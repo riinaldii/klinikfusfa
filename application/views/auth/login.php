@@ -2,6 +2,7 @@
   <div class="login-box">
     <div class="login-logo">
       <a href="../../index2.html"><b>Admin</b>LTE</a>
+      <!-- <img class="img-responsive width:100px; height:100px;" src="<?= base_url('assets/img/logo_kf.png'); ?>" alt="logo"> -->
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
@@ -29,9 +30,9 @@
         </div>
 
       </form>
-      <div class="row m-t-15 m-b-20">
+      <div class="row m-t-20 m-b-20">
         <div class="col-md-12">
-          <a href="<?= base_url('auth/registration'); ?>" class="text-center">Buat akun baru</a><br>
+          <a href="<?= base_url('auth/registration'); ?>" class="text-center mt-3">Buat akun baru</a><br>
           <a href="#" class="align-right">Lupa password?</a>
         </div>
       </div>

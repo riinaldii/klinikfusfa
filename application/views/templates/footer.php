@@ -7,14 +7,14 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Ingin keluar?</h5>
         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
       </div>
-      <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+      <div class="modal-body">Pilih "Logout" untuk keluar.</div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
         <a class="btn btn-primary" href="<?= base_url('auth/logout'); ?>">Logout</a>
       </div>
     </div>
@@ -25,6 +25,15 @@
 <script src="<?= base_url('assets/'); ?>bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="<?= base_url('assets/'); ?>bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="<?= base_url('assets/'); ?>bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="<?= base_url('assets/'); ?>bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- bootstrap datepicker -->
+<script src="<?= base_url('assets/'); ?>bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<!-- bootstrap time picker -->
+<script src="<?= base_url('assets/'); ?>plugins/timepicker/bootstrap-timepicker.min.js"></script>
+<!-- Select2 -->
+<script src="<?= base_url('assets/'); ?>bower_components/select2/dist/js/select2.full.min.js"></script>
 <!-- SlimScroll -->
 <script src="<?= base_url('assets/'); ?>bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
@@ -71,6 +80,37 @@
   });
 </script>
 
+<script>
+  $(function() {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
+    //Date picker
+    $('#datepicker').datepicker({
+      autoclose: true
+    })
+
+    //Timepicker
+    $('.timepicker').timepicker({
+      showInputs: false
+    })
+  })
+</script>
+
+<!-- dataTables page script -->
+<script>
+  $(function() {
+    $('#example1').DataTable()
+    $('#example2').DataTable({
+      'paging': true,
+      'lengthChange': false,
+      'searching': false,
+      'ordering': true,
+      'info': true,
+      'autoWidth': false
+    })
+  })
+</script>
 </body>
 
 </html>
