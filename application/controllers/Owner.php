@@ -6,8 +6,8 @@ class Owner extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('model_owner');
-        $this->load->helper('url','html');
+        // $this->load->model('model_owner');
+        $this->load->helper('url', 'html');
         is_logged_in();
     }
 
@@ -34,15 +34,15 @@ class Owner extends CI_Controller
 
         $data['title'] = "Janji Temu";
 
-        $this->load->model('m_relasi');
-        $data['query'] = $this->m_relasi->get_relasi();
+        // $this->load->model('m_relasi');
+        // $data['query'] = $this->m_relasi->get_relasi();
 
         $data['user'] = $this->db->get_where(
             'user',
             ['email' => $this->session->userdata('email')]
         )->row_array();
 
-       // $data['janjitemu'] = $this->db->get('janji_temu')->result_array();
+        // $data['janjitemu'] = $this->db->get('janji_temu')->result_array();
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
@@ -51,7 +51,8 @@ class Owner extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    public function tambah(){
+    public function tambah()
+    {
         $data = array(
             'id_pasien'  => $this->input->post('id_pasien'),
             'id_layanan' => $this->input->post('id_layanan'),
@@ -66,18 +67,20 @@ class Owner extends CI_Controller
         );
         $this->load->model('model_owner');
         $this->model_owner->tambah($data);
-        echo json_encode(array("status"=> true));
+        echo json_encode(array("status" => true));
 
-       // $this->session->set_flashdata('notif','<div class="alert alert-success" role="alert"> Data Berhasil ditambahkan <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        // $this->session->set_flashdata('notif','<div class="alert alert-success" role="alert"> Data Berhasil ditambahkan <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
         //redirect('owner/janjitemu');
     }
 
-    public function ajax_edit($id_jt){
-        $data=$this->model_owner->get_by_id_jt($id_jt);
+    public function ajax_edit($id_jt)
+    {
+        $data = $this->model_owner->get_by_id_jt($id_jt);
         echo json_encode($data);
     }
 
-    public function update(){
+    public function update()
+    {
         $data = array(
             'id_pasien'  => $this->input->post('id_pasien'),
             'id_terapis' => $this->input->post('id_terapis'),
@@ -89,13 +92,14 @@ class Owner extends CI_Controller
             'tahun' => $this->input->post('tahun'),
             'waktu' => $this->input->post('waktu'),
             'tempat' => $this->input->post('tempat'),
-            
+
         );
-        $this->model_owner->update(array('id_jt' => $this->input->post('id_jt')),$data);
-        echo json_encode(array("status"=>TRUE));
+        $this->model_owner->update(array('id_jt' => $this->input->post('id_jt')), $data);
+        echo json_encode(array("status" => TRUE));
     }
 
-    public function hapus($id_jt){
+    public function hapus($id_jt)
+    {
         $this->model_owner->delete_by_id_jt($id_jt);
         echo json_encode(array("status" => TRUE));
         //$id_jt=$this->input->get('id_jt',TRUE);
@@ -126,7 +130,8 @@ class Owner extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    public function tambah_pasien(){
+    public function tambah_pasien()
+    {
         $data = array(
             'name' => $this->input->post('name'),
             'email' => $this->input->post('email'),
@@ -145,18 +150,20 @@ class Owner extends CI_Controller
         );
         $this->load->model('model_owner');
         $this->model_owner->tambah_pasien($data);
-        echo json_encode(array("status"=> true));
+        echo json_encode(array("status" => true));
 
-       // $this->session->set_flashdata('notif','<div class="alert alert-success" role="alert"> Data Berhasil ditambahkan <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        // $this->session->set_flashdata('notif','<div class="alert alert-success" role="alert"> Data Berhasil ditambahkan <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
         //redirect('owner/janjitemu');
     }
 
-    public function ajax_edit_pasien($id){
-        $data=$this->model_owner->get_by_id_pasien($id);
+    public function ajax_edit_pasien($id)
+    {
+        $data = $this->model_owner->get_by_id_pasien($id);
         echo json_encode($data);
     }
 
-    public function update1(){
+    public function update1()
+    {
         $data = array(
             'name' => $this->input->post('name'),
             'email' => $this->input->post('email'),
@@ -172,15 +179,16 @@ class Owner extends CI_Controller
             'pekerjaan' => $this->input->post('pekerjaan'),
             'perkawinan' => $this->input->post('perkawinan'),
             'anak_ke' => $this->input->post('anak_ke'),
-            
+
         );
 
 
-        $this->model_owner->update_1(array('id' => $this->input->post('id')),$data);
-        echo json_encode(array("status"=>TRUE));
+        $this->model_owner->update_1(array('id' => $this->input->post('id')), $data);
+        echo json_encode(array("status" => TRUE));
     }
 
-    public function hapus_pasien($id){
+    public function hapus_pasien($id)
+    {
         $this->model_owner->delete_by_id_pasien($id);
         echo json_encode(array("status" => TRUE));
         //$id_jt=$this->input->get('id_jt',TRUE);
@@ -192,7 +200,7 @@ class Owner extends CI_Controller
         */
     }
 
-        public function terapis()
+    public function terapis()
     {
         $data['title'] = "Terapis";
         $data['user'] = $this->db->get_where(
@@ -209,7 +217,8 @@ class Owner extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    public function tambah_terapis(){
+    public function tambah_terapis()
+    {
         $data = array(
             'name' => $this->input->post('name'),
             'email' => $this->input->post('email'),
@@ -228,37 +237,39 @@ class Owner extends CI_Controller
         );
         $this->load->model('model_admin');
         $this->model_admin->tambah_terapis($data);
-        $this->session->set_flashdata('notif','<div class="alert alert-success" role="alert"> Data Berhasil ditambahkan <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        $this->session->set_flashdata('notif', '<div class="alert alert-success" role="alert"> Data Berhasil ditambahkan <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
         redirect('owner/terapis');
     }
 
-    function hapus_terapis($id){
+    function hapus_terapis($id)
+    {
         $this->model_admin->hapus_terapis($id);
         redirect('owner/terapis');
     }
 
-    function edit_terapis(){
-        $id=$this->input->post('id');
-        $name=$this->input->post('name');
-        $email=$this->input->post('email');
-        $image=$this->input->post('image');
-        $password=$this->input->post('password');
-        $role_id=$this->input->post('role_id');
-        $is_active=$this->input->post('is_active');
-        $date_created=$this->input->post('date_created');
-        $alamat=$this->input->post('alamat');
-        $no_telp=$this->input->post('no_telp');
-        $usia=$this->input->post('usia');
-        $pendidikan=$this->input->post('pendidikan');
-        $pekerjaan=$this->input->post('pekerjaan');
-        $perkawinan=$this->input->post('perkawinan');
-        $anak_ke=$this->input->post('anak_ke');
-        $this->model_admin->edit_terapis($id,$name,$email,$image,$password,$role_id,$is_active,$date_created,$alamat,$no_telp,$usia,$pendidikan,$pekerjaan,$perkawinan,$anak_ke);
+    function edit_terapis()
+    {
+        $id = $this->input->post('id');
+        $name = $this->input->post('name');
+        $email = $this->input->post('email');
+        $image = $this->input->post('image');
+        $password = $this->input->post('password');
+        $role_id = $this->input->post('role_id');
+        $is_active = $this->input->post('is_active');
+        $date_created = $this->input->post('date_created');
+        $alamat = $this->input->post('alamat');
+        $no_telp = $this->input->post('no_telp');
+        $usia = $this->input->post('usia');
+        $pendidikan = $this->input->post('pendidikan');
+        $pekerjaan = $this->input->post('pekerjaan');
+        $perkawinan = $this->input->post('perkawinan');
+        $anak_ke = $this->input->post('anak_ke');
+        $this->model_admin->edit_terapis($id, $name, $email, $image, $password, $role_id, $is_active, $date_created, $alamat, $no_telp, $usia, $pendidikan, $pekerjaan, $perkawinan, $anak_ke);
         redirect('owner/terapis');
     }
 
 
-    
+
     public function layanan()
     {
         $data['title'] = "Layanan";
@@ -297,18 +308,20 @@ class Owner extends CI_Controller
         }
     }
 
-    public function tambah_layanan(){
+    public function tambah_layanan()
+    {
         $data = array(
             'nama_layanan' => $this->input->post('nama_layanan'),
             'keterangan' => $this->input->post('keterangan')
         );
         $this->load->model('model_admin');
         $this->model_admin->tambah_layanan($data);
-        $this->session->set_flashdata('notif','<div class="alert alert-success" role="alert"> Data Berhasil ditambahkan <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        $this->session->set_flashdata('notif', '<div class="alert alert-success" role="alert"> Data Berhasil ditambahkan <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
         redirect('owner/layanan');
     }
 
-    function hapus_layanan($id){
+    function hapus_layanan($id)
+    {
         $this->model_admin->hapus_layanan($id);
         redirect('owner/layanan');
     }
@@ -351,7 +364,8 @@ class Owner extends CI_Controller
         }
     }
 
-    public function hapus_penyakit($id){
+    public function hapus_penyakit($id)
+    {
         $this->model_admin->hapus_penyakit($id);
         redirect('owner/penyakit');
     }

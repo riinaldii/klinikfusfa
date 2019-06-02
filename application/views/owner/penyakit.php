@@ -1,106 +1,154 @@
-<!-- Begin Page Content -->
-<div class="container-fluid">
-
-    <!-- Page Heading -->
-    <h1 class="h3 mb-4 text-gray-800"><?= $title ?></h1>
-
-    <div class="row">
-
-        <div class="col-lg">
-
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            <?= $title ?>
+        </h1>
+        <div class="col-lg-6">
             <?php if (validation_errors()) : ?>
                 <div class="alert alert-danger" role="alert">
                     <?= validation_errors(); ?>
                 </div>
             <?php endif; ?>
+    </section>
 
-            <?= $this->session->flashdata('message'); ?>
+    <!-- Main content -->
+    <section class="content">
 
-            <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addPenyakitModal">
-                Tambah Daftar Penyakit</a>
-
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Nama Penyakit</th>
-                        <th scope="col">Keterangan</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php $i = 1; ?>
-                    <?php foreach ($penyakit as $p) : ?>
+        <?= $this->session->flashdata('message'); ?>
+        <!-- Default box -->
+        <div class="box">
+            <div class="box-header with-border">
+                <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addPenyakitModal">
+                    Tambah data</a>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                        <i class="fa fa-minus"></i></button>
+                </div>
+            </div>
+            <div class="box-body">
+                <table id="example1" class="table table-bordered table-striped">
+                    <thead>
                         <tr>
-                            <th scope="row"><?= $i; ?></th>
-                            <td><?= $p['nama_penyakit'] ?> </td>
-                            <td><?= $p['keterangan'] ?> </td>
+                            <th>Nama Penyakit</th>
+                            <th>Keterangan</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Nama Penyakit</th>
+                            <th>Keterangan</th>
                             <td>
-                                <a href="" class="badge badge-success">edit</a>
-                                <a onclick="return confirm('Yakin data ingin dihapus <?php echo $p['id']?>')" href="<?php echo base_url("owner/hapus_penyakit/{$p['id']}")?>" data-toggle="tooltip" class="badge badge-danger" data-placement="bottom"> Hapus</a>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editPenyakitModal">Edit</button>
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#hapusPenyakitModal">Hapus</button>
                             </td>
                         </tr>
-                        <?php $i++; ?>
-                    <?php endforeach ?>
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.box-body -->
         </div>
-    </div>
-</div>
-<!-- /.container-fluid -->
+        <!-- /.box -->
 
+    </section>
+    <!-- /.content -->
 </div>
-<!-- End of Main Content -->
-<!-- Modal -->
+<!-- /.content-wrapper -->
+
+<footer class="main-footer">
+    <div class="pull-right hidden-xs">
+        <b>Version</b> 2.4.0
+    </div>
+    <div class="copyright text-center my-auto">
+        <span>Copyright &copy; wahini.com <?= date('Y'); ?></span>
+    </div>
+</footer>
+
+<!-- Modal Tambah Penyakit-->
 <div class="modal fade" id="addPenyakitModal" tabindex="-1" role="dialog" aria-labelledby="addPenyakitModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addPenyakitModalLabel">Tambah</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h5 class="modal-title" id="addPenyakitModalLabel">Tambah penyakit</h5>
             </div>
-            <form action="<?= base_url('owner/penyakit'); ?>" method="post">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="nama_penyakit" name="nama_penyakit" placeholder="Nama Penyakit">
+            <div class="register-box-body">
+                <form action="#" method="post">
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" id="nama_penyakit" name="nama_penyakit" placeholder="Nama penyakit">
                     </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="keterangan" name="keterangan" placeholder="Keterangan Penyakit">
+                    <div class="form-group has-feedback">
+                        <textarea type="email" class="form-control" id="keterangan" name="keterangan" placeholder="Keterangan"></textarea>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Tambah</button>
-                </div>
-            </form>
+                    <div class="row">
+                        <!-- /.col -->
+                        <div class="col-xs-12">
+                            <button type="submit" class="btn btn-primary btn-block btn-flat">Tambah data</button>
+                            <button type="button" class="btn btn-secondary btn-block btn-flat" data-dismiss="modal">Kembali</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- ============ MODAL HAPUS BARANG =============== -->
-<div class="modal fade" id="modal_hapus<?php echo $p['id'];?>" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true">
-            <div class="modal-dialog">
-            <div class="modal-content">
+<!-- Modal Edit Penyakit-->
+<div class="modal fade" id="editPenyakitModal" tabindex="-1" role="dialog" aria-labelledby="editPenyakitModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
             <div class="modal-header">
-                
-                <h3 class="modal-title" id="myModalLabel">Hapus</h3>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-            
+                <h5 class="modal-title" id="editPenyakitModalLabel">Edit penyakit</h5>
             </div>
-
-            <form class="form-horizontal" method="post" action="hapus_penyakit">
-                <div class="modal-body">
-                    <p>Anda yakin mau menghapus <b><?php echo $p['id'];?></b></p>
-                </div>
-                <div class="modal-footer">
-                    <input type="hidden" name="id" value="<?php echo $p['id'];?>">
-                    <button class="btn" data-dismiss="modal" aria-hidden="true">Tutup</button>
-                    <button class="btn btn-danger">Hapus</button>
-                </div>
-            </form>
-            </div>
+            <div class="register-box-body">
+                <form action="#" method="post">
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" id="nama_penyakit" name="nama_penyakit" placeholder="Nama penyakit">
+                    </div>
+                    <div class="form-group has-feedback">
+                        <textarea type="email" class="form-control" id="keterangan" name="keterangan" placeholder="Keterangan"></textarea>
+                    </div>
+                    <div class="row">
+                        <!-- /.col -->
+                        <div class="col-xs-12">
+                            <button type="submit" class="btn btn-primary btn-block btn-flat">Update data</button>
+                            <button type="button" class="btn btn-secondary btn-block btn-flat" data-dismiss="modal">Kembali</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
             </div>
         </div>
-    <!--END MODAL HAPUS -->
+    </div>
+</div>
+
+<!-- Modal Hapus Penyakit-->
+<div class="modal fade" id="hapusPenyakitModal" tabindex="3" role="dialog" aria-labelledby="hapusPenyakitModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">Ingin hapus data?.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Kembali</button>
+                <a class="btn btn-primary" href="<?= base_url('#'); ?>">Hapus</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Control Sidebar -->
+<aside class="control-sidebar control-sidebar-dark">
+    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+        <!-- <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li> -->
+        <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane" id="control-sidebar-home-tab">
+        </div>
+        <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
+        <div class="tab-pane" id="control-sidebar-settings-tab">
+        </div>
+    </div>
+</aside>
+<div class="control-sidebar-bg"></div>

@@ -95,7 +95,7 @@
     </div>
 </footer>
 
-<!-- Modal -->
+<!-- Modal Buat Janji-->
 <div class="modal fade" id="janjiTemuModal" tabindex="-1" role="dialog" aria-labelledby="janjiTemuModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -144,8 +144,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+                    <button type="submit" class="btn btn-primary">Buat</button>
                 </div>
             </form>
         </div>

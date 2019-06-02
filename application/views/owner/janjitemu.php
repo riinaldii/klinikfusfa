@@ -1,231 +1,351 @@
-<!-- Begin Page Content -->
-<div class="container">
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      <?= $title ?>
+    </h1>
+    <div class="col-lg-6">
+      <?= form_error('menu', '<div class="alert alert-danger" role="alert">', '</div>'); ?>
+  </section>
 
-  <!-- Page Heading -->
-  <h1 class="h3 mb-4 text-gray-800"><?= $title ?></h1>
+  <!-- Main content -->
+  <section class="content">
 
-  <!--List data Janji temu sudah-->
-  <div class="row">
-
-    <div class="col-lg-12">
-
-      <?php if (validation_errors()) : ?>
-        <div class="alert alert-danger" role="alert">
-          <?= validation_errors(); ?>
-        </div>
-      <?php endif; ?>
-
-      <?= $this->session->flashdata('message'); ?>
-
-      <button class="btn btn-primary mb-3" onclick="tambah()">
-        Tambah Data Janji Temu</button>
-
-      <table id="table_id" class="table table-striped table-bordered">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Nama Pasien</th>
-            <th>Nama Terapis</th>
-            <th>Layanan</th>
-            <th>Keluhan</th>
-            <th>Tanggal</th>
-            <th>Bulan</th>
-            <th>Tahun</th>
-            <th>Waktu</th>
-            <th>Tempat</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php $i = 1; ?>
-          <?php
-          foreach ($query->result() as $ps) {
-
-            ?>
-            <tr>
-              <td><?php echo $i; ?></td>
-              <td><?php echo $ps->name; ?></td>
-              <td><?php echo $ps->name; ?></td>
-              <td><?php echo $ps->nama_layanan; ?></td>
-              <td><?php echo $ps->keluhan; ?></td>
-              <td><?php echo $ps->tgl; ?></td>
-              <td><?php echo $ps->bulan; ?></td>
-              <td><?php echo $ps->tahun; ?></td>
-              <td><?php echo $ps->waktu; ?></td>
-              <td><?php echo $ps->tempat; ?></td>
-              <td><?php echo $ps->status; ?></td>
-              <td>
-                <button class="btn btn-warning" onclick="edit(<?php echo $ps->id_jt; ?>)"><i class="glyphicon glyphicon-pencil"></i></button>
-                <button class="btn btn-danger" onclick="delete1(<?php echo $ps->id_jt; ?>)"><i class="glyphicon glyphicon-remove"></i></button>
-              </td>
-            </tr>
-            <?php $i++; ?>
-          <?php
-        }
-        ?>
-
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <script src="<?php echo base_url('assets/'); ?>1/jquery/jquery-3.1.1.min.js"></script>
-  <script src="<?php echo base_url('assets/'); ?>1/bootstrap/js/bootstrap.min.js"></script>
-
-  <script src="<?php echo base_url('assets/'); ?>1/datatables/js/jquery.dataTables.js"></script>
-  <script src="<?php echo base_url('assets/'); ?>1/datatables/js/dataTables.bootstrap.js"></script>
-
-  <script type="text/javascript">
-    $(document).ready(function() {
-      $('#table_id').DataTable();
-    });
-
-    var save_method;
-    var table;
-
-    function tambah() {
-      save_method = 'add';
-      $('#form')[0].reset();
-      $('#modal_form').modal('show');
-    }
-
-    function save() {
-      var url;
-
-      if (save_method == 'add') {
-        url = '<?php echo site_url('index.php/owner/tambah'); ?>';
-      } else {
-        url = '<?php echo site_url('index.php/owner/update'); ?>';
-      }
-
-      $.ajax({
-        url: url,
-        type: "POST",
-        data: $('#form').serialize(),
-        dataType: "JSON",
-        success: function(data) {
-          $('#modal_form').modal('hide');
-          location.reload();
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          alert('error adding/Update data');
-        }
-      });
-    }
-
-    function edit(id_jt) {
-      save_method = 'update';
-      $('#form')[0].reset();
-
-      $.ajax({
-        url: "<?php echo site_url('index.php/owner/ajax_edit/'); ?>/" + id_jt,
-        type: "GET",
-        dataType: "JSON",
-        success: function(data) {
-          $('[name="id_jt"]').val(data.id_jt);
-          $('[name="id_pasien"]').val(data.id_pasien);
-          $('[name="id_terapis"]').val(data.id_terapis);
-          $('[name="id_layanan"]').val(data.id_layanan);
-          $('[name="keluhan"]').val(data.keluhan);
-          $('[name="tgl"]').val(data.tgl);
-          $('[name="bulan"]').val(data.bulan);
-          $('[name="tahun"]').val(data.tahun);
-          $('[name="waktu"]').val(data.waktu);
-          $('[name="tempat"]').val(data.tempat);
-          $('[name="status"]').val(data.status);
-
-          $('#modal_form').modal('show');
-          $('.modal_title').text('Edit');
-
-
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          alert('error Get data From ajax');
-        }
-      });
-    }
-
-    function delete1(id_jt) {
-      if (confirm('Are you sure delete data?')) {
-        $.ajax({
-          url: "<?php echo site_url('index.php/owner/hapus'); ?>/" + id_jt,
-          type: "POST",
-          dataType: "JSON",
-          success: function(data) {
-            location.reload();
-          },
-          error: function(jqXHR, textStatus, errorThrown) {
-            alert('Error Delete Data');
-          }
-        });
-      }
-    }
-  </script>
-
-  </body>
-
-  </html>
-
-  <div class="modal" id="modal_form" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Modal title</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+    <?= $this->session->flashdata('message'); ?>
+    <!-- Default box -->
+    <div class="box">
+      <div class="box-header with-border">
+        <h3 class="box-title">Daftar Janji Temu</h3>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+            <i class="fa fa-minus"></i>
           </button>
         </div>
-        <div class="modal-body form">
-          <form action="#" id="form">
-            <div class="form-body">
-              <div class="form-group">
-                <input type="hidden" class="form-control" id="id_jt" name="id_jt" placeholder="Nama">
+      </div>
+      <div class="box-body">
+        <table id="example1" class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>Pasien</th>
+              <th>Layanan</th>
+              <th>Tanggal Temu</th>
+              <th>Waktu Temu</th>
+              <th>Terapis</th>
+              <th>Status</th>
+              <th>Hasil Diagnosis</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Pasien</th>
+              <th>Layanan</th>
+              <th>Tanggal Temu</th>
+              <th>Waktu Temu</th>
+              <th>Terapis</th>
+              <th>Status</th>
+              <th>Hasil Diagnosis</th>
+              <th>
+                <div>
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#upJanjiModal">Update Janji</button>
+                </div>
+                <div>
+                  <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#detailPasienModal">Detail Pasien</button>
+                </div>
+                <div>
+                  <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#ubahStatusModal">Ubah Status</button>
+                </div>
+              </th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- /.box-body -->
+      <!-- <div class="box-body">
+                <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Rendering engine</th>
+                            <th>Browser</th>
+                            <th>Platform(s)</th>
+                            <th>Engine version</th>
+                            <th>CSS grade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $i = 1; ?>
+                        <?php foreach ($menu as $m) : ?>
+                                                                                                                  <tr>
+                                                                                                                      <th scope="row"><?= $i; ?></th>
+                                                                                                                      <td><?= $m['menu'] ?> </td>
+                                                                                                                      <td>
+                                                                                                                          <button class="btn btn-secondary"><a href="">Edit</a></button>
+                                                                                                                          <button class="btn btn-danger"><a href="">Hapus</a></button>
+                                                                                                                      </td>
+                                                                                                                  </tr>
+                                                                                                                  <?php $i++; ?>
+                        <?php endforeach ?>
+                    </tbody>
+                </table>
+            </div> -->
+      <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<footer class="main-footer">
+  <div class="pull-right hidden-xs">
+    <b>Version</b> 2.4.0
+  </div>
+  <div class="copyright text-center my-auto">
+    <span>Copyright &copy; wahini.com <?= date('Y'); ?></span>
+  </div>
+</footer>
+
+<!-- Modal Update Janji -->
+<div class="modal fade" id="upJanjiModal" tabindex="1" role="dialog" aria-labelledby="upJanjiModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="upJanjiModalLabel">Update Janji Temu</h5>
+      </div>
+      <form action="<?= base_url('#'); ?>" method="post">
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Nama pasien</label>
+            <div>
+              <input type="text" class="form-control" placeholder="Nama pasien" readonly>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Pilih layanan</label>
+            <div>
+              <select name="layanan" id="layanan" class="form-control select2">
+                <option value="">Pilih Layanan</option>
+                <?php foreach ($menu as $m) : ?>
+                  <option value="<?= $m['id']; ?>"><?= $m['menu'] ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Pilih Terapis</label>
+            <div>
+              <select name="menu_id" id="menu_id" class="form-control select2">
+                <option value="">Pilih Terapis</option>
+                <?php foreach ($menu as $m) : ?>
+                  <option value="<?= $m['id']; ?>"><?= $m['menu'] ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Tanggal temu</label>
+            <div class="input-group date">
+              <div class="input-group-addon">
+                <i class="fa fa-calendar"></i>
               </div>
-              <div class="form-body">
-                <div class="form-group">
-                  <input type="text" class="form-control" id="id_pasien" name="id_pasien" placeholder="Nama">
+              <input type="text" class="form-control pull-right" id="datepicker">
+            </div>
+            <!-- /.input group -->
+          </div>
+          <div class="form-group">
+            <div class="bootstrap-timepicker">
+              <div class="form-group">
+                <label>Waktu temu</label>
+                <div class="input-group">
+                  <div class="input-group-addon">
+                    <i class="fa fa-clock-o"></i>
+                  </div>
+                  <input type="text" class="form-control timepicker">
                 </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" id="id_terapis" name="id_terapis" placeholder="Id Terapis">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" id="id_layanan" name="id_layanan" placeholder="Layanan">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" id="keluhan" name="keluhan" placeholder="Keluhan">
-                </div>
-                <!-- <div class="form-group">
-                        <input type="text" class="form-control" id="tgl" name="tgl" placeholder="Tanggal">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="bulan" name="bulan" placeholder="Bulan">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="tahun" name="tahun" placeholder="Tahun">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="waktu" name="waktu" placeholder="Waktu">
-                    </div> -->
-                <div class="form-group" id="datepickers">
-                  <input type="text" class="form-control" id="waktu_temu" name="waktu_temu" placeholder="Waktu Temu" date-provide="datepicker">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" id="tempat" name="tempat" placeholder="Tempat">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" id="status" name="status" placeholder="Status">
-                </div>
-
-
-
-          </form>
-
+                <!-- /.input group -->
+              </div>
+              <!-- /.form group -->
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Keluhan</label>
+            <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
+          </div>
         </div>
         <div class="modal-footer">
-          <button type="button" onclick="save()" class="btn btn-primary">Save changes</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Update</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
         </div>
-      </div>
+      </form>
     </div>
   </div>
+</div>
+
+<!-- Modal Detail Pasien -->
+<div class="modal fade" id="detailPasienModal" tabindex="-1" role="dialog" aria-labelledby="detailPasienModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="detailPasienModalLabel">Detail pasien</h5>
+      </div>
+      <form action="<?= base_url('#'); ?>" method="post">
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Nama pasien</label>
+            <div>
+              <input type="text" class="form-control" placeholder="Nama pasien" readonly>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Pilih layanan</label>
+            <div>
+              <select name="layanan" id="layanan" class="form-control select2">
+                <option value="">Pilih Layanan</option>
+                <?php foreach ($menu as $m) : ?>
+                  <option value="<?= $m['id']; ?>"><?= $m['menu'] ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Pilih Terapis</label>
+            <div>
+              <select name="menu_id" id="menu_id" class="form-control select2">
+                <option value="">Pilih Terapis</option>
+                <?php foreach ($menu as $m) : ?>
+                  <option value="<?= $m['id']; ?>"><?= $m['menu'] ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Tanggal temu</label>
+            <div class="input-group date">
+              <div class="input-group-addon">
+                <i class="fa fa-calendar"></i>
+              </div>
+              <input type="text" class="form-control pull-right" id="datepicker">
+            </div>
+            <!-- /.input group -->
+          </div>
+          <div class="form-group">
+            <div class="bootstrap-timepicker">
+              <div class="form-group">
+                <label>Waktu temu</label>
+                <div class="input-group">
+                  <div class="input-group-addon">
+                    <i class="fa fa-clock-o"></i>
+                  </div>
+                  <input type="text" class="form-control timepicker">
+                </div>
+                <!-- /.input group -->
+              </div>
+              <!-- /.form group -->
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Keluhan</label>
+            <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Ubah Status -->
+<div class="modal fade" id="ubahStatusModal" tabindex="-1" role="dialog" aria-labelledby="ubahStatusModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ubahStatusModalLabel">Ubah status janji</h5>
+      </div>
+      <form action="<?= base_url('#'); ?>" method="post">
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Nama pasien</label>
+            <div>
+              <input type="text" class="form-control" placeholder="Nama pasien" readonly>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Pilih layanan</label>
+            <div>
+              <select name="layanan" id="layanan" class="form-control select2">
+                <option value="">Pilih Layanan</option>
+                <?php foreach ($menu as $m) : ?>
+                  <option value="<?= $m['id']; ?>"><?= $m['menu'] ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Pilih Terapis</label>
+            <div>
+              <select name="menu_id" id="menu_id" class="form-control select2">
+                <option value="">Pilih Terapis</option>
+                <?php foreach ($menu as $m) : ?>
+                  <option value="<?= $m['id']; ?>"><?= $m['menu'] ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Tanggal temu</label>
+            <div class="input-group date">
+              <div class="input-group-addon">
+                <i class="fa fa-calendar"></i>
+              </div>
+              <input type="text" class="form-control pull-right" id="datepicker">
+            </div>
+            <!-- /.input group -->
+          </div>
+          <div class="form-group">
+            <div class="bootstrap-timepicker">
+              <div class="form-group">
+                <label>Waktu temu</label>
+                <div class="input-group">
+                  <div class="input-group-addon">
+                    <i class="fa fa-clock-o"></i>
+                  </div>
+                  <input type="text" class="form-control timepicker">
+                </div>
+                <!-- /.input group -->
+              </div>
+              <!-- /.form group -->
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Keluhan</label>
+            <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Simpan</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Control Sidebar -->
+<aside class="control-sidebar control-sidebar-dark">
+  <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+    <!-- <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li> -->
+    <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane" id="control-sidebar-home-tab">
+    </div>
+    <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
+    <div class="tab-pane" id="control-sidebar-settings-tab">
+    </div>
+  </div>
+</aside>
+<div class="control-sidebar-bg"></div>
