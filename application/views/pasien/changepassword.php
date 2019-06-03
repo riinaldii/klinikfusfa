@@ -14,7 +14,7 @@
                         <?= $this->session->flashdata('message'); ?>
 
                         <div class="active tab-pane" id="profile">
-                            <form class="form-horizontal" action="<?= base_url('user/changepassword'); ?>" method="post">
+                            <form class="form-horizontal" action="<?= base_url('pasien/changepassword'); ?>" method="post">
                                 <label for="current_password" class="control-label">Password Lama</label>
                                 <div class="form-group row">
                                     <div class="col-sm-12">

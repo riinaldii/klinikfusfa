@@ -42,6 +42,15 @@ class Pasien extends CI_Controller
             $this->load->view('templates/footer');
         } else {
             $name = $this->input->post('name');
+            $alamat = $this->input->post('alamat');
+            $tempat_lahir = $this->input->post('tempat_lahir');
+            $tanggal_lahir = $this->input->post('tgl_lahir');
+            $usia = $this->input->post('usia');
+            $no_telp = $this->input->post('no_telp');
+            $anak_ke = $this->input->post('anak_ke');
+            $pendidikan = $this->input->post('riwayat_pendidikan');
+            $pekerjaan = $this->input->post('pekerjaan');
+            $perkawinan = $this->input->post('perkawinan');
             $email = $this->input->post('email');
 
             //cek jika ada gambar yang di upload
@@ -63,6 +72,10 @@ class Pasien extends CI_Controller
 
                     $new_image = $this->upload->data('file_name');
                     $this->db->set('image', $new_image);
+
+                    $this->db->set('image', $new_image);
+                    $this->db->where('email', $email);
+                    $this->db->update('pasien');
                 } else {
                     echo $this->upload->display_errors();
                 }
@@ -72,13 +85,27 @@ class Pasien extends CI_Controller
             $this->db->where('email', $email);
             $this->db->update('user');
 
+            $this->db->set('name', $name);
+            $this->db->set('alamat', $alamat);
+            $this->db->set('tempat_lahir', $tempat_lahir);
+            $this->db->set('tgl_lahir', $tanggal_lahir);
+            $this->db->set('usia', $usia);
+            $this->db->set('no_telp', $no_telp);
+            $this->db->set('anak_ke', $anak_ke);
+            $this->db->set('riwayat_pendidikan', $pendidikan);
+            $this->db->set('pekerjaan', $pekerjaan);
+            $this->db->set('perkawinan', $perkawinan);
+
+            $this->db->where('email', $email);
+            $this->db->update('pasien');
+
             $this->session->set_flashdata(
                 'message',
-                '<div class="alert alert-success alert-dismissible fade show" role = "alert">
-                    Your profile has been updated! 
+                '<div class="alert alert-success" role = "alert">
+                    Profile berhasil diperbarui! 
                 </div>'
             );
-            redirect('user');
+            redirect('pasien');
         }
     }
 
@@ -86,7 +113,7 @@ class Pasien extends CI_Controller
     {
         $data['title'] = "Ubah Password";
         $data['user'] = $this->db->get_where(
-            'user',
+            'pasien',
             ['email' => $this->session->userdata('email')]
         )->row_array();
 
@@ -98,7 +125,7 @@ class Pasien extends CI_Controller
             $this->load->view('templates/header', $data);
             $this->load->view('templates/sidebar', $data);
             $this->load->view('templates/topbar', $data);
-            $this->load->view('user/changepassword', $data);
+            $this->load->view('pasien/changepassword', $data);
             $this->load->view('templates/footer');
         } else {
 
@@ -108,20 +135,20 @@ class Pasien extends CI_Controller
             if (!password_verify($current_password, $data['user']['password'])) {
                 $this->session->set_flashdata(
                     'message',
-                    '<div class="alert alert-danger alert-dismissible fade show" role = "alert">
-                    Wrong current password! 
+                    '<div class="alert alert-danger" role = "alert">
+                    Password lama yang dimasukkan salah! 
                     </div>'
                 );
-                redirect('user/changepassword');
+                redirect('pasien/changepassword');
             } else {
                 if ($current_password == $new_password) {
                     $this->session->set_flashdata(
                         'message',
-                        '<div class="alert alert-danger alert-dismissible fade show" role = "alert">
-                        New password cannot be the same as current password! 
+                        '<div class="alert alert-danger" role = "alert">
+                        Password baru sama dengan password lama, coba password baru! 
                         </div>'
                     );
-                    redirect('user/changepassword');
+                    redirect('pasien/changepassword');
                 } else {
                     // password ok
 
@@ -131,13 +158,17 @@ class Pasien extends CI_Controller
                     $this->db->where('email', $this->session->userdata('email'));
                     $this->db->update('user');
 
+                    $this->db->set('password', $password_hash);
+                    $this->db->where('email', $this->session->userdata('email'));
+                    $this->db->update('pasien');
+
                     $this->session->set_flashdata(
                         'message',
-                        '<div class="alert alert-success alert-dismissible fade show" role = "alert">
-                        Password changed! 
+                        '<div class="alert alert-success" role = "alert">
+                        Password berhasil diubah! 
                         </div>'
                     );
-                    redirect('user/changepassword');
+                    redirect('pasien/changepassword');
                 }
             }
         }

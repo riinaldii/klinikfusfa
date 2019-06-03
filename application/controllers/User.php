@@ -11,7 +11,7 @@ class User extends CI_Controller
 
     public function index()
     {
-        $data['title'] = "Profile";
+        $data['title'] = "My Profile";
         $data['user'] = $this->db->get_where(
             'user',
             ['email' => $this->session->userdata('email')]
@@ -31,8 +31,13 @@ class User extends CI_Controller
             'user',
             ['email' => $this->session->userdata('email')]
         )->row_array();
+        $data['role_id'] = $this->db->get_where(
+            'user',
+            ['role_id' => $this->session->userdata('role_id')]
+        )->row_array();
 
-        $this->form_validation->set_rules('name', 'Full Name', 'required|trim');
+        $this->form_validation->set_rules('name', 'Nama Lengkap', 'required|trim');
+
 
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/header', $data);
@@ -42,8 +47,23 @@ class User extends CI_Controller
             $this->load->view('templates/footer');
         } else {
             $name = $this->input->post('name');
+            if ($data['role_id'] == 4) {
+                $this->form_validation->set_rules('alamat', 'Alamat', 'required|trim');
+                $this->form_validation->set_rules('usia', 'Usia', 'required|trim');
+                $this->form_validation->set_rules('no_telp', 'No. Telpon', 'required|trim');
+                $this->form_validation->set_rules('anak_ke', 'Anak Ke-', 'required|trim');
+                $this->form_validation->set_rules('pendidikan', 'Pendidikan Terakhir', 'required|trim');
+                $this->form_validation->set_rules('pekerjaan', 'Pekerjaan', 'required|trim');
+                $this->form_validation->set_rules('perkawinan', 'Status Perkawinan', 'required|trim');
+            }
+            $alamat = $this->input->post('alamat');
+            $usia = $this->input->post('usia');
+            $no_telp = $this->input->post('no_telp');
+            $anak_ke = $this->input->post('anak_ke');
+            $pendidikan = $this->input->post('pendidikan');
+            $pekerjaan = $this->input->post('pekerjaan');
+            $perkawinan = $this->input->post('perkawinan');
             $email = $this->input->post('email');
-
             //cek jika ada gambar yang di upload
             $upload_image = $_FILES['image']['name'];
 
@@ -69,6 +89,13 @@ class User extends CI_Controller
             }
 
             $this->db->set('name', $name);
+            $this->db->set('alamat', $alamat);
+            $this->db->set('no_telp', $no_telp);
+            $this->db->set('usia', $usia);
+            $this->db->set('pendidikan', $pendidikan);
+            $this->db->set('pekerjaan', $pekerjaan);
+            $this->db->set('perkawinan', $perkawinan);
+            $this->db->set('anak_ke', $anak_ke);
             $this->db->where('email', $email);
             $this->db->update('user');
 

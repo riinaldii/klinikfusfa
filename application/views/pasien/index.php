@@ -5,6 +5,9 @@
   <section class="content">
 
     <div class="row">
+      <div class="col-sm-12">
+        <?= $this->session->flashdata('message'); ?>
+      </div>
       <div class="col-md-12">
         <!-- Profile Image -->
         <div class="box box-primary">
@@ -60,6 +63,12 @@
                   <label for="alamat" class="col-sm-2 control-label">Alamat</label>
                   <div class="col-sm-10">
                     <input class="form-control" id="alamat" nama="alamat" value="<?= $user['alamat']; ?>" readonly>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="no_telp" class="col-sm-2 control-label">No. Telepon</label>
+                  <div class="col-sm-2">
+                    <input class="form-control" id="no_telp" name="no_telp" value="<?= $user['no_telp']; ?>" readonly>
                   </div>
                 </div>
                 <div class="form-group">
