@@ -14,7 +14,7 @@
   <!-- Ionicons -->
   <link rel="stylesheet" href="<?= base_url('assets/'); ?>bower_components/Ionicons/css/ionicons.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="<?= base_url('assets/'); ?>dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="<?= base_url('assets/'); ?>dist/css/AdminLTE.css">
   <!-- iCheck -->
   <link rel="stylesheet" href="<?= base_url('assets/'); ?>plugins/iCheck/square/blue.css">
 

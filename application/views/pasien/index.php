@@ -1,107 +1,139 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <h1>
-            <?= $title ?>
-        </h1>
-        <div class="col-lg-6">
-            <?= form_error('menu', '<div class="alert alert-danger" role="alert">', '</div>'); ?>
-    </section>
+  <!-- Content Header (Page header) -->
+  <!-- Main content -->
+  <section class="content">
 
-    <!-- Main content -->
-    <section class="content">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- Profile Image -->
+        <div class="box box-primary">
+          <div class="box-body box-profile">
 
-        <?= $this->session->flashdata('message'); ?>
-        <!-- Default box -->
-        <div class="box">
-            <div class="box-header with-border">
-                <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newMenuModal">
-                    Add New Menu</a>
-                <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-                        <i class="fa fa-minus"></i></button>
-                </div>
-            </div>
-            <div class="box-body">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">No.</th>
-                            <th scope="col">Menu</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $i = 1; ?>
-                        <?php foreach ($menu as $m) : ?>
-                            <tr>
-                                <th scope="row"><?= $i; ?></th>
-                                <td><?= $m['menu'] ?> </td>
-                                <td>
-                                    <button class="btn btn-secondary"><a href="">Edit</a></button>
-                                    <button class="btn btn-danger"><a href="">Hapus</a></button>
-                                </td>
-                            </tr>
-                            <?php $i++; ?>
-                        <?php endforeach ?>
-                    </tbody>
-                </table>
-            </div>
-            <!-- /.box-body -->`
+            <img class="profile-user-img img-responsive img-circle" src="<?= base_url('assets/img/profile/') . $user['image']; ?>" alt="User profile picture">
+
+            <h3 class="profile-username text-center"><?= $user['name']; ?></h3>
+            <p class="text-muted text-center"><small><i> <?= $user['email']; ?></i></s> </p>
+
+            <p class="text-muted text-center">Member sejak <?= date('d F Y', $user['date_created']); ?></p>
+            <!-- 
+            <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a> -->
+          </div>
+          <!-- /.box-body -->
         </div>
         <!-- /.box -->
 
-    </section>
-    <!-- /.content -->
+        <!-- profile tab -->
+        <div class="nav-tabs-custom">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="profile" data-toggle="tab"><?= $title ?></a></li>
+          </ul>
+          <div class="tab-content">
+
+            <div class="active tab-pane" id="profile">
+              <form class="form-horizontal">
+                <div class="form-group">
+                  <label for="name" class="col-sm-2 control-label">Nama Lengkap</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" id="name" name="name" value="<?= $user['name']; ?>" readonly>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="email" class="col-sm-2 control-label">Alamat Email</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" id="email" name="email" value="<?= $user['email']; ?>" readonly>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="ttl" class="col-sm-2 control-label">Tempat Tanggal Lahir</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" id="ttl" name="ttl" value="<?= $user['tempat_lahir']; ?>, <?= $user['tgl_lahir']; ?>" readonly>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="anak_ke" class="col-sm-2 control-label">Anak Ke-</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" id="anak_ke" nama="anak_ke" value="<?= $user['anak_ke']; ?>" readonly>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="alamat" class="col-sm-2 control-label">Alamat</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" id="alamat" nama="alamat" value="<?= $user['alamat']; ?>" readonly>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="riwayat_pendidikan" class="col-sm-2 control-label">Pendidikan Terakhir</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" id="riwayat_pendidikan" nama="riwayat_pendidikan" value="<?= $user['riwayat_pendidikan']; ?>" readonly>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="usia" class="col-sm-2 control-label">Usia</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" id="usia" nama="usia" value="<?= $user['usia']; ?>" readonly>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="pekerjaan" class="col-sm-2 control-label">Pekerjaan</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" id="pekerjaan" nama="pekerjaan" value="<?= $user['pekerjaan']; ?>" readonly>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="perkawinan" class="col-sm-2 control-label">Status Perkawinan</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" id="perkawinan" nama="perkawinan" value="<?= $user['perkawinan']; ?>" readonly>
+                  </div>
+                </div>
+
+                <!-- <div class="form-group">
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-danger">Submit</button>
+                  </div>
+                </div> -->
+              </form>
+            </div>
+            <!-- /.tab-pane -->
+          </div>
+          <!-- /.tab-content -->
+        </div>
+        <!-- /.box -->
+      </div>
+      <!-- /.col -->
+      <!-- <div class="col-md-9"> -->
+      <!-- /.nav-tabs-custom -->
+      <!-- </div> -->
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+  </section>
+  <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
 
 <footer class="main-footer">
-    <div class="pull-right hidden-xs">
-        <b>Version</b> 2.4.0
-    </div>
-    <div class="copyright text-center my-auto">
-        <span>Copyright &copy; wahini.com <?= date('Y'); ?></span>
-    </div>
+  <div class="pull-right hidden-xs">
+    <b>Version</b> 2.4.0
+  </div>
+  <div class="copyright text-center my-auto">
+    <span>Copyright &copy; wahini.com <?= date('Y'); ?></span>
+  </div>
 </footer>
-<!-- Modal -->
-<div class="modal fade" id="newMenuModal" tabindex="-1" role="dialog" aria-labelledby="newMenuModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="newMenuModalLabel">Add New Menu</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="<?= base_url('menu'); ?>" method="post">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="menu" name="menu" placeholder="Menu name">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- Control Sidebar -->
+
 <!-- Control Sidebar -->
 <aside class="control-sidebar control-sidebar-dark">
-    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-        <!-- <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li> -->
-        <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
-    </ul>
-    <div class="tab-content">
-        <div class="tab-pane" id="control-sidebar-home-tab">
-        </div>
-        <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
-        <div class="tab-pane" id="control-sidebar-settings-tab">
-        </div>
+  <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+    <!-- <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li> -->
+    <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane" id="control-sidebar-home-tab">
     </div>
+    <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
+    <div class="tab-pane" id="control-sidebar-settings-tab">
+    </div>
+  </div>
 </aside>
 <div class="control-sidebar-bg"></div>

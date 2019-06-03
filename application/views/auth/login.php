@@ -1,14 +1,24 @@
 <body class="hold-transition login-page">
   <div class="login-box">
     <div class="login-logo">
-      <a href="../../index2.html"><b>Admin</b>LTE</a>
-      <!-- <img class="img-responsive width:100px; height:100px;" src="<?= base_url('assets/img/logo_kf.png'); ?>" alt="logo"> -->
+      <!-- <a href="../../index2.html"><b>Admin</b>LTE</a> -->
+      <!--  -->
     </div>
     <!-- /.login-logo -->
-    <div class="login-box-body">
-      <p class="login-box-msg">Sign in to start your session</p>
+    <div class="login-box-body align-rigth">
+      <!-- <div class="row">
+        <img class="img kf" src="<?= base_url('assets/img/logo_kf.png'); ?>" alt="logo">
+      </div>
 
-      <?= $this->session->flashdata('message'); ?>
+      <style type="text/css">
+        .kf {
+          transform: rotate(90deg);
+        }
+      </style> -->
+      <div>
+        <h3></h3>
+        <?= $this->session->flashdata('message'); ?>
+      </div>
 
       <form class="user" method="post" action="<?= base_url('auth'); ?>">
         <div class="form-group has-feedback">
@@ -32,7 +42,7 @@
       </form>
       <div class="row m-t-20 m-b-20">
         <div class="col-md-12">
-          <a href="<?= base_url('auth/registration'); ?>" class="text-center mt-3">Buat akun baru</a><br>
+          <a href="<?= base_url('auth/registrationMember'); ?>" class="text-center mt-3">Buat akun baru</a><br>
           <a href="#" class="align-right">Lupa password?</a>
         </div>
       </div>

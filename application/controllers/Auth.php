@@ -47,8 +47,12 @@ class Auth extends CI_Controller
                     $this->session->set_userdata($data);
                     if ($user['role_id'] == 1) {
                         redirect('admin');
-                    } else {
-                        redirect('user');
+                    } else if ($user['role_id'] == 2) {
+                        redirect('owner');
+                    } else if ($user['role_id'] == 3) {
+                        redirect('terapis');
+                    } else if ($user['role_id'] == 4) {
+                        redirect('pasien');
                     }
                 } else {
                     $this->session->set_flashdata(
@@ -79,7 +83,7 @@ class Auth extends CI_Controller
         }
     }
 
-    public function registration()
+    public function registrationMember()
     {
         if ($this->session->userdata('email')) {
             redirect('user');
@@ -112,7 +116,7 @@ class Auth extends CI_Controller
                 'email' => htmlspecialchars($email),
                 'image' => 'default.jpg',
                 'password' => password_hash($this->input->post('password1'), PASSWORD_DEFAULT),
-                'role_id' => 2,
+                'role_id' => 4,
                 'is_active' => 0,
                 'date_created' => time()
             ];
@@ -127,15 +131,15 @@ class Auth extends CI_Controller
             ];
 
             $this->db->insert('user', $data);
-
+            $this->db->insert('pasien', $data);
             $this->db->insert('user_token', $user_token);
 
             $this->_sendEmail($token, 'verify');
 
             $this->session->set_flashdata(
                 'message',
-                '<div class="alert alert-success alert-dismissible fade show" role = "alert">
-            Akun berhasil dibuat. Silahkan diaktivasi! 
+                '<div class="alert alert-success" role = "alert">  
+            Akun ' . $email . '  berhasil dibuat. Silahkan diaktivasi! 
         </div>'
             );
             redirect('auth');
@@ -181,17 +185,20 @@ class Auth extends CI_Controller
         $token = $this->input->get('token');
 
         $user = $this->db->get_where('user', ['email' => $email])->row_array();
+        $pasien = $this->db->get_where('pasien', ['email' => $email])->row_array();
 
-        if ($user) {
+        if ($user && $pasien) {
             $user_token = $this->db->get_where('user_token', ['token' => $token])->row_array();
 
             if ($user_token) {
                 if (time() - $user_token['date_created'] < (60 * 60 + 24)) {
                     $this->db->set('is_active', 1);
-
                     $this->db->where('email', $email);
-
                     $this->db->update('user');
+
+                    $this->db->set('is_active', 1);
+                    $this->db->where('email', $email);
+                    $this->db->update('pasien');
 
                     $this->db->delete('user_token', ['email' => $email]);
 

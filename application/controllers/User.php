@@ -11,7 +11,7 @@ class User extends CI_Controller
 
     public function index()
     {
-        $data['title'] = "My Profile";
+        $data['title'] = "Profile";
         $data['user'] = $this->db->get_where(
             'user',
             ['email' => $this->session->userdata('email')]
@@ -63,7 +63,6 @@ class User extends CI_Controller
 
                     $new_image = $this->upload->data('file_name');
                     $this->db->set('image', $new_image);
-
                 } else {
                     echo $this->upload->display_errors();
                 }
@@ -81,7 +80,6 @@ class User extends CI_Controller
             );
             redirect('user');
         }
-
     }
 
     public function changePassword()
@@ -102,7 +100,6 @@ class User extends CI_Controller
             $this->load->view('templates/topbar', $data);
             $this->load->view('user/changepassword', $data);
             $this->load->view('templates/footer');
-
         } else {
 
             $current_password = $this->input->post('current_password');
@@ -116,7 +113,6 @@ class User extends CI_Controller
                     </div>'
                 );
                 redirect('user/changepassword');
-
             } else {
                 if ($current_password == $new_password) {
                     $this->session->set_flashdata(

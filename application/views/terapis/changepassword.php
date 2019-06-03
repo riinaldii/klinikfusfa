@@ -11,54 +11,34 @@
                         <li class="active"><a href="profile" data-toggle="tab"><?= $title ?></a></li>
                     </ul>
                     <div class="tab-content">
+                        <?= $this->session->flashdata('message'); ?>
 
                         <div class="active tab-pane" id="profile">
-                            <form class="form-horizontal">
-                                <?= form_open_multipart('user/edit'); ?>
+                            <form class="form-horizontal" action="<?= base_url('user/changepassword'); ?>" method="post">
+                                <label for="current_password" class="control-label">Password Lama</label>
                                 <div class="form-group row">
-                                    <label for="inputEmail" class="col-sm-2 control-label">Email</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="email" name="email" value="<?= $user['email']; ?>" readonly>
+                                    <div class="col-sm-12">
+                                        <input type="password" class="form-control" id="current_password" name="current_password" placeholder="Masukkan password lama">
+                                        <?= form_error('current_password', '<small class="text-danger ml-3">', '</small>'); ?>
                                     </div>
                                 </div>
+                                <label for="new_password1" class="control-label">Password Baru</label>
                                 <div class="form-group row">
-                                    <label for="inputName" class="col-sm-2 control-label">Nama Lengkap</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="name" name="name" value="<?= $user['name']; ?>">
-                                        <?= form_error('name', '<small class="text-danger ml-3">', '</small>'); ?>
+                                    <div class="col-sm-12">
+                                        <input type="password" class="form-control" id="new_password1" name="new_password1" placeholder="Masukkan password baru">
+                                        <?= form_error('new_password1', '<small class="text-danger ml-3">', '</small>'); ?>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="inputExperience" class="col-sm-2 control-label">Alamat</label>
-                                    <div class="col-sm-10">
-                                        <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputSkills" class="col-sm-2 control-label">Skills</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
-                                    </div>
-                                </div>
+                                <label for="new_password2" class="control-label">Konfirmasi Password Baru</label>
                                 <div class="form-group row">
-                                    <label class="col-sm-2 control-label">Picture</label>
-                                    <div class="col-sm-10">
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <img src="<?= base_url('assets/img/profile/') . $user['image']; ?>" class="img-thumbnail">
-                                            </div>
-                                            <div class="col-sm-9">
-                                                <div class="custom-file">
-                                                    <input type="file" class="custom-file-input" id="image" name="image">
-                                                    <label class="custom-file-label" for="image">Choose file</label>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="col-sm-12">
+                                        <input type="password" class="form-control" id="new_password2" name="new_password2" placeholder="Konfirmasi password baru">
+                                        <?= form_error('new_password2', '<small class="text-danger ml-3">', '</small>'); ?>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <div class="col-sm-offset-2 col-sm-10">
+                                    <div class="col-sm-10">
                                         <button type="submit" class="btn btn-primary">Simpan</button>
                                     </div>
                                 </div>
