@@ -49,8 +49,11 @@
                 </div>
                 <div class="form-group">
                   <label for="ttl" class="col-sm-2 control-label">Tempat Tanggal Lahir</label>
-                  <div class="col-sm-10">
-                    <input class="form-control" id="ttl" name="ttl" value="<?= $user['tempat_lahir']; ?>, <?= $user['tgl_lahir']; ?>" readonly>
+                  <div class="col-sm-6">
+                    <input class="form-control" id="ttl" name="ttl" value="<?= $user['tempat_lahir']; ?>" readonly>
+                  </div>
+                  <div class="col-sm-4">
+                    <input class="form-control" id="ttl" name="ttl" value="<?= $user['tgl_lahir']; ?>" readonly>
                   </div>
                 </div>
                 <div class="form-group">
@@ -130,19 +133,3 @@
     <span>Copyright &copy; wahini.com <?= date('Y'); ?></span>
   </div>
 </footer>
-
-<!-- Control Sidebar -->
-<aside class="control-sidebar control-sidebar-dark">
-  <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-    <!-- <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li> -->
-    <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
-  </ul>
-  <div class="tab-content">
-    <div class="tab-pane" id="control-sidebar-home-tab">
-    </div>
-    <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
-    <div class="tab-pane" id="control-sidebar-settings-tab">
-    </div>
-  </div>
-</aside>
-<div class="control-sidebar-bg"></div>

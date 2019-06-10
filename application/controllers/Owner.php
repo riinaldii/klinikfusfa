@@ -28,7 +28,6 @@ class Owner extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-
     public function janjitemu()
     {
 
@@ -51,67 +50,6 @@ class Owner extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    public function tambah()
-    {
-        $data = array(
-            'id_pasien'  => $this->input->post('id_pasien'),
-            'id_layanan' => $this->input->post('id_layanan'),
-            'id_terapis' => $this->input->post('id_terapis'),
-            'keluhan' => $this->input->post('keluhan'),
-            'tgl' => $this->input->post('tgl'),
-            'bulan' => $this->input->post('bulan'),
-            'tahun' => $this->input->post('tahun'),
-            'waktu' => $this->input->post('waktu'),
-            'tempat' => $this->input->post('tempat'),
-            'status' => $this->input->post('status'),
-        );
-        $this->load->model('model_owner');
-        $this->model_owner->tambah($data);
-        echo json_encode(array("status" => true));
-
-        // $this->session->set_flashdata('notif','<div class="alert alert-success" role="alert"> Data Berhasil ditambahkan <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
-        //redirect('owner/janjitemu');
-    }
-
-    public function ajax_edit($id_jt)
-    {
-        $data = $this->model_owner->get_by_id_jt($id_jt);
-        echo json_encode($data);
-    }
-
-    public function update()
-    {
-        $data = array(
-            'id_pasien'  => $this->input->post('id_pasien'),
-            'id_terapis' => $this->input->post('id_terapis'),
-            'id_layanan' => $this->input->post('id_layanan'),
-            'status' => $this->input->post('status'),
-            'keluhan' => $this->input->post('keluhan'),
-            'tgl' => $this->input->post('tgl'),
-            'bulan' => $this->input->post('bulan'),
-            'tahun' => $this->input->post('tahun'),
-            'waktu' => $this->input->post('waktu'),
-            'tempat' => $this->input->post('tempat'),
-
-        );
-        $this->model_owner->update(array('id_jt' => $this->input->post('id_jt')), $data);
-        echo json_encode(array("status" => TRUE));
-    }
-
-    public function hapus($id_jt)
-    {
-        $this->model_owner->delete_by_id_jt($id_jt);
-        echo json_encode(array("status" => TRUE));
-        //$id_jt=$this->input->get('id_jt',TRUE);
-        /*if($this->model_admin->hapus($id_jt) == false)
-        {
-            $this->session->set_flashdata('edit_mahasiswa','data anda berhasil dihapus');
-        }
-        redirect('owner/janjitemu','refresh');
-        */
-    }
-
-    //Pasien
     public function pasien()
     {
 
@@ -121,7 +59,7 @@ class Owner extends CI_Controller
             ['email' => $this->session->userdata('email')]
         )->row_array();
 
-        $data['pasien'] = $this->db->get('user')->result_array();
+        $data['pasien'] = $this->db->get('pasien')->result_array();
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
@@ -130,74 +68,206 @@ class Owner extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    public function tambah_pasien()
+    public function addpasien()
     {
-        $data = array(
-            'name' => $this->input->post('name'),
-            'email' => $this->input->post('email'),
-            'image' => $this->input->post('image'),
-            'password' => $this->input->post('password'),
-            'role_id' => $this->input->post('role_id'),
-            'is_active' => $this->input->post('is_active'),
-            'date_created' => $this->input->post('date_created'),
-            'alamat' => $this->input->post('alamat'),
-            'no_telp' => $this->input->post('no_telp'),
-            'usia' => $this->input->post('usia'),
-            'pendidikan' => $this->input->post('pendidikan'),
-            'pekerjaan' => $this->input->post('pekerjaan'),
-            'perkawinan' => $this->input->post('perkawinan'),
-            'anak_ke' => $this->input->post('anak_ke')
+        $this->form_validation->set_rules('name', 'Name', 'required|trim');
+        $this->form_validation->set_rules('email', 'Email', 'required|trim|is_unique[user.email]', [
+            'is_unique' => 'Email ini sudah dipakai, gunakan email lain!'
+        ]);
+
+        $this->form_validation->set_rules(
+            'password1',
+            'Password',
+            'required|trim|min_length[7]|matches[password2]',
+            [
+                'matches' => 'Password tidak cocok!',
+                'min_length' => 'Password terlalu pendek!'
+            ]
         );
-        $this->load->model('model_owner');
-        $this->model_owner->tambah_pasien($data);
-        echo json_encode(array("status" => true));
+        $this->form_validation->set_rules('password2', 'Password', 'required|trim|matches[password1]');
 
-        // $this->session->set_flashdata('notif','<div class="alert alert-success" role="alert"> Data Berhasil ditambahkan <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
-        //redirect('owner/janjitemu');
-    }
+        if ($this->form_validation->run() == false) {
+            $data['title'] = "Tambah Data Pasien";
+            $data['user'] = $this->db->get_where(
+                'user',
+                ['email' => $this->session->userdata('email')]
+            )->row_array();
 
-    public function ajax_edit_pasien($id)
-    {
-        $data = $this->model_owner->get_by_id_pasien($id);
-        echo json_encode($data);
-    }
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('owner/addpasien', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $email = $this->input->post('email', true);
+            $data_t = [
+                'name' => htmlspecialchars($this->input->post('name', true)),
+                'email' => htmlspecialchars($email),
+                'no_telp' => htmlspecialchars($this->input->post('no_telp', true)),
+                'alamat' => htmlspecialchars($this->input->post('alamat', true)),
+                'tempat_lahir' => htmlspecialchars($this->input->post('tempat_lahir', true)),
+                'tgl_lahir' => htmlspecialchars($this->input->post('tgl_lahir', true)),
+                'riwayat_pendidikan' => htmlspecialchars($this->input->post('riwayat_pendidikan', true)),
+                'usia' => htmlspecialchars($this->input->post('usia', true)),
+                'image' => 'default.jpg',
+                'password' => password_hash($this->input->post('password1'), PASSWORD_DEFAULT),
+                'role_id' => 4,
+                'is_active' => 1,
+                'date_created' => time()
+            ];
 
-    public function update1()
-    {
-        $data = array(
-            'name' => $this->input->post('name'),
-            'email' => $this->input->post('email'),
-            'image' => $this->input->post('image'),
-            'password' => $this->input->post('password'),
-            'role_id' => $this->input->post('role_id'),
-            'is_active' => $this->input->post('is_active'),
-            'date_created' => $this->input->post('date_created'),
-            'alamat' => $this->input->post('alamat'),
-            'no_telp' => $this->input->post('no_telp'),
-            'usia' => $this->input->post('usia'),
-            'pendidikan' => $this->input->post('pendidikan'),
-            'pekerjaan' => $this->input->post('pekerjaan'),
-            'perkawinan' => $this->input->post('perkawinan'),
-            'anak_ke' => $this->input->post('anak_ke'),
+            $data_u = [
+                'name' => htmlspecialchars($this->input->post('name', true)),
+                'email' => htmlspecialchars($email),
+                'image' => 'default.jpg',
+                'password' => password_hash($this->input->post('password1'), PASSWORD_DEFAULT),
+                'role_id' => 4,
+                'is_active' => 1,
+                'date_created' => time()
+            ];
 
-        );
-
-
-        $this->model_owner->update_1(array('id' => $this->input->post('id')), $data);
-        echo json_encode(array("status" => TRUE));
-    }
-
-    public function hapus_pasien($id)
-    {
-        $this->model_owner->delete_by_id_pasien($id);
-        echo json_encode(array("status" => TRUE));
-        //$id_jt=$this->input->get('id_jt',TRUE);
-        /*if($this->model_admin->hapus($id_jt) == false)
-        {
-            $this->session->set_flashdata('edit_mahasiswa','data anda berhasil dihapus');
+            $this->db->insert('user', $data_u);
+            $this->db->insert('pasien', $data_t);
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-success" role = "alert">  
+            Akun ' . $email . '  berhasil dibuat! 
+        </div>'
+            );
+            redirect('owner/pasien');
         }
-        redirect('owner/janjitemu','refresh');
-        */
+    }
+
+    public function editpasien($id = null)
+    {
+        $data['title'] = "Edit Data Pasien";
+        $data['user'] = $this->db->get_where(
+            'user',
+            ['email' => $this->session->userdata('email')]
+        )->row_array();
+
+        $data['pasien'] = $this->db->get_where(
+            'pasien',
+            ['id' => $id]
+        )->row_array();
+
+        $this->form_validation->set_rules('name', 'Full Name', 'required|trim');
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('owner/editpasien', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $name = $this->input->post('name');
+            $alamat = $this->input->post('alamat');
+            $tempat_lahir = $this->input->post('tempat_lahir');
+            $tanggal_lahir = $this->input->post('tgl_lahir');
+            $usia = $this->input->post('usia');
+            $no_telp = $this->input->post('no_telp');
+            $anak_ke = $this->input->post('anak_ke');
+            $pendidikan = $this->input->post('riwayat_pendidikan');
+            $pekerjaan = $this->input->post('pekerjaan');
+            $perkawinan = $this->input->post('perkawinan');
+            $email = $this->input->post('email');
+
+            //cek jika ada gambar yang di upload
+            $upload_image = $_FILES['image']['name'];
+
+            if ($upload_image) {
+                $config['allowed_types'] = 'gif|jpg|png';
+                $config['max_size'] = '2048';
+                $config['upload_path'] = './assets/img/profile/';
+
+                $this->load->library('upload', $config);
+
+                if ($this->upload->do_upload('image')) {
+
+                    $old_image = $data['user']['image'];
+                    if ($old_image != 'default.jpg') {
+                        unlink(FCPATH . 'assets/img/profile/' . $old_image);
+                    }
+
+                    $new_image = $this->upload->data('file_name');
+                    $this->db->set('image', $new_image);
+
+                    $this->db->set('image', $new_image);
+                    $this->db->where('email', $email);
+                    $this->db->update('pasien');
+                } else {
+                    echo $this->upload->display_errors();
+                }
+            }
+
+            $this->db->set('name', $name);
+            $this->db->where('email', $email);
+            $this->db->update('user');
+
+            $this->db->set('name', $name);
+            $this->db->set('alamat', $alamat);
+            $this->db->set('tempat_lahir', $tempat_lahir);
+            $this->db->set('tgl_lahir', $tanggal_lahir);
+            $this->db->set('usia', $usia);
+            $this->db->set('no_telp', $no_telp);
+            $this->db->set('anak_ke', $anak_ke);
+            $this->db->set('riwayat_pendidikan', $pendidikan);
+            $this->db->set('pekerjaan', $pekerjaan);
+            $this->db->set('perkawinan', $perkawinan);
+
+            $this->db->where('email', $email);
+            $this->db->update('pasien');
+
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-success" role = "alert">
+                    Akun ' . $email . '  berhasil diperbarui! 
+                </div>'
+            );
+            redirect('owner/pasien');
+        }
+    }
+
+    public function detailpasien($id = null)
+    {
+        $data['title'] = "Detail Terapis";
+        $data['user'] = $this->db->get_where(
+            'user',
+            ['email' => $this->session->userdata('email')]
+        )->row_array();
+
+        $data['pasien'] = $this->db->get_where(
+            'pasien',
+            ['id' => $id]
+        )->row_array();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('owner/detailpasien', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function hapuspasien($id = null)
+    {
+        if ($id) {
+            $this->db->delete('pasien', ['id' => $id]);
+
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-success" role = "alert">
+                    Akun berhasil dihapus! 
+                </div>'
+            );
+        } else {
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-success" role = "alert">
+                    Akun gagal dihapus! 
+                </div>'
+            );
+        }
+        redirect('owner/pasien');
     }
 
     public function terapis()
@@ -208,7 +278,12 @@ class Owner extends CI_Controller
             ['email' => $this->session->userdata('email')]
         )->row_array();
 
-        $data['terapis'] = $this->db->get('user')->result_array();
+        $data['terapis'] = $this->db->get_where(
+            'terapis',
+            ['email' => $this->session->userdata('email')]
+        )->row_array();
+
+        $data['terapis'] = $this->db->get('terapis')->result_array();
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
@@ -217,58 +292,198 @@ class Owner extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    public function tambah_terapis()
+    public function addTerapis()
     {
-        $data = array(
-            'name' => $this->input->post('name'),
-            'email' => $this->input->post('email'),
-            'image' => $this->input->post('image'),
-            'password' => $this->input->post('password'),
-            'role_id' => $this->input->post('role_id'),
-            'is_active' => $this->input->post('is_active'),
-            'date_created' => $this->input->post('date_created'),
-            'alamat' => $this->input->post('alamat'),
-            'no_telp' => $this->input->post('no_telp'),
-            'usia' => $this->input->post('usia'),
-            'pendidikan' => $this->input->post('pendidikan'),
-            'pekerjaan' => $this->input->post('pekerjaan'),
-            'perkawinan' => $this->input->post('perkawinan'),
-            'anak_ke' => $this->input->post('anak_ke')
+        $this->form_validation->set_rules('name', 'Name', 'required|trim');
+        $this->form_validation->set_rules('email', 'Email', 'required|trim|is_unique[user.email]', [
+            'is_unique' => 'Email ini sudah dipakai, gunakan email lain!'
+        ]);
+
+        $this->form_validation->set_rules(
+            'password1',
+            'Password',
+            'required|trim|min_length[7]|matches[password2]',
+            [
+                'matches' => 'Password tidak cocok!',
+                'min_length' => 'Password terlalu pendek!'
+            ]
         );
-        $this->load->model('model_admin');
-        $this->model_admin->tambah_terapis($data);
-        $this->session->set_flashdata('notif', '<div class="alert alert-success" role="alert"> Data Berhasil ditambahkan <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
-        redirect('owner/terapis');
+        $this->form_validation->set_rules('password2', 'Password', 'required|trim|matches[password1]');
+
+        if ($this->form_validation->run() == false) {
+            $data['title'] = "Tambah Data Terapis";
+            $data['user'] = $this->db->get_where(
+                'user',
+                ['email' => $this->session->userdata('email')]
+            )->row_array();
+
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('owner/addterapis', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $email = $this->input->post('email', true);
+            $data_t = [
+                'name' => htmlspecialchars($this->input->post('name', true)),
+                'email' => htmlspecialchars($email),
+                'no_telp' => htmlspecialchars($this->input->post('no_telp', true)),
+                'alamat' => htmlspecialchars($this->input->post('alamat', true)),
+                'tempat_lahir' => htmlspecialchars($this->input->post('tempat_lahir', true)),
+                'tgl_lahir' => htmlspecialchars($this->input->post('tgl_lahir', true)),
+                'riwayat_pendidikan' => htmlspecialchars($this->input->post('riwayat_pendidikan', true)),
+                'usia' => htmlspecialchars($this->input->post('usia', true)),
+                'image' => 'default.jpg',
+                'password' => password_hash($this->input->post('password1'), PASSWORD_DEFAULT),
+                'role_id' => 3,
+                'is_active' => 1,
+                'date_created' => time()
+            ];
+
+            $data_u = [
+                'name' => htmlspecialchars($this->input->post('name', true)),
+                'email' => htmlspecialchars($email),
+                'image' => 'default.jpg',
+                'password' => password_hash($this->input->post('password1'), PASSWORD_DEFAULT),
+                'role_id' => 3,
+                'is_active' => 1,
+                'date_created' => time()
+            ];
+
+            $this->db->insert('user', $data_u);
+            $this->db->insert('terapis', $data_t);
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-success" role = "alert">  
+            Akun ' . $email . '  berhasil dibuat! 
+        </div>'
+            );
+            redirect('owner/terapis');
+        }
     }
 
-    function hapus_terapis($id)
+    public function editterapis($id = null)
     {
-        $this->model_admin->hapus_terapis($id);
-        redirect('owner/terapis');
+        $data['title'] = "Edit Data Terapis";
+        $data['user'] = $this->db->get_where(
+            'user',
+            ['email' => $this->session->userdata('email')]
+        )->row_array();
+
+        $data['terapis'] = $this->db->get_where(
+            'terapis',
+            ['id' => $id]
+        )->row_array();
+
+        $this->form_validation->set_rules('name', 'Full Name', 'required|trim');
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('owner/editterapis', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $name = $this->input->post('name');
+            $alamat = $this->input->post('alamat');
+            $tempat_lahir = $this->input->post('tempat_lahir');
+            $tanggal_lahir = $this->input->post('tgl_lahir');
+            $usia = $this->input->post('usia');
+            $no_telp = $this->input->post('no_telp');
+            $pendidikan = $this->input->post('riwayat_pendidikan');
+            $email = $this->input->post('email');
+
+            //cek jika ada gambar yang di upload
+            $upload_image = $_FILES['image']['name'];
+
+            if ($upload_image) {
+                $config['allowed_types'] = 'gif|jpg|png';
+                $config['max_size'] = '2048';
+                $config['upload_path'] = './assets/img/profile/';
+
+                $this->load->library('upload', $config);
+
+                if ($this->upload->do_upload('image')) {
+
+                    $old_image = $data['user']['image'];
+                    if ($old_image != 'default.jpg') {
+                        unlink(FCPATH . 'assets/img/profile/' . $old_image);
+                    }
+
+                    $new_image = $this->upload->data('file_name');
+                    $this->db->set('image', $new_image);
+                    $this->db->set('image', $new_image);
+                    $this->db->where('email', $email);
+                    $this->db->update('terapis');
+                } else {
+                    echo $this->upload->display_errors();
+                }
+            }
+            $this->db->set('name', $name);
+            $this->db->where('email', $email);
+            $this->db->update('user');
+
+            $this->db->set('name', $name);
+            $this->db->set('alamat', $alamat);
+            $this->db->set('tempat_lahir', $tempat_lahir);
+            $this->db->set('tgl_lahir', $tanggal_lahir);
+            $this->db->set('usia', $usia);
+            $this->db->set('no_telp', $no_telp);
+            $this->db->set('riwayat_pendidikan', $pendidikan);
+
+            $this->db->where('email', $email);
+            $this->db->update('terapis');
+
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-success" role = "alert">
+                    Akun ' . $email . '  berhasil diperbarui! 
+                </div>'
+            );
+            redirect('owner/terapis');
+        }
     }
 
-    function edit_terapis()
+    public function detailterapis($id = null)
     {
-        $id = $this->input->post('id');
-        $name = $this->input->post('name');
-        $email = $this->input->post('email');
-        $image = $this->input->post('image');
-        $password = $this->input->post('password');
-        $role_id = $this->input->post('role_id');
-        $is_active = $this->input->post('is_active');
-        $date_created = $this->input->post('date_created');
-        $alamat = $this->input->post('alamat');
-        $no_telp = $this->input->post('no_telp');
-        $usia = $this->input->post('usia');
-        $pendidikan = $this->input->post('pendidikan');
-        $pekerjaan = $this->input->post('pekerjaan');
-        $perkawinan = $this->input->post('perkawinan');
-        $anak_ke = $this->input->post('anak_ke');
-        $this->model_admin->edit_terapis($id, $name, $email, $image, $password, $role_id, $is_active, $date_created, $alamat, $no_telp, $usia, $pendidikan, $pekerjaan, $perkawinan, $anak_ke);
-        redirect('owner/terapis');
+        $data['title'] = "Detail Terapis";
+        $data['user'] = $this->db->get_where(
+            'user',
+            ['email' => $this->session->userdata('email')]
+        )->row_array();
+
+        $data['terapis'] = $this->db->get_where(
+            'terapis',
+            ['id' => $id]
+        )->row_array();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('owner/detailterapis', $data);
+        $this->load->view('templates/footer');
     }
 
-
+    public function hapusterapis($id = null)
+    {
+        if ($id) {
+            $this->db->delete('terapis', ['id' => $id]);
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-success" role = "alert">
+                    Akun berhasil dihapus! 
+                </div>'
+            );
+        } else {
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-success" role = "alert">
+                    Akun gagal dihapus! 
+                </div>'
+            );
+        }
+        redirect('owner/terapis');
+    }
 
     public function layanan()
     {
@@ -318,6 +533,18 @@ class Owner extends CI_Controller
         $this->model_admin->tambah_layanan($data);
         $this->session->set_flashdata('notif', '<div class="alert alert-success" role="alert"> Data Berhasil ditambahkan <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
         redirect('owner/layanan');
+    }
+
+    public function tambah_penyakit()
+    {
+        $data = array(
+            'nama_penyakit' => $this->input->post('nama_layanan'),
+            'keterangan' => $this->input->post('keterangan')
+        );
+        $this->load->model('model_admin');
+        $this->model_admin->tambah_penyakit($data);
+        $this->session->set_flashdata('notif', '<div class="alert alert-success" role="alert"> Data Berhasil ditambahkan <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        redirect('owner/penyakit');
     }
 
     function hapus_layanan($id)

@@ -37,14 +37,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th>Nama Layanan</th>
-                            <th>Keterangan</th>
-                            <td>
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editLayananModal">Edit</button>
-                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#hapusLayananModal">Hapus</button>
-                            </td>
-                        </tr>
+                        <?php $i = 1; ?>
+                        <?php foreach ($layanan as $l) : ?>
+                            <tr>
+                                <td><?= $l['nama_layanan'] ?> </td>
+                                <td><?= $l['keterangan'] ?> </td>
+                                <td>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editLayananModal">Edit</button>
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#hapusLayananModal">Hapus</button>
+                                </td>
+                            </tr>
+                            <?php $i++; ?>
+                        <?php endforeach ?>
                     </tbody>
                 </table>
             </div>

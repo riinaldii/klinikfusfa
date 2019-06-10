@@ -145,7 +145,7 @@ class Pasien extends CI_Controller
                     $this->session->set_flashdata(
                         'message',
                         '<div class="alert alert-danger" role = "alert">
-                        Password baru sama dengan password lama, coba password baru! 
+                        Password baru sama dengan password lama, coba password lain! 
                         </div>'
                     );
                     redirect('pasien/changepassword');

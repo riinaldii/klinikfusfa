@@ -5,8 +5,14 @@
     <h1>
       <?= $title ?>
     </h1>
-    <div class="col-lg-6">
-      <?= form_error('menu', '<div class="alert alert-danger" role="alert">', '</div>'); ?>
+    <!-- <div class="col-lg-6">
+            <?= form_error('terapis', '<div class="alert alert-danger" role="alert">', '</div>'); ?> -->
+    <?= form_error('menu', '<div class="alert alert-danger" role="alert">', '</div>'); ?>
+    <?php if (validation_errors()) : ?>
+      <div class="alert alert-danger" role="alert">
+        <?= validation_errors(); ?>
+      </div>
+    <?php endif; ?>
   </section>
 
   <!-- Main content -->
@@ -16,7 +22,7 @@
     <!-- Default box -->
     <div class="box">
       <div class="box-header with-border">
-        <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addPasienModal">
+        <a href="<?= base_url('owner/addpasien'); ?>" class="btn btn-primary mb-3">
           Tambah data</a>
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -27,27 +33,44 @@
         <table id="example1" class="table table-bordered table-striped">
           <thead>
             <tr>
-              <th>Nama Lengkap</th>
-              <th>Email</th>
-              <th>Alamat</th>
-              <th>No. Telp</th>
-              <th>Aksi</th>
+              <th scope="col">Gambar Profile</th>
+              <th scope="col">Nama Lengkap</th>
+              <th scope="col">Email</th>
+              <th scope="col">Alamat</th>
+              <th scope="col">No. Telp</th>
+              <th scope="col">Aksi</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Nama Lengkap</td>
-              <td>Email</td>
-              <td>Alamat</td>
-              <td>No. Telp</td>
-              <td>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editPasienModal">Edit</button>
-                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#detailPasienModal">Detail</button>
-                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#buatJanjiModal">Buat janji temu</button>
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#hapusPasienModal">Hapus</button>
-              </td>
-            </tr>
+            <?php $i = 1; ?>
+            <?php foreach ($pasien as $p) : ?>
+              <tr>
+                <!-- <th scope="row"><?= $i; ?></th> -->
+                <td> <img class="profile-user-img img-responsive img-circle" src="<?= base_url('assets/img/profile/') . $p['image']; ?>" alt="User profile picture"></td>
+                <td><?= $p['name'] ?> </td>
+                <td><?= $p['email'] ?> </td>
+                <td><?= $p['alamat'] ?> </td>
+                <td><?= $p['no_telp'] ?> </td>
+                <td>
+                  <a href="<?php echo base_url('owner/editpasien/' . $p['id']) ?>" class="btn btn-primary"><i class="fa fa-edit"> Edit </i></a><br>
+                  <a href="<?php echo base_url('owner/detailpasien/' . $p['id']) ?>" class="btn btn-default"><i class="fa fa-edit"> Detail </i></a><br>
+                  <a href="<?php echo base_url('owner/buatjanji/' . $p['id']) ?>" class="btn btn-warning"><i class="fa fa-edit"> Buat Janji </i></a><br>
+                  <a href="<?php echo base_url('owner/hapuspasien/' . $p['id']) ?>" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus <?= $p['email'] ?>?');"><i class="fa fa-edit"> Hapus </i></a>
+                </td>
+              </tr>
+              <?php $i++; ?>
+            <?php endforeach ?>
           </tbody>
+          <tfoot>
+            <tr>
+              <th scope="col">Gambar Profile</th>
+              <th scope="col">Nama Lengkap</th>
+              <th scope="col">Email</th>
+              <th scope="col">Alamat</th>
+              <th scope="col">No. Telp</th>
+              <th scope="col">Aksi</th>
+            </tr>
+          </tfoot>
         </table>
       </div>
       <!-- /.box-body -->`
@@ -68,31 +91,40 @@
   </div>
 </footer>
 
-<!-- Modal Tambah Pasien-->
-<div class="modal fade" id="addPasienModal" tabindex="-1" role="dialog" aria-labelledby="addPasiensModalLabel" aria-hidden="true">
+<!-- Modal Tambah Terapis-->
+<div class="modal fade" id="addTerapisModal" tabindex="-1" role="dialog" aria-labelledby="addTerapisModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="addPasienModalLabel">Tambah pasien</h5>
+        <h5 class="modal-title" id="addTerapisModalLabel">Tambah Data Terapis</h5>
       </div>
       <div class="register-box-body">
-
-        <form action="#" method="post">
+        <form class="user" method="post" action="<?= base_url('Owner/addTerapis'); ?>">
           <div class="form-group has-feedback">
-            <input type="text" class="form-control" placeholder="Nama lengkap">
-            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            <input type="text" id="name" name="name" class="form-control" placeholder="Nama lengkap">
+            <span class="glyphicon  form-control-feedback"></span>
+          </div>
+          <?= form_error('name', '<small class="text-danger ml-3">', '</small>'); ?>
+          <div class="form-group has-feedback">
+            <input type="email" id="email" name="email" class="form-control" placeholder="Email">
+            <span class="glyphicon  form-control-feedback"></span>
+          </div>
+          <?= form_error('email', '<small class="text-danger ml-3">', '</small>'); ?>
+          <div class="form-group has-feedback">
+            <input type="text" id="no_telp" name="no_telp" class="form-control" placeholder="No. Telepon">
+            <span class="glyphicon  form-control-feedback"></span>
           </div>
           <div class="form-group has-feedback">
-            <input type="email" class="form-control" placeholder="Email">
-            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            <textarea type="email" id="alamat" name="alamat" class="form-control" placeholder="Alamat"></textarea>
+            <span class="glyphicon  form-control-feedback"></span>
           </div>
           <div class="form-group has-feedback">
-            <input type="password" class="form-control" placeholder="Password">
-            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            <input type="password" id="password1" name="password1" class="form-control" placeholder="Password">
+            <span class="glyphicon  form-control-feedback"></span>
           </div>
           <div class="form-group has-feedback">
-            <input type="password" class="form-control" placeholder="Ulangi password">
-            <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+            <input type="password" id="password2" name="password2" class="form-control" placeholder="Ulangi password">
+            <span class="glyphicon  form-control-feedback"></span>
           </div>
           <div class="row">
             <!-- /.col -->
@@ -108,36 +140,105 @@
   </div>
 </div>
 
-<!-- Modal Edit Pasien-->
-<div class="modal fade" id="editPasienModal" tabindex="-1" role="dialog" aria-labelledby="editPasienModalLabel" aria-hidden="true">
+<!-- Modal Edit Terapis-->
+<div class="modal fade" id="editTerapisModal" tabindex="1" role="dialog" aria-labelledby="editTerapisModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="editPasienModalLabel">Edit pasien</h5>
+        <h5 class="modal-title" id="editTerapisModalLabel">Edit Data Terapis</h5>
+      </div>
+      <div class="register-box-body">
+
+        <?= form_open_multipart('owner/editTerapis'); ?>
+        <div class="form-group has-feedback">
+          <input type="text" id="name" name="name" class="form-control" value="<?= $t['name'] ?> ">
+          <span class="glyphicon  form-control-feedback"></span>
+        </div>
+        <div class="form-group has-feedback">
+          <input type="email" id="email" name="email" class="form-control" <?= $t['email'] ?>>
+          <span class="glyphicon  form-control-feedback"></span>
+        </div>
+        <div class="form-group has-feedback">
+          <input type="text" id="no_telp" name="no_telp" class="form-control" placeholder="No. Telepon">
+          <span class="glyphicon  form-control-feedback"></span>
+        </div>
+        <div class="form-group has-feedback">
+          <textarea type="email" id="alamat" name="alamat" class="form-control" placeholder="Alamat"></textarea>
+          <span class="glyphicon  form-control-feedback"></span>
+        </div>
+        <div class="form-group has-feedback">
+          <input type="password" id="password1" name="password1" class="form-control" placeholder="Password">
+          <span class="glyphicon  form-control-feedback"></span>
+        </div>
+        <div class="form-group has-feedback">
+          <input type="password" id="password2" name="password2" class="form-control" placeholder="Ulangi password">
+          <span class="glyphicon  form-control-feedback"></span>
+        </div>
+        <div class="form-group has-feedback">
+          <label class="control-label">Gambar Profile</label>
+          <div class="row">
+            <div class="col-sm-9">
+              <div class="col-sm-3">
+                <img src="<?= base_url('assets/img/profile/') . $user['image']; ?>" class="img-thumbnail">
+              </div>
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="image" name="image">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <!-- /.col -->
+          <div class="col-xs-12">
+            <button type="submit" class="btn btn-primary btn-block btn-flat">Simpan data</button>
+            <button type="button" class="btn btn-secondary btn-block btn-flat" data-dismiss="modal">Kembali</button>
+          </div>
+          <!-- /.col -->
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Detail Terapis-->
+<div class="modal fade" id="detailTerapisModal" tabindex="2" role="dialog" aria-labelledby="detailTerapisModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="detailTerapisModalLabel">Detail terapis</h5>
       </div>
       <div class="register-box-body">
 
         <form action="#" method="post">
           <div class="form-group has-feedback">
-            <input type="text" class="form-control" placeholder="Nama lengkap">
-            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            <input type="text" id="name" name="name" class="form-control" placeholder="Nama lengkap">
+            <span class="glyphicon  form-control-feedback"></span>
           </div>
           <div class="form-group has-feedback">
-            <input type="email" class="form-control" placeholder="Email">
-            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            <input type="email" id="email" name="email" class="form-control" placeholder="Email">
+            <span class="glyphicon  form-control-feedback"></span>
           </div>
           <div class="form-group has-feedback">
-            <input type="password" class="form-control" placeholder="Password">
-            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            <input type="text" id="no_telp" name="no_telp" class="form-control" placeholder="No. Telepon">
+            <span class="glyphicon  form-control-feedback"></span>
           </div>
           <div class="form-group has-feedback">
-            <input type="password" class="form-control" placeholder="Ulangi password">
-            <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+            <textarea type="email" id="alamat" name="alamat" class="form-control" placeholder="Alamat"></textarea>
+            <span class="glyphicon  form-control-feedback"></span>
+          </div>
+          <div class="form-group has-feedback">
+            <input type="password" id="password1" name="password1" class="form-control" placeholder="Password">
+            <span class="glyphicon  form-control-feedback"></span>
+          </div>
+          <div class="form-group has-feedback">
+            <input type="password" id="password2" name="password2" class="form-control" placeholder="Ulangi password">
+            <span class="glyphicon  form-control-feedback"></span>
           </div>
           <div class="row">
             <!-- /.col -->
             <div class="col-xs-12">
-              <button type="submit" class="btn btn-primary btn-block btn-flat">Update data</button>
+              <button type="submit" class="btn btn-primary btn-block btn-flat">Tambah data</button>
               <button type="button" class="btn btn-secondary btn-block btn-flat" data-dismiss="modal">Kembali</button>
             </div>
             <!-- /.col -->
@@ -148,111 +249,15 @@
   </div>
 </div>
 
-<!-- Modal Detail Pasien-->
-<div class="modal fade" id="detailPasienModal" tabindex="-1" role="dialog" aria-labelledby="detailPasienModalLabel" aria-hidden="true">
+<!-- Modal Hapus Terapis-->
+<div class="modal fade" id="hapusPasienModal" tabindex="3" role="dialog" aria-labelledby="hapusTPasienModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="detailPasienModalLabel">Detail pasien</h5>
-      </div>
-      <div class="register-box-body">
-
-        <form action="#" method="post">
-          <div class="form-group has-feedback">
-            <input type="text" class="form-control" placeholder="Nama lengkap">
-            <span class="glyphicon glyphicon-user form-control-feedback"></span>
-          </div>
-          <div class="form-group has-feedback">
-            <input type="email" class="form-control" placeholder="Email">
-            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-          </div>
-          <div class="form-group has-feedback">
-            <input type="password" class="form-control" placeholder="Password">
-            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-          </div>
-          <div class="form-group has-feedback">
-            <input type="password" class="form-control" placeholder="Ulangi password">
-            <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
-          </div>
-          <div class="row">
-            <!-- /.col -->
-            <div class="col-xs-12">
-              <button type="button" class="btn btn-secondary btn-block btn-flat" data-dismiss="modal">Kembali</button>
-            </div>
-            <!-- /.col -->
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Hapus Pasien-->
-<div class="modal fade" id="hapusPasienModal" tabindex="-1" role="dialog" aria-labelledby="hapusPasienModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-body">Ingin hapus data?.</div>
+      <div class="modal-body">Yakin ingin menghapus data <?= $p['email']; ?>?.</div>
       <div class="modal-footer">
         <button class="btn btn-secondary" type="button" data-dismiss="modal">Kembali</button>
-        <a class="btn btn-primary" href="<?= base_url('#'); ?>">Hapus</a>
+        <a class="btn btn-primary">Hapus</a>
       </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Buat Janji-->
-<div class="modal fade" id="buatJanjiModal" tabindex="-1" role="dialog" aria-labelledby="buatJanjiModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="buatJanjiModalLabel">Buat Janji Temu</h5>
-      </div>
-      <form action="<?= base_url('#'); ?>" method="post">
-        <div class="modal-body">
-          <div class="form-group">
-            <label>Pilih layanan</label>
-            <select name="menu_id" id="menu_id" class="form-control select2 width:100%;">
-              <option value="">Pilih Layanan</option>
-              <?php foreach ($menu as $m) : ?>
-                <option value="<?= $m['id']; ?>"><?= $m['menu'] ?></option>
-              <?php endforeach; ?>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Tanggal temu</label>
-            <div class="input-group date">
-              <div class="input-group-addon">
-                <i class="fa fa-calendar"></i>
-              </div>
-              <input type="text" class="form-control pull-right" id="datepicker">
-            </div>
-            <!-- /.input group -->
-          </div>
-          <div class="form-group">
-            <div class="bootstrap-timepicker">
-              <div class="form-group">
-                <label>Waktu temu</label>
-                <div class="input-group">
-                  <div class="input-group-addon">
-                    <i class="fa fa-clock-o"></i>
-                  </div>
-                  <input type="text" class="form-control timepicker">
-                </div>
-                <!-- /.input group -->
-              </div>
-              <!-- /.form group -->
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Keluhan</label>
-            <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
-          <button type="submit" class="btn btn-primary">Buat</button>
-        </div>
-      </form>
     </div>
   </div>
 </div>

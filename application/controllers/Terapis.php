@@ -13,14 +13,14 @@ class Terapis extends CI_Controller
     {
         $data['title'] = "Profile";
         $data['user'] = $this->db->get_where(
-            'pasien',
+            'terapis',
             ['email' => $this->session->userdata('email')]
         )->row_array();
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);
-        $this->load->view('pasien/index', $data);
+        $this->load->view('terapis/index', $data);
         $this->load->view('templates/footer');
     }
 
@@ -28,7 +28,7 @@ class Terapis extends CI_Controller
     {
         $data['title'] = "Edit Profile";
         $data['user'] = $this->db->get_where(
-            'pasien',
+            'terapis',
             ['email' => $this->session->userdata('email')]
         )->row_array();
 
@@ -38,10 +38,17 @@ class Terapis extends CI_Controller
             $this->load->view('templates/header', $data);
             $this->load->view('templates/sidebar', $data);
             $this->load->view('templates/topbar', $data);
-            $this->load->view('user/edit', $data);
+            $this->load->view('terapis/edit', $data);
             $this->load->view('templates/footer');
         } else {
             $name = $this->input->post('name');
+            $alamat = $this->input->post('alamat');
+            $tempat_lahir = $this->input->post('tempat_lahir');
+            $tanggal_lahir = $this->input->post('tgl_lahir');
+            $usia = $this->input->post('usia');
+            $no_telp = $this->input->post('no_telp');
+            $anak_ke = $this->input->post('anak_ke');
+            $pendidikan = $this->input->post('riwayat_pendidikan');
             $email = $this->input->post('email');
 
             //cek jika ada gambar yang di upload
@@ -63,6 +70,10 @@ class Terapis extends CI_Controller
 
                     $new_image = $this->upload->data('file_name');
                     $this->db->set('image', $new_image);
+
+                    $this->db->set('image', $new_image);
+                    $this->db->where('email', $email);
+                    $this->db->update('terapis');
                 } else {
                     echo $this->upload->display_errors();
                 }
@@ -72,21 +83,32 @@ class Terapis extends CI_Controller
             $this->db->where('email', $email);
             $this->db->update('user');
 
+            $this->db->set('name', $name);
+            $this->db->set('alamat', $alamat);
+            $this->db->set('tempat_lahir', $tempat_lahir);
+            $this->db->set('tgl_lahir', $tanggal_lahir);
+            $this->db->set('usia', $usia);
+            $this->db->set('no_telp', $no_telp);
+            $this->db->set('riwayat_pendidikan', $pendidikan);
+
+            $this->db->where('email', $email);
+            $this->db->update('terapis');
+
             $this->session->set_flashdata(
                 'message',
-                '<div class="alert alert-success alert-dismissible fade show" role = "alert">
-                    Your profile has been updated! 
+                '<div class="alert alert-success" role = "alert">
+                    Profile berhasil diperbarui! 
                 </div>'
             );
-            redirect('user');
+            redirect('terapis');
         }
     }
 
     public function changePassword()
     {
-        $data['title'] = "Change Password";
+        $data['title'] = "Ubah Password";
         $data['user'] = $this->db->get_where(
-            'user',
+            'terapis',
             ['email' => $this->session->userdata('email')]
         )->row_array();
 
@@ -98,7 +120,7 @@ class Terapis extends CI_Controller
             $this->load->view('templates/header', $data);
             $this->load->view('templates/sidebar', $data);
             $this->load->view('templates/topbar', $data);
-            $this->load->view('user/changepassword', $data);
+            $this->load->view('terapis/changepassword', $data);
             $this->load->view('templates/footer');
         } else {
 
@@ -108,20 +130,20 @@ class Terapis extends CI_Controller
             if (!password_verify($current_password, $data['user']['password'])) {
                 $this->session->set_flashdata(
                     'message',
-                    '<div class="alert alert-danger alert-dismissible fade show" role = "alert">
-                    Wrong current password! 
+                    '<div class="alert alert-danger" role = "alert">
+                    Password lama yang dimasukkan salah! 
                     </div>'
                 );
-                redirect('user/changepassword');
+                redirect('terapis/changepassword');
             } else {
                 if ($current_password == $new_password) {
                     $this->session->set_flashdata(
                         'message',
-                        '<div class="alert alert-danger alert-dismissible fade show" role = "alert">
-                        New password cannot be the same as current password! 
+                        '<div class="alert alert-danger" role = "alert">
+                        Password baru sama dengan password lama, coba password lain! 
                         </div>'
                     );
-                    redirect('user/changepassword');
+                    redirect('terapis/changepassword');
                 } else {
                     // password ok
 
@@ -131,13 +153,17 @@ class Terapis extends CI_Controller
                     $this->db->where('email', $this->session->userdata('email'));
                     $this->db->update('user');
 
+                    $this->db->set('password', $password_hash);
+                    $this->db->where('email', $this->session->userdata('email'));
+                    $this->db->update('terapis');
+
                     $this->session->set_flashdata(
                         'message',
-                        '<div class="alert alert-success alert-dismissible fade show" role = "alert">
-                        Password changed! 
+                        '<div class="alert alert-success" role = "alert">
+                        Password berhasil diubah! 
                         </div>'
                     );
-                    redirect('user/changepassword');
+                    redirect('terapis/changepassword');
                 }
             }
         }
@@ -156,13 +182,13 @@ class Terapis extends CI_Controller
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);
-        $this->load->view('terapis/janjitemu', $data);
+        $this->load->view('pasien/janjitemu', $data);
         $this->load->view('templates/footer');
     }
 
-    public function pasien()
+    public function keluhan()
     {
-        $data['title'] = "Data Pasien";
+        $data['title'] = "Keluhan";
         $data['user'] = $this->db->get_where(
             'user',
             ['email' => $this->session->userdata('email')]
@@ -171,7 +197,7 @@ class Terapis extends CI_Controller
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);
-        $this->load->view('terapis/pasien', $data);
+        $this->load->view('pasien/keluhan', $data);
         $this->load->view('templates/footer');
     }
 

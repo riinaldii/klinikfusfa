@@ -44,54 +44,6 @@
                     <input class="form-control" id="email" name="email" value="<?= $user['email']; ?>" readonly>
                   </div>
                 </div>
-                <div class="form-group">
-                  <label for="ttl" class="col-sm-2 control-label">Tempat Tanggal Lahir</label>
-                  <div class="col-sm-10">
-                    <input class="form-control" id="ttl" name="ttl" value="<?= $user['tempat_lahir']; ?>, <?= $user['tgl_lahir']; ?>" readonly>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="anak_ke" class="col-sm-2 control-label">Anak Ke-</label>
-                  <div class="col-sm-10">
-                    <input class="form-control" id="anak_ke" nama="anak_ke" value="<?= $user['anak_ke']; ?>" readonly>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="alamat" class="col-sm-2 control-label">Alamat</label>
-                  <div class="col-sm-10">
-                    <input class="form-control" id="alamat" nama="alamat" value="<?= $user['alamat']; ?>" readonly>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="riwayat_pendidikan" class="col-sm-2 control-label">Pendidikan Terakhir</label>
-                  <div class="col-sm-10">
-                    <input class="form-control" id="riwayat_pendidikan" nama="riwayat_pendidikan" value="<?= $user['riwayat_pendidikan']; ?>" readonly>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="usia" class="col-sm-2 control-label">Usia</label>
-                  <div class="col-sm-10">
-                    <input class="form-control" id="usia" nama="usia" value="<?= $user['usia']; ?>" readonly>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="pekerjaan" class="col-sm-2 control-label">Pekerjaan</label>
-                  <div class="col-sm-10">
-                    <input class="form-control" id="pekerjaan" nama="pekerjaan" value="<?= $user['pekerjaan']; ?>" readonly>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="perkawinan" class="col-sm-2 control-label">Status Perkawinan</label>
-                  <div class="col-sm-10">
-                    <input class="form-control" id="perkawinan" nama="perkawinan" value="<?= $user['perkawinan']; ?>" readonly>
-                  </div>
-                </div>
-
-                <!-- <div class="form-group">
-                  <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-danger">Submit</button>
-                  </div>
-                </div> -->
               </form>
             </div>
             <!-- /.tab-pane -->
@@ -121,19 +73,3 @@
     <span>Copyright &copy; wahini.com <?= date('Y'); ?></span>
   </div>
 </footer>
-
-<!-- Control Sidebar -->
-<aside class="control-sidebar control-sidebar-dark">
-  <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-    <!-- <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li> -->
-    <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
-  </ul>
-  <div class="tab-content">
-    <div class="tab-pane" id="control-sidebar-home-tab">
-    </div>
-    <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
-    <div class="tab-pane" id="control-sidebar-settings-tab">
-    </div>
-  </div>
-</aside>
-<div class="control-sidebar-bg"></div>

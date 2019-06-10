@@ -13,54 +13,84 @@
                     <div class="tab-content">
                         <div class="active tab-pane" id="profile">
 
-                            <?= form_open_multipart('terapis/edit'); ?>
+                            <?= form_open_multipart('owner/editpasien'); ?>
                             <div class="form-group row">
                                 <label for="email" class="col-sm-2 col-form-label">Email</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="email" name="email" value="<?= $user['email']; ?>" readonly>
+                                    <input type="text" class="form-control" id="email" name="email" value="<?= $pasien['email']; ?>" readonly>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="name" class="col-sm-2 col-form-label">Nama Lengkap</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="name" name="name" value="<?= $user['name']; ?>">
+                                    <input type="text" class="form-control" id="name" name="name" value="<?= $pasien['name']; ?>">
                                     <?= form_error('name', '<small class="text-danger ml-3">', '</small>'); ?>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="tempat_lahir" class="col-sm-2 control-label">Tempat Lahir</label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" id="tempat_lahir" name="tempat_lahir" value="<?= $user['tempat_lahir']; ?>">
+                                    <input class="form-control" id="tempat_lahir" name="tempat_lahir" value="<?= $pasien['tempat_lahir']; ?>">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="tempat_lahir" class="col-sm-2 control-label">Tanggal Lahir</label>
                                 <div class="col-sm-2 ">
-                                    <input type="text" class="form-control pull-right" id="datepicker" name="tgl_lahir" value="<?= $user['tgl_lahir']; ?>">
+                                    <input type="text" class="form-control pull-right" id="datepicker" name="tgl_lahir" value="<?= $pasien['tgl_lahir']; ?>">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="anak_ke" class="col-sm-2 control-label">Anak Ke-</label>
+                                <div class="col-sm-2">
+                                    <input class="form-control" id="anak_ke" name="anak_ke" value="<?= $pasien['anak_ke']; ?>">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="alamat" class="col-sm-2 control-label">Alamat</label>
                                 <div class="col-sm-6">
-                                    <textarea class="form-control" name="alamat" id="alamat" cols="20" rows="3"><?= $user['alamat']; ?></textarea>
+                                    <textarea class="form-control" name="alamat" id="alamat" cols="20" rows="3"><?= $pasien['alamat']; ?></textarea>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="no_telp" class="col-sm-2 control-label">No. Telepon</label>
                                 <div class="col-sm-2">
-                                    <input class="form-control" id="no_telp" name="no_telp" value="<?= $user['no_telp']; ?>">
+                                    <input class="form-control" id="no_telp" name="no_telp" value="<?= $pasien['no_telp']; ?>">
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="riwayat_pendidikan" class="col-sm-2 control-label">Riwayat Pendidikan</label>
+                                <label for="riwayat_pendidikan" class="col-sm-2 control-label">Pendidikan Terakhir</label>
                                 <div class="col-sm-4">
-                                    <textarea class="form-control" name="riwayat_pendidikan" id="riwayat_pendidikan" cols="20" rows="3"><?= $user['riwayat_pendidikan']; ?></textarea>
+                                    <select class="form-control select2" id="riwayat_pendidikan" name="riwayat_pendidikan" style="width: 100%;">
+                                        <option>SD/Sederajat</option>
+                                        <option>SMP/Sederajat</option>
+                                        <option>SMA/Sederajat</option>
+                                        <option>Lainnya</option>
+                                    </select>
+                                    <!-- <input class="form-control" id="riwayat_pendidikan" nama="riwayat_pendidikan" value="<?= $pasien['riwayat_pendidikan']; ?>" readonly> -->
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="usia" class="col-sm-2 control-label">Usia</label>
                                 <div class="col-sm-2">
-                                    <input class="form-control" id="usia" name="usia" value="<?= $user['usia']; ?>">
+                                    <input class="form-control" id="usia" name="usia" value="<?= $pasien['usia']; ?>">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="pekerjaan" class="col-sm-2 control-label">Pekerjaan</label>
+                                <div class="col-sm-4">
+                                    <input class="form-control" id="pekerjaan" name="pekerjaan" value="<?= $pasien['pekerjaan']; ?>">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="perkawinan" class="col-sm-2 control-label">Status Perkawinan</label>
+                                <div class="col-sm-4">
+                                    <select class="form-control select2" name="perkawinan" id="perkawinan" style="width: 100%;">
+                                        <option>Belum Menikah</option>
+                                        <option>Sudah Menikah</option>
+                                        <option>Cerai</option>
+                                        <option>Lainnya</option>
+                                    </select>
+                                    <!-- <input class="form-control" id="perkawinan" nama="perkawinan" value="<?= $pasien['perkawinan']; ?>" readonly> -->
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -68,7 +98,7 @@
                                 <div class="col-sm-10">
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            <img src="<?= base_url('assets/img/profile/') . $user['image']; ?>" class="img-thumbnail">
+                                            <img src="<?= base_url('assets/img/profile/') . $pasien['image']; ?>" class="img-thumbnail">
                                         </div>
                                         <div class="col-sm-9">
                                             <div class="custom-file">

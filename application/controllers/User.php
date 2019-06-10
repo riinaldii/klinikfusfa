@@ -11,7 +11,7 @@ class User extends CI_Controller
 
     public function index()
     {
-        $data['title'] = "My Profile";
+        $data['title'] = "Profile";
         $data['user'] = $this->db->get_where(
             'user',
             ['email' => $this->session->userdata('email')]
@@ -31,13 +31,8 @@ class User extends CI_Controller
             'user',
             ['email' => $this->session->userdata('email')]
         )->row_array();
-        $data['role_id'] = $this->db->get_where(
-            'user',
-            ['role_id' => $this->session->userdata('role_id')]
-        )->row_array();
 
-        $this->form_validation->set_rules('name', 'Nama Lengkap', 'required|trim');
-
+        $this->form_validation->set_rules('name', 'Full Name', 'required|trim');
 
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/header', $data);
@@ -47,23 +42,8 @@ class User extends CI_Controller
             $this->load->view('templates/footer');
         } else {
             $name = $this->input->post('name');
-            if ($data['role_id'] == 4) {
-                $this->form_validation->set_rules('alamat', 'Alamat', 'required|trim');
-                $this->form_validation->set_rules('usia', 'Usia', 'required|trim');
-                $this->form_validation->set_rules('no_telp', 'No. Telpon', 'required|trim');
-                $this->form_validation->set_rules('anak_ke', 'Anak Ke-', 'required|trim');
-                $this->form_validation->set_rules('pendidikan', 'Pendidikan Terakhir', 'required|trim');
-                $this->form_validation->set_rules('pekerjaan', 'Pekerjaan', 'required|trim');
-                $this->form_validation->set_rules('perkawinan', 'Status Perkawinan', 'required|trim');
-            }
-            $alamat = $this->input->post('alamat');
-            $usia = $this->input->post('usia');
-            $no_telp = $this->input->post('no_telp');
-            $anak_ke = $this->input->post('anak_ke');
-            $pendidikan = $this->input->post('pendidikan');
-            $pekerjaan = $this->input->post('pekerjaan');
-            $perkawinan = $this->input->post('perkawinan');
             $email = $this->input->post('email');
+
             //cek jika ada gambar yang di upload
             $upload_image = $_FILES['image']['name'];
 
@@ -89,20 +69,13 @@ class User extends CI_Controller
             }
 
             $this->db->set('name', $name);
-            $this->db->set('alamat', $alamat);
-            $this->db->set('no_telp', $no_telp);
-            $this->db->set('usia', $usia);
-            $this->db->set('pendidikan', $pendidikan);
-            $this->db->set('pekerjaan', $pekerjaan);
-            $this->db->set('perkawinan', $perkawinan);
-            $this->db->set('anak_ke', $anak_ke);
             $this->db->where('email', $email);
             $this->db->update('user');
 
             $this->session->set_flashdata(
                 'message',
-                '<div class="alert alert-success alert-dismissible fade show" role = "alert">
-                    Your profile has been updated! 
+                '<div class="alert alert-success" role = "alert">
+                    Profile berhasil diperbarui! 
                 </div>'
             );
             redirect('user');
@@ -111,7 +84,7 @@ class User extends CI_Controller
 
     public function changePassword()
     {
-        $data['title'] = "Change Password";
+        $data['title'] = "Ubah Password";
         $data['user'] = $this->db->get_where(
             'user',
             ['email' => $this->session->userdata('email')]
@@ -135,8 +108,8 @@ class User extends CI_Controller
             if (!password_verify($current_password, $data['user']['password'])) {
                 $this->session->set_flashdata(
                     'message',
-                    '<div class="alert alert-danger alert-dismissible fade show" role = "alert">
-                    Wrong current password! 
+                    '<div class="alert alert-danger" role = "alert">
+                    Password lama yang dimasukkan salah! 
                     </div>'
                 );
                 redirect('user/changepassword');
@@ -144,8 +117,8 @@ class User extends CI_Controller
                 if ($current_password == $new_password) {
                     $this->session->set_flashdata(
                         'message',
-                        '<div class="alert alert-danger alert-dismissible fade show" role = "alert">
-                        New password cannot be the same as current password! 
+                        '<div class="alert alert-danger" role = "alert">
+                        Password baru sama dengan password lama, coba password lain! 
                         </div>'
                     );
                     redirect('user/changepassword');
@@ -160,13 +133,156 @@ class User extends CI_Controller
 
                     $this->session->set_flashdata(
                         'message',
-                        '<div class="alert alert-success alert-dismissible fade show" role = "alert">
-                        Password changed! 
+                        '<div class="alert alert-success" role = "alert">
+                        Password berhasil diubah! 
                         </div>'
                     );
                     redirect('user/changepassword');
                 }
             }
         }
+    }
+
+    public function janjitemu()
+    {
+        $data['title'] = "Janji Temu";
+        $data['user'] = $this->db->get_where(
+            'user',
+            ['email' => $this->session->userdata('email')]
+        )->row_array();
+
+        $data['janjitemu'] = $this->db->get('janji_temu')->result_array();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('pasien/janjitemu', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function keluhan()
+    {
+        $data['title'] = "Keluhan";
+        $data['user'] = $this->db->get_where(
+            'user',
+            ['email' => $this->session->userdata('email')]
+        )->row_array();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('pasien/keluhan', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function layanan()
+    {
+        $data['title'] = "Layanan";
+        $data['user'] = $this->db->get_where(
+            'user',
+            ['email' => $this->session->userdata('email')]
+        )->row_array();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('owner/layanan', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function penyakit()
+    {
+        $data['title'] = "Penyakit";
+        $data['user'] = $this->db->get_where(
+            'user',
+            ['email' => $this->session->userdata('email')]
+        )->row_array();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('owner/penyakit', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function grafik()
+    {
+        $data['title'] = "Grafik";
+        $data['user'] = $this->db->get_where(
+            'user',
+            ['email' => $this->session->userdata('email')]
+        )->row_array();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('owner/grafik', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function role()
+    {
+        $data['title'] = "Role";
+        $data['user'] = $this->db->get_where(
+            'user',
+            ['email' => $this->session->userdata('email')]
+        )->row_array();
+
+        $data['role'] = $this->db->get('user_role')->result_array();
+
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('admin/role', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function roleAccess($role_id)
+    {
+        $data['title'] = "Role Access";
+        $data['user'] = $this->db->get_where(
+            'user',
+            ['email' => $this->session->userdata('email')]
+        )->row_array();
+
+        $data['role'] = $this->db->get_where('user_role', ['id' => $role_id])->row_array();
+
+        $this->db->where('id != ', 1);
+
+        $data['menu'] = $this->db->get('user_menu')->result_array();
+
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('admin/role-access', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function changeAccess()
+    {
+        $menu_id = $this->input->post('menuId');
+        $role_id = $this->input->post('roleId');
+
+        $data = [
+            'role_id' => $role_id,
+            'menu_id' => $menu_id
+        ];
+
+        $result = $this->db->get_where('user_access_menu', $data);
+
+        if ($result->num_rows() < 1) {
+            $this->db->insert('user_access_menu', $data);
+        } else {
+            $this->db->delete('user_access_menu', $data);
+        }
+
+        $this->session->set_flashdata(
+            'message',
+            '<div class="alert alert-success" role = "alert">
+            Access change! 
+        </div>'
+        );
     }
 }

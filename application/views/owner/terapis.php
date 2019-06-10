@@ -6,7 +6,12 @@
             <?= $title ?>
         </h1>
         <div class="col-lg-6">
-            <?= form_error('menu', '<div class="alert alert-danger" role="alert">', '</div>'); ?>
+            <?= form_error('terapis', '<div class="alert alert-danger" role="alert">', '</div>'); ?>
+            <?php if (validation_errors()) : ?>
+                <div class="alert alert-danger" role="alert">
+                    <?= validation_errors(); ?>
+                </div>
+            <?php endif; ?>
     </section>
 
     <!-- Main content -->
@@ -16,7 +21,7 @@
         <!-- Default box -->
         <div class="box">
             <div class="box-header with-border">
-                <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addTerapisModal">
+                <a href="<?= base_url('owner/addterapis'); ?>" class="btn btn-primary mb-3">
                     Tambah data</a>
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -27,26 +32,46 @@
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>Nama Lengkap</th>
-                            <th>Email</th>
-                            <th>Alamat</th>
-                            <th>No. Telp</th>
-                            <th>Aksi</th>
+                            <th scope="col">Gambar Profile</th>
+                            <th scope="col">Nama Lengkap</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Alamat</th>
+                            <th scope="col">No. Telp</th>
+                            <th scope="col">Role ID</th>
+                            <th scope="col">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Nama Lengkap</td>
-                            <td>Email</td>
-                            <td>Alamat</td>
-                            <td>No. Telp</td>
-                            <td>
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editTerapisModal">Edit</button>
-                                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#detailTerapisModal">Detail</button>
-                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#hapusTerapisModal">Hapus</button>
-                            </td>
-                        </tr>
+                        <?php $i = 1; ?>
+                        <?php foreach ($terapis as $t) : ?>
+                            <tr>
+                                <!-- <th scope="row"><?= $i; ?></th> -->
+                                <td> <img class="profile-user-img img-responsive img-circle" src="<?= base_url('assets/img/profile/') . $t['image']; ?>" alt="User profile picture"></td>
+                                <td><?= $t['name'] ?></td>
+                                <td><?= $t['email'] ?> </td>
+                                <td><?= $t['alamat'] ?> </td>
+                                <td><?= $t['no_telp'] ?> </td>
+                                <td><?= $t['role_id'] ?> </td>
+                                <td>
+                                    <a href="<?php echo base_url('owner/editterapis/' . $t['id']) ?>" class="btn btn-default"><i class="fa fa-edit"> Edit </i></a>
+                                    <a href="<?php echo base_url('owner/detailterapis/' . $t['id']) ?>" class="btn btn-warning"><i class="fa fa-edit"> Detail </i></a>
+                                    <a href="<?php echo base_url('owner/hapusterapis/' . $t['id']) ?>" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus <?= $t['email'] ?>?');"><i class="fa fa-edit"> Hapus </i></a>
+                                </td>
+                            </tr>
+                            <?php $i++; ?>
+                        <?php endforeach ?>
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <th scope="col">Gambar Profile</th>
+                            <th scope="col">Nama Lengkap</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Alamat</th>
+                            <th scope="col">No. Telp</th>
+                            <th scope="col">Role ID</th>
+                            <th scope="col">Aksi</th>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
             <!-- /.box-body -->`
@@ -72,26 +97,35 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addTerapisModalLabel">Tambah terapis</h5>
+                <h5 class="modal-title" id="addTerapisModalLabel">Tambah Data Terapis</h5>
             </div>
             <div class="register-box-body">
-
-                <form action="#" method="post">
+                <form class="user" method="post" action="<?= base_url('Owner/addTerapis'); ?>">
                     <div class="form-group has-feedback">
-                        <input type="text" class="form-control" placeholder="Nama lengkap">
-                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="Nama lengkap">
+                        <span class="glyphicon  form-control-feedback"></span>
+                    </div>
+                    <?= form_error('name', '<small class="text-danger ml-3">', '</small>'); ?>
+                    <div class="form-group has-feedback">
+                        <input type="email" id="email" name="email" class="form-control" placeholder="Email">
+                        <span class="glyphicon  form-control-feedback"></span>
+                    </div>
+                    <?= form_error('email', '<small class="text-danger ml-3">', '</small>'); ?>
+                    <div class="form-group has-feedback">
+                        <input type="text" id="no_telp" name="no_telp" class="form-control" placeholder="No. Telepon">
+                        <span class="glyphicon  form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
-                        <input type="email" class="form-control" placeholder="Email">
-                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                        <textarea type="email" id="alamat" name="alamat" class="form-control" placeholder="Alamat"></textarea>
+                        <span class="glyphicon  form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
-                        <input type="password" class="form-control" placeholder="Password">
-                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                        <input type="password" id="password1" name="password1" class="form-control" placeholder="Password">
+                        <span class="glyphicon  form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
-                        <input type="password" class="form-control" placeholder="Ulangi password">
-                        <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+                        <input type="password" id="password2" name="password2" class="form-control" placeholder="Ulangi password">
+                        <span class="glyphicon  form-control-feedback"></span>
                     </div>
                     <div class="row">
                         <!-- /.col -->
@@ -112,35 +146,56 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editTerapisModalLabel">Edit terapis</h5>
+                <h5 class="modal-title" id="editTerapisModalLabel">Edit Data Terapis</h5>
             </div>
             <div class="register-box-body">
 
-                <form action="#" method="post">
-                    <div class="form-group has-feedback">
-                        <input type="text" class="form-control" placeholder="Nama lengkap">
-                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                    </div>
-                    <div class="form-group has-feedback">
-                        <input type="email" class="form-control" placeholder="Email">
-                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-                    </div>
-                    <div class="form-group has-feedback">
-                        <input type="password" class="form-control" placeholder="Password">
-                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                    </div>
-                    <div class="form-group has-feedback">
-                        <input type="password" class="form-control" placeholder="Ulangi password">
-                        <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
-                    </div>
+                <?= form_open_multipart('owner/editTerapis'); ?>
+                <div class="form-group has-feedback">
+                    <input type="text" id="name" name="name" class="form-control" value="<?= $t['name'] ?> ">
+                    <span class="glyphicon  form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="email" id="email" name="email" class="form-control" <?= $t['email'] ?>>
+                    <span class="glyphicon  form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="text" id="no_telp" name="no_telp" class="form-control" placeholder="No. Telepon">
+                    <span class="glyphicon  form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <textarea type="email" id="alamat" name="alamat" class="form-control" placeholder="Alamat"></textarea>
+                    <span class="glyphicon  form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="password" id="password1" name="password1" class="form-control" placeholder="Password">
+                    <span class="glyphicon  form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="password" id="password2" name="password2" class="form-control" placeholder="Ulangi password">
+                    <span class="glyphicon  form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <label class="control-label">Gambar Profile</label>
                     <div class="row">
-                        <!-- /.col -->
-                        <div class="col-xs-12">
-                            <button type="submit" class="btn btn-primary btn-block btn-flat">Update data</button>
-                            <button type="button" class="btn btn-secondary btn-block btn-flat" data-dismiss="modal">Kembali</button>
+                        <div class="col-sm-9">
+                            <div class="col-sm-3">
+                                <img src="<?= base_url('assets/img/profile/') . $user['image']; ?>" class="img-thumbnail">
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="image" name="image">
+                            </div>
                         </div>
-                        <!-- /.col -->
                     </div>
+                </div>
+                <div class="row">
+                    <!-- /.col -->
+                    <div class="col-xs-12">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">Simpan data</button>
+                        <button type="button" class="btn btn-secondary btn-block btn-flat" data-dismiss="modal">Kembali</button>
+                    </div>
+                    <!-- /.col -->
+                </div>
                 </form>
             </div>
         </div>
@@ -158,24 +213,33 @@
 
                 <form action="#" method="post">
                     <div class="form-group has-feedback">
-                        <input type="text" class="form-control" placeholder="Nama lengkap">
-                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="Nama lengkap">
+                        <span class="glyphicon  form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
-                        <input type="email" class="form-control" placeholder="Email">
-                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="Email">
+                        <span class="glyphicon  form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
-                        <input type="password" class="form-control" placeholder="Password">
-                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                        <input type="text" id="no_telp" name="no_telp" class="form-control" placeholder="No. Telepon">
+                        <span class="glyphicon  form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
-                        <input type="password" class="form-control" placeholder="Ulangi password">
-                        <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+                        <textarea type="email" id="alamat" name="alamat" class="form-control" placeholder="Alamat"></textarea>
+                        <span class="glyphicon  form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="password" id="password1" name="password1" class="form-control" placeholder="Password">
+                        <span class="glyphicon  form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="password" id="password2" name="password2" class="form-control" placeholder="Ulangi password">
+                        <span class="glyphicon  form-control-feedback"></span>
                     </div>
                     <div class="row">
                         <!-- /.col -->
                         <div class="col-xs-12">
+                            <button type="submit" class="btn btn-primary btn-block btn-flat">Tambah data</button>
                             <button type="button" class="btn btn-secondary btn-block btn-flat" data-dismiss="modal">Kembali</button>
                         </div>
                         <!-- /.col -->
