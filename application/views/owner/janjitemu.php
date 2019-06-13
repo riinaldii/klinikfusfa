@@ -32,11 +32,30 @@
               <th>Tanggal Temu</th>
               <th>Waktu Temu</th>
               <th>Terapis</th>
+              <th>Keluhan</th>
               <th>Status</th>
               <th>Hasil Diagnosis</th>
               <th>Aksi</th>
             </tr>
           </thead>
+          <tbody>
+            <?php foreach ($janjitemu as $jt) : ?>
+              <tr>
+                <td><?= $jt['psn'] ?></td>
+                <td><?= $jt['layanan'] ?></td>
+                <td><?= $jt['tgl_temu'] ?></td>
+                <td><?= $jt['waktu'] ?></td>
+                <td><?= $jt['trp'] ?></td>
+                <td><?= $jt['keluhan'] ?></td>
+                <td><?= $jt['status'] ?></td>
+                <td><?= $jt['penyakit'] ?></td>
+                <td>
+                  <a href="<?php echo base_url('owner/konfirmasijanji/' . $jt['id_jt']) ?>" class="btn btn-success"><i class="fa fa-edit"> Konfirmasi </i></a>
+                  <a href="<?php echo base_url('pasien/editjanji/' . $jt['id_jt']) ?>" class="btn btn-primary"><i class="fa fa-edit"> Detail Pasien </i></a>
+                </td>
+              </tr>
+            <?php endforeach ?>
+          </tbody>
           <tbody>
             <tr>
               <th>Pasien</th>
@@ -44,6 +63,7 @@
               <th>Tanggal Temu</th>
               <th>Waktu Temu</th>
               <th>Terapis</th>
+              <th>Keluhan</th>
               <th>Status</th>
               <th>Hasil Diagnosis</th>
               <th>
@@ -76,15 +96,15 @@
                     <tbody>
                         <?php $i = 1; ?>
                         <?php foreach ($menu as $m) : ?>
-                                                                                                                  <tr>
-                                                                                                                      <th scope="row"><?= $i; ?></th>
-                                                                                                                      <td><?= $m['menu'] ?> </td>
-                                                                                                                      <td>
-                                                                                                                          <button class="btn btn-secondary"><a href="">Edit</a></button>
-                                                                                                                          <button class="btn btn-danger"><a href="">Hapus</a></button>
-                                                                                                                      </td>
-                                                                                                                  </tr>
-                                                                                                                  <?php $i++; ?>
+                                                                                                                              <tr>
+                                                                                                                                  <th scope="row"><?= $i; ?></th>
+                                                                                                                                  <td><?= $m['menu'] ?> </td>
+                                                                                                                                  <td>
+                                                                                                                                      <button class="btn btn-secondary"><a href="">Edit</a></button>
+                                                                                                                                      <button class="btn btn-danger"><a href="">Hapus</a></button>
+                                                                                                                                  </td>
+                                                                                                                              </tr>
+                                                                                                                              <?php $i++; ?>
                         <?php endforeach ?>
                     </tbody>
                 </table>

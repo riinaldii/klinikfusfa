@@ -13,13 +13,17 @@ class Owner extends CI_Controller
 
     public function index()
     {
-        //$this->load->view('janjitemu');
-
         $data['title'] = "Dashboard";
         $data['user'] = $this->db->get_where(
             'user',
             ['email' => $this->session->userdata('email')]
         )->row_array();
+
+        $this->load->model('Janjitemu_model', 'jt');
+
+        $data['janjitemu'] = $this->jt->getJanjiTemuMasuk();
+        $data['layanan'] = $this->db->get('list_layanan')->result_array();
+        $data['terapis'] = $this->db->get('terapis')->result_array();
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
@@ -28,20 +32,76 @@ class Owner extends CI_Controller
         $this->load->view('templates/footer');
     }
 
+    public function konfirmasijanji($id_jt = null)
+    {
+        $data['title'] = "Konfirmasi Janji Temu";
+        $data['user'] = $this->db->get_where(
+            'user',
+            ['email' => $this->session->userdata('email')]
+        )->row_array();
+
+        $this->load->model('Janjitemu_model', 'jt');
+
+        $data['janjitemu'] = $this->jt->getJanjiTemubyId($id_jt);
+
+        $data['layanan'] = $this->db->get('list_layanan')->result_array();
+        $data['terapis'] = $this->db->get('terapis')->result_array();
+
+        $this->form_validation->set_rules('tgl_temu', 'Tanggal Temu', 'required');
+        $this->form_validation->set_rules('waktu', 'Waktu Temu', 'required');
+        $this->form_validation->set_rules('layanan', 'Layanan', 'required');
+
+        if ($this->form_validation->run() == false) {
+
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('owner/konfirmasijanji', $data);
+            $this->load->view('templates/footer');
+
+        } else {
+            $id_jt = $this->input->post('id_jt');
+            $id_pasien = $this->input->post('id_pasien');
+            $id_layanan = $this->input->post('layanan');
+            $id_terapis = $this->input->post('id_terapis');
+            $tgl_temu = $this->input->post('tgl_temu');
+            $waktu = $this->input->post('waktu');
+            $keluhan = $this->input->post('keluhan');
+            $status = 'Dikonfirmasi';
+
+            $this->db->set('id_pasien', $id_pasien);
+            $this->db->set('id_layanan', $id_layanan);
+            $this->db->set('id_terapis', $id_terapis);
+            $this->db->set('tgl_temu', $tgl_temu);
+            $this->db->set('waktu', $waktu);
+            $this->db->set('keluhan', $keluhan);
+            $this->db->set('status', $status);
+
+            $this->db->where('id_jt', $id_jt);
+            $this->db->update('janji_temu');
+
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-success" role = "alert">
+                    Janji temu berhasil dikonfirmasi! 
+                </div>'
+            );
+            redirect('owner/index');
+        }
+    }
+
     public function janjitemu()
     {
-
         $data['title'] = "Janji Temu";
-
-        // $this->load->model('m_relasi');
-        // $data['query'] = $this->m_relasi->get_relasi();
 
         $data['user'] = $this->db->get_where(
             'user',
             ['email' => $this->session->userdata('email')]
         )->row_array();
 
-        // $data['janjitemu'] = $this->db->get('janji_temu')->result_array();
+        $this->load->model('Janjitemu_model', 'jt');
+
+        $data['janjitemu'] = $this->jt->getJanjiTemuAll();
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
@@ -497,7 +557,6 @@ class Owner extends CI_Controller
 
         $this->form_validation->set_rules('nama_layanan', 'Nama Layanan', 'required');
         $this->form_validation->set_rules('keterangan', 'Keterangan Layanan', 'required');
-
 
         if ($this->form_validation->run() == FALSE) {
             $this->load->view('templates/header', $data);

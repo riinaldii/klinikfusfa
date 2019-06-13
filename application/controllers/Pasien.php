@@ -12,6 +12,7 @@ class Pasien extends CI_Controller
     public function index()
     {
         $data['title'] = "Profile";
+
         $data['user'] = $this->db->get_where(
             'pasien',
             ['email' => $this->session->userdata('email')]
@@ -177,18 +178,119 @@ class Pasien extends CI_Controller
     public function janjitemu()
     {
         $data['title'] = "Janji Temu";
+
+        $data['user'] = $this->db->get_where(
+            'pasien',
+            ['email' => $this->session->userdata('email')]
+        )->row_array();
+
+        $this->load->model('Janjitemu_model', 'jt');
+
+        $data['janjitemu'] = $this->jt->getJanjiTemuPasien();
+        $data['layanan'] = $this->db->get('list_layanan')->result_array();
+
+        $this->form_validation->set_rules('tgl_temu', 'Tanggal Temu', 'required');
+
+        if ($this->form_validation->run() == false) {
+
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('pasien/janjitemu', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $data = [
+                'id_pasien' => $this->input->post('id', true),
+                'id_layanan' => $this->input->post('layanan', true),
+                'tgl_temu' => $this->input->post('tgl_temu', true),
+                'waktu' => $this->input->post('waktu', true),
+                'keluhan' => $this->input->post('keluhan', true),
+                'status' => 'Menunggu Konfirmasi'
+            ];
+
+            $this->db->insert('janji_temu', $data);
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-success" role = "alert">  
+            Janji temu berhasil dibuat! 
+        </div>'
+            );
+            redirect('pasien/janjitemu');
+        }
+    }
+
+    public function editjanji($id_jt = null)
+    {
+        $data['title'] = "Edit Janji Temu";
         $data['user'] = $this->db->get_where(
             'user',
             ['email' => $this->session->userdata('email')]
         )->row_array();
 
-        $data['janjitemu'] = $this->db->get('janji_temu')->result_array();
+        $data['janjitemu'] = $this->db->get_where(
+            'janji_temu',
+            ['id_jt' => $id_jt]
+        )->row_array();
 
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/sidebar', $data);
-        $this->load->view('templates/topbar', $data);
-        $this->load->view('pasien/janjitemu', $data);
-        $this->load->view('templates/footer');
+        $data['layanan'] = $this->db->get('list_layanan')->result_array();
+
+        $this->form_validation->set_rules('tgl_temu', 'Tanggal Temu', 'required');
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('pasien/editjanji', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $id_jt = $this->input->post('id_jt');
+            $id_pasien = $this->input->post('id_pasien');
+            $id_layanan = $this->input->post('layanan');
+            $tgl_temu = $this->input->post('tgl_temu');
+            $waktu = $this->input->post('waktu');
+            $keluhan = $this->input->post('keluhan');
+            $status = 'Menunggu Konfirmasi';
+
+            $this->db->set('id_pasien', $id_pasien);
+            $this->db->set('id_layanan', $id_layanan);
+            $this->db->set('tgl_temu', $tgl_temu);
+            $this->db->set('waktu', $waktu);
+            $this->db->set('keluhan', $keluhan);
+            $this->db->set('status', $status);
+
+            $this->db->where('id_jt', $id_jt);
+            $this->db->update('janji_temu');
+
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-success" role = "alert">
+                    Janji temu berhasil diperbarui! 
+                </div>'
+            );
+            redirect('pasien/janjitemu');
+        }
+    }
+
+    public function hapusjanji($id_jt = null)
+    {
+        if ($id_jt) {
+            $this->db->delete('janji_temu', ['id_jt' => $id_jt]);
+
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-success" role = "alert">
+                    Janji temu berhasil dihapus! 
+                </div>'
+            );
+        } else {
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-success" role = "alert">
+                    Janji temu gagal dihapus! 
+                </div>'
+            );
+        }
+        redirect('pasien/janjitemu');
     }
 
     public function keluhan()
@@ -249,71 +351,5 @@ class Pasien extends CI_Controller
         $this->load->view('templates/topbar', $data);
         $this->load->view('owner/grafik', $data);
         $this->load->view('templates/footer');
-    }
-
-    public function role()
-    {
-        $data['title'] = "Role";
-        $data['user'] = $this->db->get_where(
-            'user',
-            ['email' => $this->session->userdata('email')]
-        )->row_array();
-
-        $data['role'] = $this->db->get('user_role')->result_array();
-
-
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/sidebar', $data);
-        $this->load->view('templates/topbar', $data);
-        $this->load->view('admin/role', $data);
-        $this->load->view('templates/footer');
-    }
-
-    public function roleAccess($role_id)
-    {
-        $data['title'] = "Role Access";
-        $data['user'] = $this->db->get_where(
-            'user',
-            ['email' => $this->session->userdata('email')]
-        )->row_array();
-
-        $data['role'] = $this->db->get_where('user_role', ['id' => $role_id])->row_array();
-
-        $this->db->where('id != ', 1);
-
-        $data['menu'] = $this->db->get('user_menu')->result_array();
-
-
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/sidebar', $data);
-        $this->load->view('templates/topbar', $data);
-        $this->load->view('admin/role-access', $data);
-        $this->load->view('templates/footer');
-    }
-
-    public function changeAccess()
-    {
-        $menu_id = $this->input->post('menuId');
-        $role_id = $this->input->post('roleId');
-
-        $data = [
-            'role_id' => $role_id,
-            'menu_id' => $menu_id
-        ];
-
-        $result = $this->db->get_where('user_access_menu', $data);
-
-        if ($result->num_rows() < 1) {
-            $this->db->insert('user_access_menu', $data);
-        } else {
-            $this->db->delete('user_access_menu', $data);
-        }
-
-        $this->session->set_flashdata(
-            'message',
-            '<div class="alert alert-success" role = "alert">
-            Access change! 
-        </div>'
-        );
     }
 }

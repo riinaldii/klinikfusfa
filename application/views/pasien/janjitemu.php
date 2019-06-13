@@ -27,57 +27,44 @@
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
                         <tr>
+                            <th>ID Pasien</th>
                             <th>Layanan</th>
                             <th>Tanggal Temu</th>
                             <th>Waktu Temu</th>
-                            <th>Terapis</th>
+                            <th>Keluhan</th>
                             <th>Status</th>
-                            <th>Hasil Diagnosis</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th>Layanan</th>
-                            <th>Tanggal Temu</th>
-                            <th>Waktu Temu</th>
-                            <th>Terapis</th>
-                            <th>Status</th>
-                            <th>Hasil Diagnosis</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <!-- /.box-body -->
-            <!-- <div class="box-body">
-                <table id="example1" class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>Rendering engine</th>
-                            <th>Browser</th>
-                            <th>Platform(s)</th>
-                            <th>Engine version</th>
-                            <th>CSS grade</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $i = 1; ?>
-                        <?php foreach ($menu as $m) : ?>
-                                                                                                                <tr>
-                                                                                                                    <th scope="row"><?= $i; ?></th>
-                                                                                                                    <td><?= $m['menu'] ?> </td>
-                                                                                                                    <td>
-                                                                                                                        <button class="btn btn-secondary"><a href="">Edit</a></button>
-                                                                                                                        <button class="btn btn-danger"><a href="">Hapus</a></button>
-                                                                                                                    </td>
-                                                                                                                </tr>
-                                                                                                                <?php $i++; ?>
+                        <?php foreach ($janjitemu as $jt) : ?>
+                            <tr>
+                                <td><?= $jt['id_pasien'] ?></td>
+                                <td><?= $jt['nama_layanan'] ?></td>
+                                <td><?= $jt['tgl_temu'] ?></td>
+                                <td><?= $jt['waktu'] ?></td>
+                                <td><?= $jt['keluhan'] ?></td>
+                                <td><?= $jt['status'] ?></td>
+                                <td>
+                                    <a href="<?php echo base_url('pasien/editjanji/' . $jt['id_jt']) ?>" class="btn btn-primary"><i class="fa fa-edit"> Edit </i></a>
+                                    <a href="<?php echo base_url('pasien/hapusjanji/' . $jt['id_jt']) ?>" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus janji temu ?');"><i class="fa fa-edit"> Hapus </i></a>
+                                </td>
+                            </tr>
                         <?php endforeach ?>
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>ID Pasien</th>
+                            <th>Layanan</th>
+                            <th>Tanggal Temu</th>
+                            <th>Waktu Temu</th>
+                            <th>Keluhan</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </tfoot>
                 </table>
-            </div> -->
-            <!-- /.box-body -->`
+            </div>
         </div>
         <!-- /.box -->
 
@@ -102,14 +89,17 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="janjiTemuModalLabel">Buat Janji Temu</h5>
             </div>
-            <form action="<?= base_url('#'); ?>" method="post">
+            <form action="<?= base_url('pasien/janjitemu'); ?>" method="post">
                 <div class="modal-body">
                     <div class="form-group">
+                        <input type="hidden" name="id" id="id" value="<?= $user['id']; ?>">
+                    </div>
+                    <div class="form-group">
                         <label>Pilih layanan</label>
-                        <select name="menu_id" id="menu_id" class="form-control select2 width:100%;">
+                        <select name="layanan" id="layanan" class="form-control select width:100%;">
                             <option value="">Pilih Layanan</option>
-                            <?php foreach ($menu as $m) : ?>
-                                <option value="<?= $m['id']; ?>"><?= $m['menu'] ?></option>
+                            <?php foreach ($layanan as $l) : ?>
+                                <option value="<?= $l['id']; ?>"><?= $l['nama_layanan'] ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -119,8 +109,9 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </div>
-                            <input type="text" class="form-control pull-right" id="datepicker">
+                            <input type="text" class="form-control pull-right" name="tgl_temu" id="datepicker">
                         </div>
+                        <?= form_error('tgl_temu', '<small class="text-danger ml-3">', '</small>'); ?>
                         <!-- /.input group -->
                     </div>
                     <div class="form-group">
@@ -131,7 +122,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-clock-o"></i>
                                     </div>
-                                    <input type="text" class="form-control timepicker">
+                                    <input type="text" name="waktu" id="waktu" class="form-control timepicker">
                                 </div>
                                 <!-- /.input group -->
                             </div>
@@ -140,12 +131,73 @@
                     </div>
                     <div class="form-group">
                         <label>Keluhan</label>
-                        <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
+                        <textarea class="form-control" rows="3" name="keluhan" id="keluhan" placeholder="Masukkan Keluhan"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
-                    <button type="submit" class="btn btn-primary">Buat</button>
+                    <button type="submit" class="btn btn-primary">Buat Janji</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Edit Janji-->
+<div class="modal fade" id="editJanjiTemuModal" tabindex="-1" role="dialog" aria-labelledby="editJanjiTemuModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editJanjiTemuModalLabel">Edit Janji Temu</h5>
+            </div>
+            <form action="<?= base_url('pasien/editjanji'); ?>" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="text" name="id" id="id" value="<?= $janji['id_jt']; ?>">
+                    </div>
+                    <div class="form-group">
+                        <label>Pilih layanan</label>
+                        <select name="layanan" id="layanan" class="form-control select width:100%;" value="<?= $jt['nama_layanan']; ?>">
+                            <option value="">Pilih Layanan</option>
+                            <?php foreach ($layanan as $l) : ?>
+                                <option value="<?= $l['id']; ?>"><?= $l['nama_layanan'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Tanggal temu</label>
+                        <div class="input-group date">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" class="form-control pull-right" name="tgl_temu" id="datepicker">
+                        </div>
+                        <?= form_error('tgl_temu', '<small class="text-danger ml-3">', '</small>'); ?>
+                        <!-- /.input group -->
+                    </div>
+                    <div class="form-group">
+                        <div class="bootstrap-timepicker">
+                            <div class="form-group">
+                                <label>Waktu temu</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input type="text" name="waktu" id="waktu" class="form-control timepicker">
+                                </div>
+                                <!-- /.input group -->
+                            </div>
+                            <!-- /.form group -->
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Keluhan</label>
+                        <textarea class="form-control" rows="3" name="keluhan" id="keluhan" placeholder="Masukkan Keluhan"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+                    <button type="submit" class="btn btn-primary">Buat Janji</button>
                 </div>
             </form>
         </div>

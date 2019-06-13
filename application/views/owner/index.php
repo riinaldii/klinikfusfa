@@ -31,64 +31,40 @@
               <th>Layanan</th>
               <th>Tanggal Temu</th>
               <th>Waktu Temu</th>
-              <th>Terapis</th>
+              <th>Keluhan</th>
               <th>Status</th>
-              <th>Hasil Diagnosis</th>
               <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
+            <?php foreach ($janjitemu as $jt) : ?>
+              <tr>
+                <td><?= $jt['psn'] ?></td>
+                <td><?= $jt['nama_layanan'] ?></td>
+                <td><?= $jt['tgl_temu'] ?></td>
+                <td><?= $jt['waktu'] ?></td>
+                <td><?= $jt['keluhan'] ?></td>
+                <td><?= $jt['status'] ?></td>
+                <td>
+                  <a href="<?php echo base_url('owner/konfirmasijanji/' . $jt['id_jt']) ?>" class="btn btn-success"><i class="fa fa-edit"> Konfirmasi </i></a>
+                  <a href="<?php echo base_url('pasien/editjanji/' . $jt['id_jt']) ?>" class="btn btn-primary"><i class="fa fa-edit"> Detail Pasien </i></a>
+                </td>
+              </tr>
+            <?php endforeach ?>
+          </tbody>
+          <tfoot>
             <tr>
               <th>Pasien</th>
               <th>Layanan</th>
               <th>Tanggal Temu</th>
               <th>Waktu Temu</th>
-              <th>Terapis</th>
+              <th>Keluhan</th>
               <th>Status</th>
-              <th>Hasil Diagnosis</th>
-              <th>
-                <div>
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#upJanjiModal">Update Janji</button>
-                </div>
-                <div>
-                  <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#detailPasienModal">Detail Pasien</button>
-                </div>
-                <div>
-                  <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#ubahStatusModal">Ubah Status</button>
-                </div>
-              </th>
+              <th>Aksi</th>
             </tr>
-          </tbody>
+          </tfoot>
         </table>
       </div>
-      <!-- /.box-body -->
-      <!-- <div class="box-body">
-                <table id="example1" class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>Rendering engine</th>
-                            <th>Browser</th>
-                            <th>Platform(s)</th>
-                            <th>Engine version</th>
-                            <th>CSS grade</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $i = 1; ?>
-                        <?php foreach ($menu as $m) : ?>
-                                                                                                                        <tr>
-                                                                                                                            <th scope="row"><?= $i; ?></th>
-                                                                                                                            <td><?= $m['menu'] ?> </td>
-                                                                                                                            <td>
-                                                                                                                                <button class="btn btn-secondary"><a href="">Edit</a></button>
-                                                                                                                                <button class="btn btn-danger"><a href="">Hapus</a></button>
-                                                                                                                            </td>
-                                                                                                                        </tr>
-                                                                                                                        <?php $i++; ?>
-                        <?php endforeach ?>
-                    </tbody>
-                </table>
-            </div> -->
       <!-- /.box-body -->
     </div>
     <!-- /.box -->

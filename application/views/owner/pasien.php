@@ -58,7 +58,7 @@
                   <a href="<?php echo base_url('owner/hapuspasien/' . $p['id']) ?>" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus <?= $p['email'] ?>?');"><i class="fa fa-edit"> Hapus </i></a>
                 </td>
               </tr>
-              <?php $i++; ?>
+              <?php $i++; ?>a
             <?php endforeach ?>
           </tbody>
           <tfoot>
