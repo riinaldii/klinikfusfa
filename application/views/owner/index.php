@@ -29,8 +29,7 @@
             <tr>
               <th>Pasien</th>
               <th>Layanan</th>
-              <th>Tanggal Temu</th>
-              <th>Waktu Temu</th>
+              <th>Tanggal & Waktu Temu</th>
               <th>Keluhan</th>
               <th>Status</th>
               <th>Aksi</th>
@@ -39,15 +38,15 @@
           <tbody>
             <?php foreach ($janjitemu as $jt) : ?>
               <tr>
-                <td><?= $jt['psn'] ?></td>
-                <td><?= $jt['nama_layanan'] ?></td>
-                <td><?= $jt['tgl_temu'] ?></td>
-                <td><?= $jt['waktu'] ?></td>
+                <td>
+                  <a href="<?php echo base_url('owner/detailpasien/' . $jt['id_pasien']) ?>"><?= $jt['psn'] ?></a>
+                </td>
+                <td><?= $jt['layanan'] ?></td>
+                <td><?= $jt['tgl_temu'] ?> | <?= $jt['waktu'] ?></td>
                 <td><?= $jt['keluhan'] ?></td>
                 <td><?= $jt['status'] ?></td>
                 <td>
-                  <a href="<?php echo base_url('owner/konfirmasijanji/' . $jt['id_jt']) ?>" class="btn btn-success"><i class="fa fa-edit"> Konfirmasi </i></a>
-                  <a href="<?php echo base_url('pasien/editjanji/' . $jt['id_jt']) ?>" class="btn btn-primary"><i class="fa fa-edit"> Detail Pasien </i></a>
+                  <a href="<?php echo base_url('owner/konfirmasijanji/' . $jt['id_jt']) ?>" class="btn btn-success">Konfirmasi</a>
                 </td>
               </tr>
             <?php endforeach ?>
@@ -56,8 +55,7 @@
             <tr>
               <th>Pasien</th>
               <th>Layanan</th>
-              <th>Tanggal Temu</th>
-              <th>Waktu Temu</th>
+              <th>Tanggal & Waktu Temu</th>
               <th>Keluhan</th>
               <th>Status</th>
               <th>Aksi</th>
@@ -166,12 +164,18 @@
       <div class="modal-header">
         <h5 class="modal-title" id="detailPasienModalLabel">Detail pasien</h5>
       </div>
-      <form action="<?= base_url('#'); ?>" method="post">
+      <form action="<?php echo base_url('#owner/detail/' . $jt['id_jt']) ?>" method="post">
         <div class="modal-body">
+          <div class="form-group">
+            <label>ID pasien</label>
+            <div>
+              <input type="text" class="form-control" placeholder="Nama pasien" value="<?= $pasien['id'] ?>" readonly>
+            </div>
+          </div>
           <div class="form-group">
             <label>Nama pasien</label>
             <div>
-              <input type="text" class="form-control" placeholder="Nama pasien" readonly>
+              <input type="text" class="form-control" placeholder="Nama pasien" value="<?= $pasien['name'] ?>" readonly>
             </div>
           </div>
           <div class="form-group">

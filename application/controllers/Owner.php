@@ -32,6 +32,15 @@ class Owner extends CI_Controller
         $this->load->view('templates/footer');
     }
 
+    public function detail($id)
+    {
+        $this->load->model('Janjitemu_model', 'jt');
+
+        $data['pasien'] = $this->jt->getPasienbyId($id);
+
+        $this->load->$data['pasien']->row_array();
+    }
+
     public function konfirmasijanji($id_jt = null)
     {
         $data['title'] = "Konfirmasi Janji Temu";
@@ -58,11 +67,10 @@ class Owner extends CI_Controller
             $this->load->view('templates/topbar', $data);
             $this->load->view('owner/konfirmasijanji', $data);
             $this->load->view('templates/footer');
-
         } else {
             $id_jt = $this->input->post('id_jt');
             $id_pasien = $this->input->post('id_pasien');
-            $id_layanan = $this->input->post('layanan');
+            $layanan = $this->input->post('layanan');
             $id_terapis = $this->input->post('id_terapis');
             $tgl_temu = $this->input->post('tgl_temu');
             $waktu = $this->input->post('waktu');
@@ -70,7 +78,7 @@ class Owner extends CI_Controller
             $status = 'Dikonfirmasi';
 
             $this->db->set('id_pasien', $id_pasien);
-            $this->db->set('id_layanan', $id_layanan);
+            $this->db->set('layanan', $layanan);
             $this->db->set('id_terapis', $id_terapis);
             $this->db->set('tgl_temu', $tgl_temu);
             $this->db->set('waktu', $waktu);
@@ -160,13 +168,15 @@ class Owner extends CI_Controller
             $this->load->view('templates/footer');
         } else {
             $email = $this->input->post('email', true);
-            $data_t = [
+            $data_p = [
                 'name' => htmlspecialchars($this->input->post('name', true)),
                 'email' => htmlspecialchars($email),
                 'no_telp' => htmlspecialchars($this->input->post('no_telp', true)),
                 'alamat' => htmlspecialchars($this->input->post('alamat', true)),
                 'tempat_lahir' => htmlspecialchars($this->input->post('tempat_lahir', true)),
                 'tgl_lahir' => htmlspecialchars($this->input->post('tgl_lahir', true)),
+                'pekerjaan' => htmlspecialchars($this->input->post('pekerjaan', true)),
+                'anak_ke' => htmlspecialchars($this->input->post('anak_ke', true)),
                 'riwayat_pendidikan' => htmlspecialchars($this->input->post('riwayat_pendidikan', true)),
                 'usia' => htmlspecialchars($this->input->post('usia', true)),
                 'image' => 'default.jpg',
@@ -187,7 +197,7 @@ class Owner extends CI_Controller
             ];
 
             $this->db->insert('user', $data_u);
-            $this->db->insert('pasien', $data_t);
+            $this->db->insert('pasien', $data_p);
             $this->session->set_flashdata(
                 'message',
                 '<div class="alert alert-success" role = "alert">  
@@ -290,7 +300,7 @@ class Owner extends CI_Controller
 
     public function detailpasien($id = null)
     {
-        $data['title'] = "Detail Terapis";
+        $data['title'] = "Detail Pasien";
         $data['user'] = $this->db->get_where(
             'user',
             ['email' => $this->session->userdata('email')]
@@ -672,69 +682,22 @@ class Owner extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    public function role()
+    public function laporan()
     {
-        $data['title'] = "Role";
+        $data['title'] = "Laporan";
         $data['user'] = $this->db->get_where(
             'user',
             ['email' => $this->session->userdata('email')]
         )->row_array();
 
-        $data['role'] = $this->db->get('user_role')->result_array();
+        $this->load->model('Janjitemu_model', 'jt');
 
-
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/sidebar', $data);
-        $this->load->view('templates/topbar', $data);
-        $this->load->view('admin/role', $data);
-        $this->load->view('templates/footer');
-    }
-
-    public function roleAccess($role_id)
-    {
-        $data['title'] = "Role Access";
-        $data['user'] = $this->db->get_where(
-            'user',
-            ['email' => $this->session->userdata('email')]
-        )->row_array();
-
-        $data['role'] = $this->db->get_where('user_role', ['id' => $role_id])->row_array();
-
-        $this->db->where('id != ', 1);
-
-        $data['menu'] = $this->db->get('user_menu')->result_array();
-
+        $data['janjitemu'] = $this->jt->getJanjiTemuSelesaiAll();
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);
-        $this->load->view('admin/role-access', $data);
+        $this->load->view('owner/laporan', $data);
         $this->load->view('templates/footer');
-    }
-
-    public function changeAccess()
-    {
-        $menu_id = $this->input->post('menuId');
-        $role_id = $this->input->post('roleId');
-
-        $data = [
-            'role_id' => $role_id,
-            'menu_id' => $menu_id
-        ];
-
-        $result = $this->db->get_where('user_access_menu', $data);
-
-        if ($result->num_rows() < 1) {
-            $this->db->insert('user_access_menu', $data);
-        } else {
-            $this->db->delete('user_access_menu', $data);
-        }
-
-        $this->session->set_flashdata(
-            'message',
-            '<div class="alert alert-success" role = "alert">
-            Access change! 
-        </div>'
-        );
     }
 }

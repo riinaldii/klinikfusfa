@@ -12,7 +12,7 @@
                     </ul>
                     <div class="tab-content">
                         <div class="active tab-pane" id="profile">
-                            <form class="user" method="post" action="<?= base_url('terapis/addpasien'); ?>">
+                            <form class="user" method="post" action="<?= base_url('owner/addpasien'); ?>">
                                 <div class="form-group row">
                                     <label for="email" class="col-sm-2 col-form-label">Email</label>
                                     <div class="col-sm-6">
@@ -34,7 +34,7 @@
                                     </div>
                                 </div>
                                 <div class=" form-group row">
-                                    <label for="tempat_lahir" index="2" class="col-sm-2 control-label">Tanggal Lahir</label>
+                                    <label for="tempat_lahir" class="col-sm-2 control-label">Tanggal Lahir</label>
                                     <div class="col-sm-2 ">
                                         <input type="text" class="form-control pull-right" id="datepicker" name="tgl_lahir" value="<?= set_value('tgl_lahir'); ?>">
                                     </div>

@@ -16,14 +16,13 @@
                                 <div class="modal-body">
                                     <div class="form-group">
                                         <label>Nama Pasien</label>
-                                        <input type="text" class="form-control" name="keluhan" id="keluhan" 
-                                        value="<?= $janjitemu['psn']; ?>" readonly>
+                                        <input type="text" class="form-control" name="keluhan" id="keluhan" value="<?= $janjitemu['psn']; ?>" readonly>
                                     </div>
                                     <div class="form-group ">
                                         <label>Pilih layanan</label>
                                         <select name="layanan" id="layanan" class="form-control select width:100%;">
                                             <?php foreach ($layanan as $l) : ?>
-                                                <option value="<?= $l['id']; ?>"><?= $l['nama_layanan'] ?></option>
+                                                <option value="<?= $l['nama_layanan']; ?>"><?= $l['nama_layanan'] ?></option>
                                             <?php endforeach; ?>
                                         </select>
                                     </div>

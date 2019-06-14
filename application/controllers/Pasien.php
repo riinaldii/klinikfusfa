@@ -11,6 +11,29 @@ class Pasien extends CI_Controller
 
     public function index()
     {
+        $data['title'] = "Dashboard";
+
+        $data['user'] = $this->db->get_where(
+            'pasien',
+            ['email' => $this->session->userdata('email')]
+        )->row_array();
+
+        $email = $this->session->userdata('email');
+
+        $this->load->model('Janjitemu_model', 'jt');
+
+        $data['janjitemu'] = $this->jt->getJanjiTemuPasienNext($email);
+        $data['layanan'] = $this->db->get('list_layanan')->result_array();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('pasien/index', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function profile()
+    {
         $data['title'] = "Profile";
 
         $data['user'] = $this->db->get_where(
@@ -21,7 +44,7 @@ class Pasien extends CI_Controller
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);
-        $this->load->view('pasien/index', $data);
+        $this->load->view('pasien/profile', $data);
         $this->load->view('templates/footer');
     }
 
@@ -184,9 +207,11 @@ class Pasien extends CI_Controller
             ['email' => $this->session->userdata('email')]
         )->row_array();
 
+        $email = $this->session->userdata('email');
+
         $this->load->model('Janjitemu_model', 'jt');
 
-        $data['janjitemu'] = $this->jt->getJanjiTemuPasien();
+        $data['janjitemu'] = $this->jt->getJanjiTemuPasien($email);
         $data['layanan'] = $this->db->get('list_layanan')->result_array();
 
         $this->form_validation->set_rules('tgl_temu', 'Tanggal Temu', 'required');
@@ -201,7 +226,7 @@ class Pasien extends CI_Controller
         } else {
             $data = [
                 'id_pasien' => $this->input->post('id', true),
-                'id_layanan' => $this->input->post('layanan', true),
+                'layanan' => $this->input->post('layanan', true),
                 'tgl_temu' => $this->input->post('tgl_temu', true),
                 'waktu' => $this->input->post('waktu', true),
                 'keluhan' => $this->input->post('keluhan', true),
@@ -245,14 +270,14 @@ class Pasien extends CI_Controller
         } else {
             $id_jt = $this->input->post('id_jt');
             $id_pasien = $this->input->post('id_pasien');
-            $id_layanan = $this->input->post('layanan');
+            $layanan = $this->input->post('layanan');
             $tgl_temu = $this->input->post('tgl_temu');
             $waktu = $this->input->post('waktu');
             $keluhan = $this->input->post('keluhan');
             $status = 'Menunggu Konfirmasi';
 
             $this->db->set('id_pasien', $id_pasien);
-            $this->db->set('id_layanan', $id_layanan);
+            $this->db->set('layanan', $layanan);
             $this->db->set('tgl_temu', $tgl_temu);
             $this->db->set('waktu', $waktu);
             $this->db->set('keluhan', $keluhan);

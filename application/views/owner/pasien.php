@@ -47,18 +47,18 @@
               <tr>
                 <!-- <th scope="row"><?= $i; ?></th> -->
                 <td> <img class="profile-user-img img-responsive img-circle" src="<?= base_url('assets/img/profile/') . $p['image']; ?>" alt="User profile picture"></td>
-                <td><?= $p['name'] ?> </td>
+                <td>
+                  <a href="<?php echo base_url('owner/detailpasien/' . $p['id']) ?>"><?= $p['name'] ?></a></td>
                 <td><?= $p['email'] ?> </td>
                 <td><?= $p['alamat'] ?> </td>
                 <td><?= $p['no_telp'] ?> </td>
                 <td>
-                  <a href="<?php echo base_url('owner/editpasien/' . $p['id']) ?>" class="btn btn-primary"><i class="fa fa-edit"> Edit </i></a><br>
-                  <a href="<?php echo base_url('owner/detailpasien/' . $p['id']) ?>" class="btn btn-default"><i class="fa fa-edit"> Detail </i></a><br>
-                  <a href="<?php echo base_url('owner/buatjanji/' . $p['id']) ?>" class="btn btn-warning"><i class="fa fa-edit"> Buat Janji </i></a><br>
-                  <a href="<?php echo base_url('owner/hapuspasien/' . $p['id']) ?>" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus <?= $p['email'] ?>?');"><i class="fa fa-edit"> Hapus </i></a>
+                  <a href="<?php echo base_url('owner/editpasien/' . $p['id']) ?>" class="btn btn-primary">Edit</a>
+                  <a href="<?= $p['id'] ?>" class="btn btn-warning" data-toggle="modal" data-target="#janjiTemuModal">Buat Janji</a>
+                  <a href="<?php echo base_url('owner/hapuspasien/' . $p['id']) ?>" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus <?= $p['email'] ?>?');">Hapus</a>
                 </td>
               </tr>
-              <?php $i++; ?>a
+              <?php $i++; ?>
             <?php endforeach ?>
           </tbody>
           <tfoot>
@@ -91,12 +91,12 @@
   </div>
 </footer>
 
-<!-- Modal Tambah Terapis-->
+<!-- Modal Tambah Pasien -->
 <div class="modal fade" id="addTerapisModal" tabindex="-1" role="dialog" aria-labelledby="addTerapisModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="addTerapisModalLabel">Tambah Data Terapis</h5>
+        <h5 class="modal-title" id="addTerapisModalLabel">Tambah Data Pasien</h5>
       </div>
       <div class="register-box-body">
         <form class="user" method="post" action="<?= base_url('Owner/addTerapis'); ?>">
@@ -139,6 +139,68 @@
     </div>
   </div>
 </div>
+
+<!-- Modal Buat Janji-->
+<div class="modal fade" id="janjiTemuModal" tabindex="-1" role="dialog" aria-labelledby="janjiTemuModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="janjiTemuModalLabel">Buat Janji Temu</h5>
+      </div>
+      <form action="<?= base_url('pasien/janjitemu'); ?>" method="post">
+        <div class="modal-body">
+          <div class="form-group">
+            <input type="hidden" name="id" id="id" value="<?= $user['id']; ?>">
+          </div>
+          <div class="form-group">
+            <label>Pilih layanan</label>
+            <select name="layanan" id="layanan" class="form-control select width:100%;">
+              <option value="">Pilih Layanan</option>
+              <?php foreach ($layanan as $l) : ?>
+                <option value="<?= $l['nama_layanan']; ?>"><?= $l['nama_layanan'] ?></option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Tanggal temu</label>
+            <div class="input-group date">
+              <div class="input-group-addon">
+                <i class="fa fa-calendar"></i>
+              </div>
+              <input type="text" class="form-control pull-right" name="tgl_temu" id="datepicker">
+            </div>
+            <?= form_error('tgl_temu', '<small class="text-danger ml-3">', '</small>'); ?>
+            <!-- /.input group -->
+          </div>
+          <div class="form-group">
+            <div class="bootstrap-timepicker">
+              <div class="form-group">
+                <label>Waktu temu</label>
+                <div class="input-group">
+                  <div class="input-group-addon">
+                    <i class="fa fa-clock-o"></i>
+                  </div>
+                  <input type="text" name="waktu" id="waktu" class="form-control timepicker">
+                </div>
+                <!-- /.input group -->
+              </div>
+              <!-- /.form group -->
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Keluhan</label>
+            <textarea class="form-control" rows="3" name="keluhan" id="keluhan" placeholder="Masukkan Keluhan"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+          <button type="submit" class="btn btn-primary">Buat Janji</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 
 <!-- Modal Edit Terapis-->
 <div class="modal fade" id="editTerapisModal" tabindex="1" role="dialog" aria-labelledby="editTerapisModalLabel" aria-hidden="true">

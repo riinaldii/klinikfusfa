@@ -27,10 +27,8 @@
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>ID Pasien</th>
                             <th>Layanan</th>
-                            <th>Tanggal Temu</th>
-                            <th>Waktu Temu</th>
+                            <th>Tanggal & Waktu Temu</th>
                             <th>Keluhan</th>
                             <th>Status</th>
                             <th>Aksi</th>
@@ -39,10 +37,8 @@
                     <tbody>
                         <?php foreach ($janjitemu as $jt) : ?>
                             <tr>
-                                <td><?= $jt['id_pasien'] ?></td>
-                                <td><?= $jt['nama_layanan'] ?></td>
-                                <td><?= $jt['tgl_temu'] ?></td>
-                                <td><?= $jt['waktu'] ?></td>
+                                <td><?= $jt['layanan'] ?></td>
+                                <td><?= $jt['tgl_temu'] ?> | <?= $jt['waktu'] ?></td>
                                 <td><?= $jt['keluhan'] ?></td>
                                 <td><?= $jt['status'] ?></td>
                                 <td>
@@ -54,10 +50,8 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th>ID Pasien</th>
                             <th>Layanan</th>
-                            <th>Tanggal Temu</th>
-                            <th>Waktu Temu</th>
+                            <th>Tanggal & Waktu Temu</th>
                             <th>Keluhan</th>
                             <th>Status</th>
                             <th>Aksi</th>
@@ -99,7 +93,7 @@
                         <select name="layanan" id="layanan" class="form-control select width:100%;">
                             <option value="">Pilih Layanan</option>
                             <?php foreach ($layanan as $l) : ?>
-                                <option value="<?= $l['id']; ?>"><?= $l['nama_layanan'] ?></option>
+                                <option value="<?= $l['nama_layanan']; ?>"><?= $l['nama_layanan'] ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>

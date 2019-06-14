@@ -90,7 +90,6 @@
                                         <option>Cerai</option>
                                         <option>Lainnya</option>
                                     </select>
-                                    <!-- <input class="form-control" id="perkawinan" nama="perkawinan" value="<?= $pasien['perkawinan']; ?>" readonly> -->
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -103,7 +102,6 @@
                                         <div class="col-sm-9">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" id="image" name="image">
-                                                <!-- <label class="custom-file-label" for="image">Choose file</label> -->
                                             </div>
                                         </div>
                                     </div>

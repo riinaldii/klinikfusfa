@@ -47,15 +47,16 @@
                             <tr>
                                 <!-- <th scope="row"><?= $i; ?></th> -->
                                 <td> <img class="profile-user-img img-responsive img-circle" src="<?= base_url('assets/img/profile/') . $t['image']; ?>" alt="User profile picture"></td>
-                                <td><?= $t['name'] ?></td>
+                                <td>
+                                    <a href="<?php echo base_url('owner/detailterapis/' . $t['id']) ?>"><?= $t['name'] ?></a>
+                                </td>
                                 <td><?= $t['email'] ?> </td>
                                 <td><?= $t['alamat'] ?> </td>
                                 <td><?= $t['no_telp'] ?> </td>
                                 <td><?= $t['role_id'] ?> </td>
                                 <td>
-                                    <a href="<?php echo base_url('owner/editterapis/' . $t['id']) ?>" class="btn btn-default"><i class="fa fa-edit"> Edit </i></a>
-                                    <a href="<?php echo base_url('owner/detailterapis/' . $t['id']) ?>" class="btn btn-warning"><i class="fa fa-edit"> Detail </i></a>
-                                    <a href="<?php echo base_url('owner/hapusterapis/' . $t['id']) ?>" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus <?= $t['email'] ?>?');"><i class="fa fa-edit"> Hapus </i></a>
+                                    <a href="<?php echo base_url('owner/editterapis/' . $t['id']) ?>" class="btn btn-primary">Edit</a>
+                                    <a href="<?php echo base_url('owner/hapusterapis/' . $t['id']) ?>" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus <?= $t['email'] ?>?');">Hapus</a>
                                 </td>
                             </tr>
                             <?php $i++; ?>

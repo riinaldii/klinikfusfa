@@ -16,16 +16,16 @@
                             <form action="<?= base_url('pasien/editjanji'); ?>" method="post">
                                 <div class="modal-body">
                                     <div class="form-group">
-                                        <input type="text" name="id_jt" id="id_jt" value="<?= $janjitemu['id_jt']; ?>">
+                                        <input type="hidden" name="id_jt" id="id_jt" value="<?= $janjitemu['id_jt']; ?>">
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" name="id_pasien" id="id_pasien" value="<?= $janjitemu['id_pasien']; ?>">
+                                        <input type="hidden" name="id_pasien" id="id_pasien" value="<?= $janjitemu['id_pasien']; ?>">
                                     </div>
                                     <div class="form-group">
                                         <label>Pilih layanan</label>
                                         <select name="layanan" id="layanan" class="form-control select width:100%;">
                                             <?php foreach ($layanan as $l) : ?>
-                                                <option value="<?= $l['id']; ?>"><?= $l['nama_layanan'] ?></option>
+                                                <option value="<?= $l['nama_layanan']; ?>"><?= $l['nama_layanan'] ?></option>
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
