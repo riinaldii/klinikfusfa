@@ -83,6 +83,7 @@
                             <div class="form-group row justify-content-end">
                                 <div class="col-sm-offset-2 col-sm-10">
                                     <button type="submit" class="btn btn-primary">Simpan</button>
+                                    <a href="<?= base_url('owner/terapis'); ?>" class="btn btn-default">Kembali</a>
                                 </div>
                             </div>
                             </form>

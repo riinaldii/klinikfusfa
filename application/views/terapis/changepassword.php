@@ -40,6 +40,7 @@
                                 <div class="form-group">
                                     <div class="col-sm-10">
                                         <button type="submit" class="btn btn-primary">Simpan</button>
+                                        <a href="<?= base_url('terapis/profile'); ?>" class="btn btn-default">Kembali</a>
                                     </div>
                                 </div>
                             </form>

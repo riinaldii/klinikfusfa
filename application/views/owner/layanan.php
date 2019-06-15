@@ -5,21 +5,24 @@
         <h1>
             <?= $title ?>
         </h1>
-        <div class="col-lg-6">
-            <?php if (validation_errors()) : ?>
-                <div class="alert alert-danger" role="alert">
-                    <?= validation_errors(); ?>
-                </div>
-            <?php endif; ?>
+
     </section>
 
     <!-- Main content -->
     <section class="content">
 
         <?= $this->session->flashdata('message'); ?>
+        
+            <?php if (validation_errors()) : ?>
+                <div class="alert alert-danger" role="alert">
+                    <?= validation_errors(); ?>
+                </div>
+            <?php endif; ?>
+        
         <!-- Default box -->
         <div class="box">
             <div class="box-header with-border">
+
                 <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addLayananModal">
                     Tambah data</a>
                 <div class="box-tools pull-right">
@@ -43,8 +46,8 @@
                                 <td><?= $l['nama_layanan'] ?> </td>
                                 <td><?= $l['keterangan'] ?> </td>
                                 <td>
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editLayananModal">Edit</button>
-                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#hapusLayananModal">Hapus</button>
+                                    <a href="<?php echo base_url('owner/editlayanan/' . $l['id']) ?>" class="btn btn-primary">Edit</a>
+                                    <a href="<?php echo base_url('owner/hapuslayanan/' . $l['id']) ?>" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus <?= $l['nama_layanan'] ?>?');">Hapus</a>
                                 </td>
                             </tr>
                             <?php $i++; ?>

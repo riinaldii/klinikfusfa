@@ -42,8 +42,8 @@
                                 <td><?= $jt['keluhan'] ?></td>
                                 <td><?= $jt['status'] ?></td>
                                 <td>
-                                    <a href="<?php echo base_url('pasien/editjanji/' . $jt['id_jt']) ?>" class="btn btn-primary"><i class="fa fa-edit"> Edit </i></a>
-                                    <a href="<?php echo base_url('pasien/hapusjanji/' . $jt['id_jt']) ?>" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus janji temu ?');"><i class="fa fa-edit"> Hapus </i></a>
+                                    <a href="<?php echo base_url('pasien/editjanji/' . $jt['id_jt']) ?>" class="btn btn-primary">Edit</a>
+                                    <a href="<?php echo base_url('pasien/hapusjanji/' . $jt['id_jt']) ?>" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus janji temu ?');">Hapus</a>
                                 </td>
                             </tr>
                         <?php endforeach ?>

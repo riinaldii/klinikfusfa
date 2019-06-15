@@ -30,10 +30,9 @@
               <th>Pasien</th>
               <th>Layanan</th>
               <th>Tanggal & Waktu Temu</th>
-              <th>Terapis</th>
-              <th>Keluhan</th>
               <th>Status</th>
               <th>Hasil Diagnosis</th>
+              <th>Laporan Diagnosis</th>
               <th>Aksi</th>
             </tr>
           </thead>
@@ -45,15 +44,15 @@
                 </td>
                 <td><?= $jt['layanan'] ?></td>
                 <td><?= $jt['tgl_temu'] ?> | <?= $jt['waktu'] ?></td>
-                <td>
-                  <a href="<?php echo base_url('terapis/detailterapis/' . $jt['id_terapis']) ?>"><?= $jt['trp'] ?></a>
-                </td>
-                <td><?= $jt['keluhan'] ?></td>
                 <td><?= $jt['status'] ?></td>
                 <td><?= $jt['penyakit'] ?></td>
                 <td>
+                  <a href="<?php echo base_url('terapis/downloaddiagnosis/' . $jt['id_jt']) ?>"><?= $jt['laporan_diagnosis'] ?></a>
+                </td>
+                <td>
                   <!-- <a href="<?php echo base_url('terapis/ubahstatus/' . $jt['id_jt']) ?>" class="btn btn-primary">Ubah Status</a> -->
                   <a href="<?php echo base_url('terapis/updatejanji/' . $jt['id_jt']) ?>" class="btn btn-success">Update Janji</a>
+                  <a href="<?php echo base_url('terapis/detailjanji/' . $jt['id_jt']) ?>" class="btn btn-primary">Detail Janji</a>
                 </td>
               </tr>
             <?php endforeach ?>
@@ -63,10 +62,9 @@
               <th>Pasien</th>
               <th>Layanan</th>
               <th>Tanggal & Temu</th>
-              <th>Terapis</th>
-              <th>Keluhan</th>
               <th>Status</th>
               <th>Hasil Diagnosis</th>
+              <th>Laporan Diagnosis</th>
               <th>Aksi</th>
             </tr>
           </tfoot>

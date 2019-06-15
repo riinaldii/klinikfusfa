@@ -12,7 +12,7 @@
                     </ul>
                     <div class="tab-content">
                         <div class="active tab-pane" id="profile">
-                            <?= form_open_multipart('terapis/updatejanji'); ?>
+                            <?= form_open_multipart('owner/updatejanji'); ?>
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label>Tanggal temu</label>
@@ -111,7 +111,7 @@
                             </div>
                             <div class="col-sm-10">
                                 <button type="submit" class="btn btn-primary">Simpan</button>
-                                <a href="<?= base_url('terapis/index'); ?>" class="btn btn-default">Kembali</a>
+                                <a href="<?= base_url('owner/janjitemu'); ?>" class="btn btn-default">Kembali</a>
                             </div>
                             </form>
                             <div class="form-group row justify-content-end">

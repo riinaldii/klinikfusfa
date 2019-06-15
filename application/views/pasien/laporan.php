@@ -31,31 +31,27 @@
                             <th>Layanan</th>
                             <th>Tanggal & Waktu Temu</th>
                             <th>Terapis</th>
-                            <th>Keluhan</th>
                             <th>Status</th>
                             <th>Hasil Diagnosis</th>
-                            <th>Keterangan</th>
-                            <!-- <th>Aksi</th> -->
+                            <th>Laporan Diagnosis</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($janjitemu as $jt) : ?>
                             <tr>
                                 <td>
-                                    <a href="<?php echo base_url('terapis/detailpasien/' . $jt['id_pasien']) ?>"><?= $jt['psn'] ?></a>
+                                    <?= $jt['psn'] ?>
                                 </td>
                                 <td><?= $jt['layanan'] ?></td>
                                 <td><?= $jt['tgl_temu'] ?> | <?= $jt['waktu'] ?></td>
                                 <td>
-                                    <a href="<?php echo base_url('terapis/detailterapis/' . $jt['id_terapis']) ?>"><?= $jt['trp'] ?></a>
+                                    <?= $jt['trp'] ?>
                                 </td>
-                                <td><?= $jt['keluhan'] ?></td>
                                 <td><?= $jt['status'] ?></td>
                                 <td><?= $jt['penyakit'] ?></td>
-                                <td><?= $jt['catatan'] ?></td>
-                                <!-- <td>
-                                    <a href="<?php echo base_url('terapis/detailjanji/' . $jt['id_jt']) ?>" class="btn btn-success">Detail</a>
-                                </td> -->
+                                <td>
+                                    <a href="<?php echo base_url('terapis/download/' . $jt['id_jt']) ?>"><?= $jt['laporan_diagnosis'] ?></a>
+                                </td>
                             </tr>
                         <?php endforeach ?>
                     </tbody>
@@ -63,13 +59,11 @@
                         <tr>
                             <th>Pasien</th>
                             <th>Layanan</th>
-                            <th>Tanggal & Temu</th>
+                            <th>Tanggal & Waktu Temu</th>
                             <th>Terapis</th>
-                            <th>Keluhan</th>
                             <th>Status</th>
                             <th>Hasil Diagnosis</th>
-                            <th>Keterangan</th>
-                            <!-- <th>Aksi</th> -->
+                            <th>Laporan Diagnosis</th>
                         </tr>
                     </tfoot>
                 </table>

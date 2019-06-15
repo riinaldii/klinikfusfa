@@ -13,11 +13,23 @@ class Janjitemu_model extends CI_Model
         return $this->db->query($query)->row_array();
     }
 
+
     public function getJanjiTemubyId($id)
     {
         $query = "SELECT `janji_temu`.*, `terapis`.`name`'trp', `pasien`.`name`'psn'
                     FROM `janji_temu` 
                     JOIN `terapis` ON `janji_temu`.`id_terapis` = `terapis`.`id`
+                    JOIN `pasien` ON `janji_temu`.`id_pasien` = `pasien`.`id`
+                    WHERE `janji_temu`.`id_jt` = '$id'
+                ";
+
+        return $this->db->query($query)->row_array();
+    }
+
+    public function getJanjiTemuOwnerbyId($id)
+    {
+        $query = "SELECT `janji_temu`.*, `pasien`.`name`'psn'
+                    FROM `janji_temu` 
                     JOIN `pasien` ON `janji_temu`.`id_pasien` = `pasien`.`id`
                     WHERE `janji_temu`.`id_jt` = '$id'
                 ";
@@ -64,7 +76,7 @@ class Janjitemu_model extends CI_Model
                     FROM `janji_temu` 
                     JOIN `pasien` ON `janji_temu`.`id_pasien` = `pasien`.`id`
                     JOIN `terapis` ON `janji_temu`.`id_terapis` = `terapis`.`id`
-                    WHERE `pasien`.`email` = '$email'
+                    WHERE `pasien`.`email` = '$email' AND `janji_temu`.`status` != 'Selesai'
                 ";
         return $this->db->query($query)->result_array();
     }
@@ -91,13 +103,24 @@ class Janjitemu_model extends CI_Model
         return $this->db->query($query)->result_array();
     }
 
+    public function getJanjiTemuSelesaiPasien($email)
+    {
+        $query = "SELECT `janji_temu`.*, `pasien`.`name`'psn', `pasien`.`email`, `terapis`.`name`'trp', `terapis`.`email`
+                    FROM `janji_temu` 
+                    JOIN `pasien` ON `janji_temu`.`id_pasien` = `pasien`.`id`
+                    JOIN `terapis` ON `janji_temu`.`id_terapis` = `terapis`.`id`
+                    WHERE `pasien`.`email` = '$email' AND `janji_temu`.`status` = 'Selesai'
+                ";
+        return $this->db->query($query)->result_array();
+    }
+
     public function getJanjiTemuSelesaiAll()
     {
         $query = "SELECT `janji_temu`.*, `pasien`.`name`'psn', `terapis`.`name`'trp', `terapis`.`email`
                     FROM `janji_temu` 
                     JOIN `pasien` ON `janji_temu`.`id_pasien` = `pasien`.`id`
                     JOIN `terapis` ON `janji_temu`.`id_terapis` = `terapis`.`id`
-                    WHERE `janji_temu`.`status` = 'Selesai'
+                    WHERE `janji_temu`.`status` = 'Selesai' OR `janji_temu`.`status` = 'Dibatalkan'
                 ";
         return $this->db->query($query)->result_array();
     }

@@ -80,6 +80,12 @@
                                         <input class="form-control" id="usia" nama="usia" value="<?= $terapis['usia']; ?>" readonly>
                                     </div>
                                 </div>
+
+                                <div class="form-group row justify-content-end">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <a href="<?= base_url('owner/terapis'); ?>" class="btn btn-default">Kembali</a>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                         <!-- /.tab-pane -->

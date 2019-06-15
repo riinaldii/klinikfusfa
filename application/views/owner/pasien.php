@@ -54,7 +54,7 @@
                 <td><?= $p['no_telp'] ?> </td>
                 <td>
                   <a href="<?php echo base_url('owner/editpasien/' . $p['id']) ?>" class="btn btn-primary">Edit</a>
-                  <a href="<?= $p['id'] ?>" class="btn btn-warning" data-toggle="modal" data-target="#janjiTemuModal">Buat Janji</a>
+                  <a href="<?php echo base_url('owner/buatjanji/' . $p['id']) ?>" class="btn btn-warning">Buat Janji</a>
                   <a href="<?php echo base_url('owner/hapuspasien/' . $p['id']) ?>" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus <?= $p['email'] ?>?');">Hapus</a>
                 </td>
               </tr>

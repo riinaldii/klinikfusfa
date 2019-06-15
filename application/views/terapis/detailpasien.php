@@ -99,11 +99,11 @@
                                     </div>
                                 </div>
 
-                                <!-- <div class="form-group">
-                  <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-danger">Submit</button>
-                  </div>
-                </div> -->
+                                <div class="form-group row justify-content-end">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <a href="<?= base_url('terapis/index'); ?>" class="btn btn-default">Kembali</a>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                         <!-- /.tab-pane -->

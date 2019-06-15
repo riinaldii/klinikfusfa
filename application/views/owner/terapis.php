@@ -37,7 +37,6 @@
                             <th scope="col">Email</th>
                             <th scope="col">Alamat</th>
                             <th scope="col">No. Telp</th>
-                            <th scope="col">Role ID</th>
                             <th scope="col">Aksi</th>
                         </tr>
                     </thead>
@@ -53,7 +52,6 @@
                                 <td><?= $t['email'] ?> </td>
                                 <td><?= $t['alamat'] ?> </td>
                                 <td><?= $t['no_telp'] ?> </td>
-                                <td><?= $t['role_id'] ?> </td>
                                 <td>
                                     <a href="<?php echo base_url('owner/editterapis/' . $t['id']) ?>" class="btn btn-primary">Edit</a>
                                     <a href="<?php echo base_url('owner/hapusterapis/' . $t['id']) ?>" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus <?= $t['email'] ?>?');">Hapus</a>
@@ -69,7 +67,6 @@
                             <th scope="col">Email</th>
                             <th scope="col">Alamat</th>
                             <th scope="col">No. Telp</th>
-                            <th scope="col">Role ID</th>
                             <th scope="col">Aksi</th>
                         </tr>
                     </tfoot>

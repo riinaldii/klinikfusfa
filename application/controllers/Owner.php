@@ -43,7 +43,7 @@ class Owner extends CI_Controller
 
     public function konfirmasijanji($id_jt = null)
     {
-        $data['title'] = "Konfirmasi Janji Temu";
+        $data['title'] = "Update Janji Temu";
         $data['user'] = $this->db->get_where(
             'user',
             ['email' => $this->session->userdata('email')]
@@ -51,8 +51,9 @@ class Owner extends CI_Controller
 
         $this->load->model('Janjitemu_model', 'jt');
 
-        $data['janjitemu'] = $this->jt->getJanjiTemubyId($id_jt);
+        $data['janjitemu'] = $this->jt->getJanjiTemuOwnerbyId($id_jt);
 
+        $data['penyakit'] = $this->db->get('list_penyakit')->result_array();
         $data['layanan'] = $this->db->get('list_layanan')->result_array();
         $data['terapis'] = $this->db->get('terapis')->result_array();
 
@@ -96,6 +97,108 @@ class Owner extends CI_Controller
             );
             redirect('owner/index');
         }
+    }
+
+    public function updatejanji($id_jt = null)
+    {
+        $data['title'] = "Update Janji Temu";
+        $data['user'] = $this->db->get_where(
+            'user',
+            ['email' => $this->session->userdata('email')]
+        )->row_array();
+
+        $this->load->model('Janjitemu_model', 'jt');
+
+        $data['janjitemu'] = $this->jt->getJanjiTemubyId($id_jt);
+
+        $data['penyakit'] = $this->db->get('list_penyakit')->result_array();
+        $data['layanan'] = $this->db->get('list_layanan')->result_array();
+        $data['terapis'] = $this->db->get('terapis')->result_array();
+
+        $this->form_validation->set_rules('tgl_temu', 'Tanggal Temu', 'required');
+        $this->form_validation->set_rules('waktu', 'Waktu Temu', 'required');
+        $this->form_validation->set_rules('status', 'Status', 'required');
+        $this->form_validation->set_rules('penyakit', 'Hasil Diagnosa', 'required');
+
+        if ($this->form_validation->run() == false) {
+
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('owner/updatejanji', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $id_jt = $this->input->post('id_jt');
+            $id_pasien = $this->input->post('id_pasien');
+            $id_terapis = $this->input->post('id_terapis');
+            $layanan = $this->input->post('layanan');
+            $tgl_temu = $this->input->post('tgl_temu');
+            $waktu = $this->input->post('waktu');
+            $keluhan = $this->input->post('keluhan');
+            $status = $this->input->post('status');
+            $penyakit = $this->input->post('penyakit');
+            $catatan = $this->input->post('catatan');
+
+            $upload_image = $_FILES['laporan_diagnosis']['name'];
+
+            if ($upload_image) {
+                $config['allowed_types'] = 'doc|docx|pdf';
+                $config['max_size'] = '10240';
+                $config['upload_path'] = './assets/laporan/';
+
+                $this->load->library('upload', $config);
+
+                if ($this->upload->do_upload('laporan_diagnosis')) {
+
+                    $new_file = $this->upload->data('file_name');
+                    $this->db->set('laporan_diagnosis', $new_file);
+                    $this->db->where('id_jt', $id_jt);
+                    $this->db->update('janji_temu');
+                } else {
+                    echo $this->upload->display_errors();
+                }
+            }
+
+            $this->db->set('id_pasien', $id_pasien);
+            $this->db->set('layanan', $layanan);
+            $this->db->set('id_terapis', $id_terapis);
+            $this->db->set('tgl_temu', $tgl_temu);
+            $this->db->set('waktu', $waktu);
+            $this->db->set('keluhan', $keluhan);
+            $this->db->set('status', $status);
+            $this->db->set('penyakit', $penyakit);
+            $this->db->set('catatan', $catatan);
+
+            $this->db->where('id_jt', $id_jt);
+            $this->db->update('janji_temu');
+
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-success" role = "alert">
+                    Janji temu berhasil diupdate! 
+                </div>'
+            );
+            redirect('owner/janjitemu');
+        }
+    }
+
+    public function detailjanji($id_jt = null)
+    {
+        $data['title'] = "Detail Janji Temu";
+        $data['user'] = $this->db->get_where(
+            'user',
+            ['email' => $this->session->userdata('email')]
+        )->row_array();
+
+        $this->load->model('Janjitemu_model', 'jt');
+
+        $data['janjitemu'] = $this->jt->getJanjiTemubyId($id_jt);
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('owner/detailjanji', $data);
+        $this->load->view('templates/footer');
     }
 
     public function janjitemu()
@@ -318,6 +421,54 @@ class Owner extends CI_Controller
         $this->load->view('templates/footer');
     }
 
+    public function buatjanji($id = null)
+    {
+        $data['title'] = "Buat Janji Temu";
+
+        $data['user'] = $this->db->get_where(
+            'terapis',
+            ['email' => $this->session->userdata('email')]
+        )->row_array();
+
+        $data['pasien'] = $this->db->get_where(
+            'pasien',
+            ['id' => $id]
+        )->row_array();
+
+        $data['layanan'] = $this->db->get('list_layanan')->result_array();
+        $data['terapis'] = $this->db->get('terapis')->result_array();
+
+        $this->form_validation->set_rules('tgl_temu', 'Tanggal Temu', 'required');
+        $this->form_validation->set_rules('waktu', 'Waktu Temu', 'required');
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('owner/buatjanji', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $data = [
+                'id_pasien' => $this->input->post('id_pasien', true),
+                'id_terapis' => $this->input->post('id_terapis', true),
+                'layanan' => $this->input->post('layanan', true),
+                'tgl_temu' => $this->input->post('tgl_temu', true),
+                'waktu' => $this->input->post('waktu', true),
+                'keluhan' => $this->input->post('keluhan', true),
+                'status' => 'Dikonfirmasi'
+            ];
+
+            $this->db->insert('janji_temu', $data);
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-success" role = "alert">  
+            Janji temu berhasil dibuat! 
+        </div>'
+            );
+            redirect('owner/pasien');
+        }
+    }
+
     public function hapuspasien($id = null)
     {
         if ($id) {
@@ -332,7 +483,7 @@ class Owner extends CI_Controller
         } else {
             $this->session->set_flashdata(
                 'message',
-                '<div class="alert alert-success" role = "alert">
+                '<div class="alert alert-danger" role = "alert">
                     Akun gagal dihapus! 
                 </div>'
             );
@@ -592,33 +743,68 @@ class Owner extends CI_Controller
         }
     }
 
-    public function tambah_layanan()
+    public function editlayanan($id = null)
     {
-        $data = array(
-            'nama_layanan' => $this->input->post('nama_layanan'),
-            'keterangan' => $this->input->post('keterangan')
-        );
-        $this->load->model('model_admin');
-        $this->model_admin->tambah_layanan($data);
-        $this->session->set_flashdata('notif', '<div class="alert alert-success" role="alert"> Data Berhasil ditambahkan <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
-        redirect('owner/layanan');
+        $data['title'] = "Edit Data Terapis";
+        $data['user'] = $this->db->get_where(
+            'user',
+            ['email' => $this->session->userdata('email')]
+        )->row_array();
+
+        $data['layanan'] = $this->db->get_where(
+            'list_layanan',
+            ['id' => $id]
+        )->row_array();
+
+        $this->form_validation->set_rules('nama_layanan', 'Full Name', 'required|trim');
+        $this->form_validation->set_rules('keterangan', 'Full Name', 'required|trim');
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('owner/editlayanan', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $id = $this->input->post('id');
+            $nama_layanan = $this->input->post('nama_layanan');
+            $keterangan = $this->input->post('keterangan');
+
+            $this->db->set('nama_layanan', $nama_layanan);
+            $this->db->set('keterangan', $keterangan);
+
+            $this->db->where('id', $id);
+            $this->db->update('list_layanan');
+
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-success" role = "alert">
+                    Layanan ' . $nama_layanan . '  berhasil diperbarui! 
+                </div>'
+            );
+            redirect('owner/layanan');
+        }
     }
 
-    public function tambah_penyakit()
+    public function hapuslayanan($id = null)
     {
-        $data = array(
-            'nama_penyakit' => $this->input->post('nama_layanan'),
-            'keterangan' => $this->input->post('keterangan')
-        );
-        $this->load->model('model_admin');
-        $this->model_admin->tambah_penyakit($data);
-        $this->session->set_flashdata('notif', '<div class="alert alert-success" role="alert"> Data Berhasil ditambahkan <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
-        redirect('owner/penyakit');
-    }
+        if ($id) {
+            $this->db->delete('list_layanan', ['id' => $id]);
 
-    function hapus_layanan($id)
-    {
-        $this->model_admin->hapus_layanan($id);
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-success" role = "alert">
+                    Layanan berhasil dihapus! 
+                </div>'
+            );
+        } else {
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-danger" role = "alert">
+                    Layanan gagal dihapus! 
+                </div>'
+            );
+        }
         redirect('owner/layanan');
     }
 
@@ -660,12 +846,70 @@ class Owner extends CI_Controller
         }
     }
 
-    public function hapus_penyakit($id)
+    public function editpenyakit($id = null)
     {
-        $this->model_admin->hapus_penyakit($id);
-        redirect('owner/penyakit');
+        $data['title'] = "Edit Data Penyakit";
+        $data['user'] = $this->db->get_where(
+            'user',
+            ['email' => $this->session->userdata('email')]
+        )->row_array();
+
+        $data['penyakit'] = $this->db->get_where(
+            'list_penyakit',
+            ['id' => $id]
+        )->row_array();
+
+        $this->form_validation->set_rules('nama_penyakit', 'Full Name', 'required|trim');
+        $this->form_validation->set_rules('keterangan', 'Full Name', 'required|trim');
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('owner/editpenyakit', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $id = $this->input->post('id');
+            $nama_penyakit = $this->input->post('nama_penyakit');
+            $keterangan = $this->input->post('keterangan');
+
+            $this->db->set('nama_penyakit', $nama_penyakit);
+            $this->db->set('keterangan', $keterangan);
+
+            $this->db->where('id', $id);
+            $this->db->update('list_penyakit');
+
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-success" role = "alert">
+                ' . $nama_penyakit . '  berhasil diperbarui! 
+                </div>'
+            );
+            redirect('owner/penyakit');
+        }
     }
 
+    public function hapuspenyakit($id = null)
+    {
+        if ($id) {
+            $this->db->delete('list_penyakit', ['id' => $id]);
+
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-success" role = "alert">
+                    Data berhasil dihapus! 
+                </div>'
+            );
+        } else {
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-danger" role = "alert">
+                    Data gagal dihapus! 
+                </div>'
+            );
+        }
+        redirect('owner/penyakit');
+    }
 
     public function grafik()
     {

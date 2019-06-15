@@ -31,6 +31,25 @@ class Terapis extends CI_Controller
         $this->load->view('templates/footer');
     }
 
+    public function detailjanji($id_jt = null)
+    {
+        $data['title'] = "Detail Janji Temu";
+        $data['user'] = $this->db->get_where(
+            'user',
+            ['email' => $this->session->userdata('email')]
+        )->row_array();
+
+        $this->load->model('Janjitemu_model', 'jt');
+
+        $data['janjitemu'] = $this->jt->getJanjiTemubyId($id_jt);
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('terapis/detailjanji', $data);
+        $this->load->view('templates/footer');
+    }
+
     public function updatejanji($id_jt = null)
     {
         $data['title'] = "Update Janji Temu";
@@ -69,6 +88,7 @@ class Terapis extends CI_Controller
             $keluhan = $this->input->post('keluhan');
             $status = $this->input->post('status');
             $penyakit = $this->input->post('penyakit');
+            $catatan = $this->input->post('catatan');
 
             $upload_image = $_FILES['laporan_diagnosis']['name'];
 
@@ -98,6 +118,7 @@ class Terapis extends CI_Controller
             $this->db->set('keluhan', $keluhan);
             $this->db->set('status', $status);
             $this->db->set('penyakit', $penyakit);
+            $this->db->set('catatan', $catatan);
 
             $this->db->where('id_jt', $id_jt);
             $this->db->update('janji_temu');

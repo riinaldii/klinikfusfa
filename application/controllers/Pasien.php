@@ -32,6 +32,40 @@ class Pasien extends CI_Controller
         $this->load->view('templates/footer');
     }
 
+    public function download($id_jt = null)
+    {
+        $this->load->helper('download');
+
+        $data['janjitemu'] = $this->db->get_where(
+            'janji_temu',
+            ['id_jt' => $id_jt]
+        )->row_array();
+
+        $name = 'mytext.txt';
+        force_download($name, $data);
+        force_download('/path/to/photo.jpg', NULL);
+        redirect('pasien/janjitemu');
+    }
+
+    public function detailjanji($id_jt = null)
+    {
+        $data['title'] = "Detail Janji Temu";
+        $data['user'] = $this->db->get_where(
+            'user',
+            ['email' => $this->session->userdata('email')]
+        )->row_array();
+
+        $this->load->model('Janjitemu_model', 'jt');
+
+        $data['janjitemu'] = $this->jt->getJanjiTemubyId($id_jt);
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('pasien/detailjanji', $data);
+        $this->load->view('templates/footer');
+    }
+
     public function profile()
     {
         $data['title'] = "Profile";
@@ -363,18 +397,24 @@ class Pasien extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    public function grafik()
+    public function laporan()
     {
-        $data['title'] = "Grafik";
+        $data['title'] = "Riwayat Janji Temu";
         $data['user'] = $this->db->get_where(
             'user',
             ['email' => $this->session->userdata('email')]
         )->row_array();
 
+        $email = $this->session->userdata('email');
+
+        $this->load->model('Janjitemu_model', 'jt');
+
+        $data['janjitemu'] = $this->jt->getJanjiTemuSelesaiPasien($email);
+
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);
-        $this->load->view('owner/grafik', $data);
+        $this->load->view('pasien/laporan', $data);
         $this->load->view('templates/footer');
     }
 }

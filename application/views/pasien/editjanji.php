@@ -24,6 +24,7 @@
                                     <div class="form-group">
                                         <label>Pilih layanan</label>
                                         <select name="layanan" id="layanan" class="form-control select width:100%;">
+                                            <option value="<?= $janjitemu['layanan']; ?>"><?= $janjitemu['layanan']; ?></option>
                                             <?php foreach ($layanan as $l) : ?>
                                                 <option value="<?= $l['nama_layanan']; ?>"><?= $l['nama_layanan'] ?></option>
                                             <?php endforeach; ?>
@@ -62,6 +63,7 @@
                                 </div>
                                 <div class="col-sm-10">
                                     <button type="submit" class="btn btn-primary">Simpan</button>
+                                    <a href="<?= base_url('pasien/janjitemu'); ?>" class="btn btn-default">Kembali</a>
                                 </div>
                             </form>
                             <div class="form-group row justify-content-end">

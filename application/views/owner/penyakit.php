@@ -5,17 +5,17 @@
         <h1>
             <?= $title ?>
         </h1>
-        <div class="col-lg-6">
-            <?php if (validation_errors()) : ?>
-                <div class="alert alert-danger" role="alert">
-                    <?= validation_errors(); ?>
-                </div>
-            <?php endif; ?>
+
+
     </section>
 
     <!-- Main content -->
     <section class="content">
-
+        <?php if (validation_errors()) : ?>
+            <div class="alert alert-danger" role="alert">
+                <?= validation_errors(); ?>
+            </div>
+        <?php endif; ?>
         <?= $this->session->flashdata('message'); ?>
         <!-- Default box -->
         <div class="box">
@@ -43,8 +43,8 @@
                                 <td><?= $p['nama_penyakit'] ?> </td>
                                 <td><?= $p['keterangan'] ?> </td>
                                 <td>
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editLayananModal">Edit</button>
-                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#hapusLayananModal">Hapus</button>
+                                    <a href="<?php echo base_url('owner/editpenyakit/' . $p['id']) ?>" class="btn btn-primary">Edit</a>
+                                    <a href="<?php echo base_url('owner/hapuspenyakit/' . $p['id']) ?>" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus <?= $p['nama_penyakit'] ?>?');">Hapus</a>
                                 </td>
                             </tr>
                             <?php $i++; ?>
