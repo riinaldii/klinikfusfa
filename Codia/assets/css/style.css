@@ -1,0 +1,355 @@
+/* Codia template - created by Setyo WS.
+This template is property of Pinandu Academy. */
+
+body {
+	font-family: 'Source Sans Pro', sans-serif;
+}
+
+.btn-codia {
+	color: white;
+	background-color: #c310c9;
+	border-radius: 20px;
+}
+
+.btn-codia:hover {
+	background-color: #c310c9;
+}
+
+/* navbar */
+.navbar {
+	min-height: 80px;
+	border-top: 5px solid #c310c9;
+}
+
+.navbar-light .navbar-brand {
+	font-family: 'Righteous', cursive;
+	font-size: 2.5rem;
+	color: #c310c9;
+}
+
+.navbar-light .navbar-brand:hover {
+	color: #c310c9;
+}
+
+.navbar .nav-item .btn {
+	margin-left: 10px;
+	margin-top: 3px;
+	padding: 5px 30px 5px 30px;
+}
+
+.btn-login {
+	background-color: transparent;
+	border: 1px solid #ddd;
+	border-radius: 20px;
+}
+
+.btn-login:hover {
+	background-color: white;
+	border: 1px solid #555;
+}
+
+.btn-load {
+	padding: 5px 30px 5px 30px;
+	margin-bottom: 50px;
+}
+
+/* end of navbar */
+
+/* header */
+.jumbotron {
+	min-height: 600px;
+	background-image: url(../img/img_fusfa_ls.jpg);
+	background-size: cover;
+	position: relative;
+	z-index: 1;
+	padding-top: 200px;
+}
+
+.jumbotron::after {
+	content: '';
+	display: block;
+	width: 100%;
+	height: 100%;
+	background-image: linear-gradient(to right, #ca11ca, #000);
+	opacity: 0.7;
+	position: absolute;
+	bottom: 0;
+}
+
+.jumbotron .display-4,
+.lead {
+	position: relative;
+	z-index: 1;
+	text-align: center;
+	color: white;
+}
+
+.jumbotron .display-4 {
+	font-weight: bold;
+}
+
+.input-search {
+	position: relative;
+	z-index: 1;
+	width: 70%;
+	margin: auto;
+	margin-top: 40px;
+}
+
+.input-search .form-control {
+	border-radius: 40px;
+	width: 100%;
+	height: 45px;
+}
+
+.input-search ::placeholder {
+	font-style: italic;
+	font-size: small;
+}
+
+.input-search input {
+	font-size: small;
+	text-align: center;
+}
+
+.btn-src {
+	background-color: transparent;
+	border: 1px solid white;
+	border-radius: 40px;
+	color: white;
+	width: 100%;
+	height: 45px;
+}
+
+.btn-src:hover {
+	background-color: white;
+	color: #555;
+}
+
+/* end of header */
+
+#service h1,
+#about h1,
+#price h1,
+#testi h1 {
+	color: #555;
+	margin-bottom: 20px;
+}
+
+/* why codia */
+#service {
+	text-align: center;
+	min-height: 400px;
+	padding-top: 20px;
+}
+
+.codia-list {
+	background-color: #ee43ee;
+	color: white;
+	border-radius: 5px;
+	padding: 30px;
+	margin-bottom: 60px;
+	cursor: pointer;
+}
+
+#service img {
+	margin: 20px 0 30px;
+}
+
+.list-title {
+	color: #fff;
+	margin-bottom: 20px;
+	font-weight: bold;
+}
+
+/* end of why codia */
+
+/* feature */
+
+#about {
+	background-color: #f7f7f7;
+	text-align: center;
+	min-height: 400px;
+	padding-top: 30px;
+}
+
+
+.about-desc {
+	text-align: left;
+}
+
+#about .list-group {
+	text-align: left;
+}
+
+.btn-read {
+	padding: 5px 30px 5px 30px;
+}
+
+/* end of feature */
+
+/* lastest course */
+#price {
+	background-color: #f7f7f7;
+	text-align: center;
+	min-height: 400px;
+	padding-top: 20px;
+}
+
+#price h1 {
+	margin-top: 1rem;
+}
+
+#price h6 {
+	text-align: left;
+}
+
+#price small {
+	text-align: right;
+}
+
+.course-list {
+	background-color: rgba(255, 255, 255, 0.685);
+	text-align: left;
+	border: 1px solid #eee;
+	border-radius: 5px;
+	margin-bottom: 60px;
+	cursor: pointer;
+}
+
+
+.course-list:hover {
+	background-color: rgba(255, 255, 255, 0.685);
+	border: 1px solid #ddd;
+}
+
+.course-list img {
+	width: 100%;
+	height: 200px;
+	object-fit: cover;
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+}
+
+.course-list h5 {
+	margin: 15px;
+}
+
+.course-list p {
+	margin: 15px;
+}
+
+.btn-get {
+	margin: 15px;
+	padding: 5px 30px 5px 30px;
+}
+
+/* end of lastest course */
+
+/* testimonials */
+#testi {
+	text-align: center;
+	min-height: 450px;
+	padding-top: 20px;
+	background-image: url(../img/coding.jpg);
+	background-size: cover;
+	position: relative;
+	z-index: 1;
+}
+
+#testi::after {
+	content: '';
+	display: block;
+	width: 100%;
+	height: 100%;
+	background-image: linear-gradient(to left, #14a397, #000);
+	opacity: 0.7;
+	position: absolute;
+	bottom: 0;
+}
+
+#testi h1 {
+	margin-top: 1rem;
+}
+
+#testi h1,
+#testi p {
+	position: relative;
+	z-index: 1;
+	color: white;
+}
+
+#testi p {
+	text-align: left;
+	margin-top: 40px;
+	font-style: italic;
+	font-size: larger;
+}
+
+#testi img {
+	width: 200px;
+	height: 200px;
+	object-fit: cover;
+	border-radius: 100px;
+	position: relative;
+	z-index: 1;
+}
+
+/* end of testimonials */
+
+/* footer */
+#footer {
+	height: 60px;
+	background-color: #1d1b1b;
+	border-top: 5px solid #c310c9;
+}
+
+#footer h6 {
+	color: #b9b9b9;
+	text-align: center;
+	font-size: 12px;
+	padding-top: 20px;
+}
+
+/* end of footer */
+
+@media (max-width: 575.98px) {
+	.navbar {
+		text-align: center;
+		/* padding-bottom: 20px; */
+	}
+
+	.navbar .nav-item .btn {
+		margin-left: 0px;
+		margin-top: 10px;
+	}
+
+	.feature-desc {
+		text-align: center;
+	}
+
+	#feature .list-group {
+		margin-top: 30px;
+	}
+
+	#testi {
+		padding-bottom: 30px;
+	}
+
+	#testi p {
+		text-align: center;
+	}
+
+}
+
+@media (max-width: 767.98px) {
+	.btn-src {
+		margin-top: 20px;
+	}
+}
+
+@media (min-width: 576px) {
+	.btn-read {
+		float: right;
+	}
+}

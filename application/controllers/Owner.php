@@ -6,7 +6,6 @@ class Owner extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        // $this->load->model('model_owner');
         $this->load->helper('url', 'html');
         is_logged_in();
     }
@@ -128,6 +127,19 @@ class Owner extends CI_Controller
             $this->load->view('owner/updatejanji', $data);
             $this->load->view('templates/footer');
         } else {
+            $data = [
+                'id_jt' = $this->input->post('id_jt'),
+                'id_pasien' = $this->input->post('id_pasien'),
+                'id_terapis' = $this->input->post('id_terapis'),
+                'layanan' = $this->input->post('layanan'),
+                'tgl_temu' = $this->input->post('tgl_temu'),,
+                'waktu' = $this->input->post('waktu'),
+                'keluhan' = $this->input->post('keluhan'),
+                'status' = $this->input->post('status'),
+                'penyakit' = $this->input->post('penyakit'),
+                'catatan' = $this->input->post('catatan')
+            ];
+
             $id_jt = $this->input->post('id_jt');
             $id_pasien = $this->input->post('id_pasien');
             $id_terapis = $this->input->post('id_terapis');
@@ -138,6 +150,8 @@ class Owner extends CI_Controller
             $status = $this->input->post('status');
             $penyakit = $this->input->post('penyakit');
             $catatan = $this->input->post('catatan');
+
+            $this->db->insert('log_janji_temu', $data);
 
             $upload_image = $_FILES['laporan_diagnosis']['name'];
 
