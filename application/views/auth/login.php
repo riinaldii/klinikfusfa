@@ -6,11 +6,11 @@
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body align-rigth">
-      <!-- <div class="row">
-        <img class="img kf" src="<?= base_url('assets/img/logo_kf.png'); ?>" alt="logo">
+      <div class="row">
+        <img class="img align-center" alt="" width="340px;" src="<?= base_url('assets/img/logo_kf.png'); ?>" alt="logo">
       </div>
 
-      <style type="text/css">
+      <!-- <style type="text/css">
         .kf {
           transform: rotate(90deg);
         }
@@ -43,10 +43,25 @@
       <div class="row m-t-20 m-b-20">
         <div class="col-md-12">
           <a href="<?= base_url('auth/registrationMember'); ?>" class="text-center mt-3">Buat akun baru</a><br>
-          <a href="#" class="align-right">Lupa password?</a>
+          <a href="#" class="align-right" data-toggle="modal" data-target="#passModal">Lupa password?</a>
         </div>
       </div>
     </div>
     <!-- /.login-box-body -->
   </div>
   <!-- /.login-box -->
+
+  <!-- Logout Modal-->
+  <div class="modal" id="passModal" tabindex="-1" role="dialog" aria-labelledby="passModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="passModalLabel">Lupa Password?</h5>
+        </div>
+        <div class="modal-body">Silahkan hubungi Admin Klinik Fusfa untuk mendapatkan password baru</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Kembali</button>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -127,18 +127,18 @@ class Owner extends CI_Controller
             $this->load->view('owner/updatejanji', $data);
             $this->load->view('templates/footer');
         } else {
-            $data = [
-                'id_jt' = $this->input->post('id_jt'),
-                'id_pasien' = $this->input->post('id_pasien'),
-                'id_terapis' = $this->input->post('id_terapis'),
-                'layanan' = $this->input->post('layanan'),
-                'tgl_temu' = $this->input->post('tgl_temu'),,
-                'waktu' = $this->input->post('waktu'),
-                'keluhan' = $this->input->post('keluhan'),
-                'status' = $this->input->post('status'),
-                'penyakit' = $this->input->post('penyakit'),
-                'catatan' = $this->input->post('catatan')
-            ];
+            // $data = [
+            //     'id_jt' = $this->input->post('id_jt'),
+            //     'id_pasien' = $this->input->post('id_pasien'),
+            //     'id_terapis' = $this->input->post('id_terapis'),
+            //     'layanan' = $this->input->post('layanan'),
+            //     'tgl_temu' = $this->input->post('tgl_temu'),,
+            //     'waktu' = $this->input->post('waktu'),
+            //     'keluhan' = $this->input->post('keluhan'),
+            //     'status' = $this->input->post('status'),
+            //     'penyakit' = $this->input->post('penyakit'),
+            //     'catatan' = $this->input->post('catatan')
+            // ];
 
             $id_jt = $this->input->post('id_jt');
             $id_pasien = $this->input->post('id_pasien');

@@ -3,10 +3,10 @@
   <a href="../../index2.html" class="logo">
     <!-- mini logo for sidebar mini 50x50 pixels -->
     <!-- <span class="logo-mini"><b>A</b>LT</span> -->
-    <span class="logo-mini"><img src="<?= base_url('assets/img/kf_logo.png') ?>" alt="KF Logo"></span>
+    <span class="logo-mini"><img src="<?= base_url('assets/img/kf_logo.png') ?>" alt="KF Logo" width="50px;"></span>
     <!-- logo for regular state and mobile devices -->
     <!-- <span class="logo-lg"><b>Admin</b>LTE</span> -->
-    <span class="logo-mini "><img src="<?= base_url('assets/img/logo_kf.png') ?>" alt="Logo KF"></span>
+    <span class="logo-lg"><img src="<?= base_url('assets/img/logo_kf.png') ?>" alt="Logo KF" width="210px;"></span>
   </a>
   <!-- Header Navbar: style can be found in header.less -->
   <nav class="navbar navbar-static-top">
