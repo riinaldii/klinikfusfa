@@ -20,6 +20,10 @@
   <link rel="stylesheet" href="<?= base_url('assets/'); ?>plugins/timepicker/bootstrap-timepicker.min.css">
   <!-- DataTables -->
   <link rel="stylesheet" href="<?= base_url('assets/'); ?>bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+  <link rel="stylesheet" href="<?= base_url('assets/'); ?>bower_components/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="<?= base_url('assets/'); ?>bower_components/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="<?= base_url('assets/'); ?>bower_components/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="<?= base_url('assets/'); ?>bower_components/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
   <!-- Select2 -->
   <link rel="stylesheet" href="<?= base_url('assets/'); ?>bower_components/select2/dist/css/select2.min.css">
   <!-- Theme style -->

@@ -43,6 +43,20 @@
 <!-- DataTables -->
 <script src="<?= base_url('assets/'); ?>bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="<?= base_url('assets/'); ?>bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="<?= base_url('assets/'); ?>bower_components/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+<script src="<?= base_url('assets/'); ?>bower_components/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+<script src="<?= base_url('assets/'); ?>bower_components/datatables.net-buttons/js/buttons.flash.min.js"></script>
+<script src="<?= base_url('assets/'); ?>bower_components/datatables.net-buttons/js/buttons.html5.min.js"></script>
+<script src="<?= base_url('assets/'); ?>bower_components/datatables.net-buttons/js/buttons.print.min.js"></script>
+<script src="<?= base_url('assets/'); ?>bower_components/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+<script src="<?= base_url('assets/'); ?>bower_components/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+<script src="<?= base_url('assets/'); ?>bower_components/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="<?= base_url('assets/'); ?>bower_components/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+<script src="<?= base_url('assets/'); ?>bower_components/datatables.net-scroller/js/datatables.scroller.min.js"></script>
+<script src="<?= base_url('assets/'); ?>bower_components/jszip/dist/jszip.min.js"> </script>
+<script src="<?= base_url('assets/'); ?>bower_components/pdfmake/build/pdfmake.min.js"></script>
+<script src="<?= base_url('assets/'); ?>bower_components/pdfmake/build/vfs_fonts.js"></script>
+<script src="<?= base_url('assets/'); ?>bower_components/chart.js/Chart.js"></script>
 <!-- bootstrap datepicker -->
 <script src="<?= base_url('assets/'); ?>bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <!-- bootstrap time picker -->
@@ -125,6 +139,16 @@
       'autoWidth': false
     })
   })
+</script>
+<script>
+  $(document).ready(function() {
+    $('#print').DataTable({
+      dom: 'Bfrtip',
+      buttons: [
+        'print'
+      ]
+    });
+  });
 </script>
 </body>
 
